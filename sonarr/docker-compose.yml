@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  sonarr:
+    container_name: sonarr
+    environment:
+      PGID: ${PGID}
+      PUID: ${PUID}
+      TZ: ${TZ}
+    image: lscr.io/linuxserver/sonarr:develop
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    networks:
+      - shyDockerServer
+    ports:
+      - 8989:8989
+    labels:
+      - swag=enable
+      - swag_auth=authelia
+    restart: unless-stopped
+    volumes:
+      - ${DOCKERCONFDIR}/sonarr:/config
+      - ${DOCKERSTORAGEDIR}:/storage
+
+networks:
+  shyDockerServer:
+    driver: bridge
+    external: true

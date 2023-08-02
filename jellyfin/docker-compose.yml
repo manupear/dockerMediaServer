@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  jellyfin:
+    container_name: jellyfin
+    environment:
+      PGID: ${PGID}
+      PUID: ${PUID}
+      TZ: ${TZ}
+    image: lscr.io/linuxserver/jellyfin:latest
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    networks:
+      - shyDockerServer
+    restart: unless-stopped
+    ports:
+      - 8096:8096
+    labels:
+      - swag=enable
+      - swag_auth=authelia
+    volumes:
+      - ${DOCKERCONFDIR}/jellyfin:/config
+      - ${DOCKERSTORAGEDIR}/medialibrary/movies-anime:/data/anime_movies
+      - ${DOCKERSTORAGEDIR}/medialibrary/movies:/data/movies
+      - ${DOCKERSTORAGEDIR}/medialibrary/tv-anime:/data/anime_tvshows
+      - ${DOCKERSTORAGEDIR}/medialibrary/tv:/data/tvshows
+
+networks:
+  shyDockerServer:
+    driver: bridge
+    external: true

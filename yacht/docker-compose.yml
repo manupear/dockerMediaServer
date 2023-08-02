@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  yacht:
+    container_name: yacht
+    image: selfhostedpro/yacht
+    environment:
+      DOCKER_HOST: dockerproxy
+      PGID: ${PGID}
+      PUID: ${PUID}
+      TZ: ${TZ}
+    ports:
+      - 8000:8000
+    networks:
+      - shyDockerServer
+    restart: unless-stopped
+    labels:
+      - swag=enable
+      - swag_auth=authelia
+    volumes:
+      - ${DOCKERCONFDIR}/yacht:/config
+
+networks:
+  shyDockerServer:
+    driver: bridge
+    external: true

@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  notifiarr:
+    container_name: notifiarr
+    hostname: notifiarr
+    image: golift/notifiarr
+    restart: unless-stopped
+    environment:
+      PGID: ${PGID}
+      PUID: ${PUID}
+      TZ: ${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    ports:
+      - 5454:5454
+    networks:
+      - shyDockerServer
+    volumes:
+      - ${DOCKERCONFDIR}/notifiarr:/config
+      - /var/run/utmp:/var/run/utmp
+      - /etc/machine-id:/etc/machine-id
+
+networks:
+  shyDockerServer:
+    driver: bridge
+    external: true

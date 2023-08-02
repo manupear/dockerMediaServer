@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  wizarr:
+    container_name: wizarr
+    image: ghcr.io/wizarrrr/wizarr
+    ports:
+      - 5690:5690
+    restart: unless-stopped
+    labels:
+      - swag=enable
+      - swag_auth=authelia
+    volumes:
+      - ${DOCKERCONFDIR}/wizarr:/data/database
+    networks:
+      - shyDockerServer
+    environment:
+      APP_URL: ${WIZARR_APP_URL}
+      DISABLE_BUILTIN_AUTH: false
+      PGID: ${PGID}
+      PUID: ${PUID}
+      TZ: ${TZ}
+
+networks:
+  shyDockerServer:
+    driver: bridge
+    external: true

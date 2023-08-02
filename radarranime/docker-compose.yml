@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  radarranime:
+    container_name: radarranime
+    image: lscr.io/linuxserver/radarr:latest
+    ports:
+      - 7879:7879
+    environment:
+      PGID: ${PGID}
+      PUID: ${PUID}
+      TZ: ${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    networks:
+      - shyDockerServer
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/radarranime:/config
+      - ${DOCKERSTORAGEDIR}:/storage
+
+networks:
+  shyDockerServer:
+    driver: bridge
+    external: true

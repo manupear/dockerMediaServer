@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  bazarr:
+    container_name: bazarr
+    environment:
+      PGID: ${PGID}
+      PUID: ${PUID}
+      TZ: ${TZ}
+    image: lscr.io/linuxserver/bazarr:latest
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    networks:
+      - shyDockerServer
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+    volumes:
+      - ${DOCKERCONFDIR}/bazarr:/config
+      - ${DOCKERSTORAGEDIR}:/storage
+
+networks:
+  shyDockerServer:
+    driver: bridge
+    external: true

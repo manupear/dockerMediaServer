@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  radarr:
+    container_name: radarr
+    environment:
+      PGID: ${PGID}
+      PUID: ${PUID}
+      TZ: ${TZ}
+    image: lscr.io/linuxserver/radarr:latest
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    networks:
+      - shyDockerServer
+    ports:
+      - 7880:7880
+    labels:
+      - swag=enable
+      - swag_auth=authelia
+    restart: unless-stopped
+    volumes:
+      - ${DOCKERCONFDIR}/radarr:/config
+      - ${DOCKERSTORAGEDIR}:/storage
+
+networks:
+  shyDockerServer:
+    driver: bridge
+    external: true

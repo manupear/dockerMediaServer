@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  homarr:
+    container_name: homarr
+    image: ghcr.io/ajnart/homarr:latest
+    restart: ${HOMARR_RESTART}
+    environment:
+      PGID: ${PGID}
+      PUID: ${PUID}
+      TZ: ${TZ}
+      DOCKER_HOST: dockerproxy
+    volumes:
+      - ${DOCKERCONFDIR}/homarr/configs:/app/data/configs
+      - ${DOCKERCONFDIR}/homarr/icons:/app/public/icons
+    ports:
+      - 7575:7575
+    networks:
+      - shyDockerServer
+    labels:
+      - swag=disable
+
+networks:
+  shyDockerServer:
+    driver: bridge
+    external: true
