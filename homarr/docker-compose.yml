@@ -3,7 +3,7 @@ services:
   homarr:
     container_name: homarr
     image: ghcr.io/ajnart/homarr:latest
-    restart: ${HOMARR_RESTART}
+    restart: unless-stopped
     environment:
       PGID: ${PGID}
       PUID: ${PUID}
