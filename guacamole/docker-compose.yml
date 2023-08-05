@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  guacamole:
+    image: abesnier/guacamole
+    container_name: guacamole
+    volumes:
+      - ${DOCKERCONFDIR}/guacamole/postgres:/config
+    environment:
+      PGID: ${PGID}
+      PUID: ${PUID}
+      TZ: ${TZ}
+    # labels:
+    #   - swag=enable
+    #   - swag_auth=authelia
+    networks:
+      - shyDockerServer
+    ports:
+      - 8081:8080
+
+networks:
+  shyDockerServer:
+    driver: bridge
+    external: true
