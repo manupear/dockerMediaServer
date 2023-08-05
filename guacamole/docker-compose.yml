@@ -9,9 +9,9 @@ services:
       PGID: ${PGID}
       PUID: ${PUID}
       TZ: ${TZ}
-    # labels:
-    #   - swag=enable
-    #   - swag_auth=authelia
+    labels:
+      - swag=enable
+      - swag_auth=authelia
     networks:
       - shyDockerServer
     ports:
