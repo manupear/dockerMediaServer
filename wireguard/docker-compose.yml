@@ -13,7 +13,6 @@ services:
       SERVERURL: auto
       SERVERPORT: 51820
       PEERS: peer1,peer2
-      PEERDNS: 1.1.1.1,1.0.0.1
       ALLOWEDIPS: 0.0.0.0/0
     volumes:
       - ${DOCKERCONFDIR}/wireguard:/config
