@@ -15,11 +15,43 @@ services:
       - ${DOCKERCONFDIR}/prometheus/data:/prometheus
     command: "--config.file=/etc/prometheus//prometheus.yml"
     restart: unless-stopped
-    labels:
-      - swag=enable
-      - swag_auth=authelia
     networks:
       - shyDockerServer
+
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node_exporter
+    command:
+      - "--path.rootfs=/host"
+    pid: host
+    restart: unless-stopped
+    volumes:
+      - "/:/host:ro,rslave"
+    networks:
+      - shyDockerServer
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    # ports:
+    #   - 8081:8081
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    depends_on:
+      - redis
+    networks:
+      - shyDockerServer
+
+  # redis:
+  #   image: redis:latest
+  #   container_name: redis
+  #   ports:
+  #     - 6379:6379
+  #   networks:
+  #     - shyDockerServer
 
 networks:
   shyDockerServer:
