@@ -17,6 +17,9 @@ services:
     restart: unless-stopped
     networks:
       - shyDockerServer
+    depends_on:
+      - cadvisor
+      - node_exporter
 
   node_exporter:
     image: quay.io/prometheus/node-exporter:latest
@@ -42,14 +45,16 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
     networks:
       - shyDockerServer
+    depends_on:
+      - redis
 
-  # redis:
-  #   image: redis:latest
-  #   container_name: redis
-  #   ports:
-  #     - 6379:6379
-  #   networks:
-  #     - shyDockerServer
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - 6379:6379
+    networks:
+      - shyDockerServer
 
 networks:
   shyDockerServer:
