@@ -3,11 +3,10 @@ services:
   grafana:
     image: grafana/grafana-oss:latest
     container_name: grafana
+    user: "${PUID}:${PGID}"
     ports:
       - "3000:3000"
     environment:
-      PGID: ${PGID}
-      PUID: ${PUID}
       TZ: ${TZ}
     volumes:
       - ${DOCKERCONFDIR}/grafana:/var/lib/grafana
