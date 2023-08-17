@@ -13,21 +13,24 @@ services:
       - shyDockerServer
     environment:
       DB_ROOT_PASSWORD: ${PIGLET_DB_ROOT_PASSWORD}
-        #MYSQL_DATABASE: ${MYSQL_DATABASE} # Default 'piglet'
-        #MYSQL_USER: ${MYSQL_USER} # Default 'piglet'
-        #MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-        #MYSQL_HOST: ${MYSQL_HOST}
-        #MAIL_SERVER: ${MAIL_SERVER}
-        #MAIL_USER: ${MAIL_USER}
-        #MAIL_PASSWORD: ${MAIL_PASSWORD}
-        #MAIL_PORT: ${MAIL_PORT}
-        #MAIL_ENCRYPTIONPROTOCOL: ${MAIL_ENCRYPTIONPROTOCOL}
-        #DOMAIN: ${DOMAIN} # Default 'localhost'
-        #DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-        #SECURE_COOKIE: ${SECURE_COOKIE}
+      #MYSQL_DATABASE: ${MYSQL_DATABASE} # Default 'piglet'
+      #MYSQL_USER: ${MYSQL_USER} # Default 'piglet'
+      #MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      #MYSQL_HOST: ${MYSQL_HOST}
+      #MAIL_SERVER: ${MAIL_SERVER}
+      #MAIL_USER: ${MAIL_USER}
+      #MAIL_PASSWORD: ${MAIL_PASSWORD}
+      #MAIL_PORT: ${MAIL_PORT}
+      #MAIL_ENCRYPTIONPROTOCOL: ${MAIL_ENCRYPTIONPROTOCOL}
+      #DOMAIN: ${DOMAIN} # Default 'localhost'
+      #DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      #SECURE_COOKIE: ${SECURE_COOKIE}
     volumes:
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
+    labels:
+      - swag=enable
+      - swag_auth=authelia
   database:
     image: mariadb:latest
     container_name: piglet-db
