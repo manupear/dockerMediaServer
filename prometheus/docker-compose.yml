@@ -10,8 +10,9 @@ services:
       PUID: ${PUID}
       TZ: ${TZ}
     volumes:
-      - ${DOCKERCONFDIR}/prometheus:/prometheus
-    command: "--config.file=/prometheus/config/prometheus.yml"
+      - ${DOCKERCONFDIR}/prometheus/config:/etc/prometheus
+      - ${DOCKERCONFDIR}/prometheus/data:/prometheus
+    command: "--config.file=/etc/prometheus//prometheus.yml"
     restart: unless-stopped
     labels:
       - swag=enable
