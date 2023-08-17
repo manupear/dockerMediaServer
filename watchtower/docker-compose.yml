@@ -2,8 +2,9 @@ version: "3.8"
 services:
   watchtower:
     image: containrrr/watchtower
+    command: -H tcp://dockerproxy:2375
     container_name: watchtower
-    restart: always
+    restart: unless-stopped
     environment:
       PGID: ${PGID}
       PUID: ${PUID}
