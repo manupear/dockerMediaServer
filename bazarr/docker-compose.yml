@@ -16,6 +16,9 @@ services:
       - shyDockerServer
     ports:
       - 6767:6767
+    labels:
+      - swag=enable
+      - swag_auth=authelia
     restart: unless-stopped
     volumes:
       - ${DOCKERCONFDIR}/bazarr:/config

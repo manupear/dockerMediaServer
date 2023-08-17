@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: always
+    environment:
+      PGID: ${PGID}
+      PUID: ${PUID}
+      TZ: ${TZ}
+      WATCHTOWER_SCHEDULE: "0 0 03 * * *"
+      WATCHTOWER_CLEANUP: "true"
+      DOCKER_HOST: dockerproxy
+    networks:
+      - shyDockerServer
+
+networks:
+  shyDockerServer:
+    driver: bridge
+    external: true
