@@ -38,6 +38,7 @@ services:
     container_name: cadvisor
     ports:
       - 8081:8081
+    privileged: true
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
@@ -45,8 +46,6 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
     networks:
       - shyDockerServer
-    devices:
-      - /dev/kmsg
     depends_on:
       - redis
 
