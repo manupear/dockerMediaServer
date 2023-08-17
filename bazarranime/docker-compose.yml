@@ -4,7 +4,7 @@ services:
     container_name: bazarranime
     image: lscr.io/linuxserver/bazarr:latest
     ports:
-      - 6768:6768
+      - 6768:6767
     environment:
       PGID: ${PGID}
       PUID: ${PUID}

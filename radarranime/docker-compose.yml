@@ -4,7 +4,7 @@ services:
     container_name: radarranime
     image: lscr.io/linuxserver/radarr:latest
     ports:
-      - 7879:7879
+      - 7879:7878
     environment:
       PGID: ${PGID}
       PUID: ${PUID}

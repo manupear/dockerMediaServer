@@ -4,7 +4,7 @@ services:
     container_name: sonarranime
     image: lscr.io/linuxserver/sonarr:develop
     ports:
-      - 8990:8990
+      - 8990:8989
     environment:
       PGID: ${PGID}
       PUID: ${PUID}
