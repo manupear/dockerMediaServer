@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    environment:
+      PGID: ${PGID}
+      PUID: ${PUID}
+      TZ: ${TZ}
+    volumes:
+      - ${DOCKERCONFDIR}/prometheus:/prometheus
+    command: "--config.file=/prometheus/config/prometheus.yml"
+    restart: unless-stopped
+    labels:
+      - swag=enable
+      - swag_auth=authelia
+    networks:
+      - shyDockerServer
+
+networks:
+  shyDockerServer:
+    driver: bridge
+    external: true
