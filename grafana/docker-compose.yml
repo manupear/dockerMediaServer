@@ -3,12 +3,10 @@ services:
   grafana:
     image: grafana/grafana-oss:latest
     container_name: grafana
-    user: "${PUID}:${PGID}"
     ports:
       - "3000:3000"
+    user: "${PUID}:${PGID}"
     environment:
-      PGID: ${PGID}
-      PUID: ${PUID}
       TZ: ${TZ}
     volumes:
       - ${DOCKERCONFDIR}/grafana:/var/lib/grafana
@@ -16,6 +14,31 @@ services:
     labels:
       - swag=enable
       - swag_auth=authelia
+    networks:
+      - shyDockerServer
+
+  loki:
+    image: grafana/loki:2.8.0
+    environment:
+      TZ: ${TZ}
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    volumes:
+      - ${DOCKERCONFDIR}/grafana/loki:/etc/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - shyDockerServer
+
+  promtail:
+    image: grafana/promtail:2.8.0
+    environment:
+      TZ: ${TZ}
+    restart: unless-stopped
+    volumes:
+      - /var/log:/var/log
+      - ${DOCKERCONFDIR}/grafana/promtail:/etc/promtail
+    command: -config.file=/etc/promtail/config.yml
     networks:
       - shyDockerServer
 
