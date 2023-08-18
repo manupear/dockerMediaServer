@@ -19,6 +19,7 @@ services:
 
   loki:
     image: grafana/loki:2.8.0
+    container_name: grafana-loki
     environment:
       TZ: ${TZ}
     restart: unless-stopped
@@ -32,6 +33,7 @@ services:
 
   promtail:
     image: grafana/promtail:2.8.0
+    container_name: grafana-promtail
     environment:
       TZ: ${TZ}
     restart: unless-stopped
