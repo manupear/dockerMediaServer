@@ -55,7 +55,7 @@ services:
       CACHE_PREFIX: "firefly"
       FIREFLY_III_LAYOUT: "v1"
     volumes:
-      - ${DOCKERCONFDIR}/firefly_iii/firefly_iii_upload:/var/www/html/storage/upload
+      - ${DOCKERCONFDIR}/firefly_iii/firefly_iii_upload/:/var/www/html/storage/upload
     networks:
       - shyDockerServer
     ports:
@@ -78,7 +78,7 @@ services:
     networks:
       - shyDockerServer
     volumes:
-      - ${DOCKERCONFDIR}/firefly_iii/firefly_iii_db:/var/lib/mysql
+      - ${DOCKERCONFDIR}/firefly_iii/firefly_iii_db/:/var/lib/mysql
 
   cron:
     image: alpine
