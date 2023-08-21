@@ -3,6 +3,7 @@ services:
   authelia:
     image: authelia/authelia
     container_name: authelia
+    init: true
     volumes:
       - ${DOCKERCONFDIR}/authelia:/config
     ports:

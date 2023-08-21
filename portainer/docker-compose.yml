@@ -17,7 +17,7 @@ services:
     networks:
       - shyDockerServer
     ports:
-      - 9001:9001
+      - 9000:9000
     labels:
       - swag=enable
       - swag_auth=authelia

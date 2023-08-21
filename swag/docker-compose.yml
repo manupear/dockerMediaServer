@@ -5,8 +5,6 @@ services:
     container_name: swag
     cap_add:
       - NET_ADMIN
-    depends_on:
-      - dockerproxy
     environment:
       PGID: ${PGID}
       PUID: ${PUID}
