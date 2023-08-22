@@ -1,0 +1,94 @@
+version: "3.8"
+
+x-default-conf: &default_conf
+  init: true
+  restart: unless-stopped
+  networks:
+    - managementStackNetwork
+    - socketProxykNetwork
+
+x-authelia-conf: &authelia
+  labels:
+    - swag=enable
+    - swag_auth=authelia
+
+x-environment: &environment
+  PGID: ${PGID}
+  PUID: ${PUID}
+  TZ: ${TZ}
+
+services:
+  swag:
+    image: lscr.io/linuxserver/swag:latest
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      <<: *environment
+      URL: ${SWAG_URL}
+      SUBDOMAINS: wildcard
+      VALIDATION: dns
+      CERTPROVIDER: zerossl
+      DNSPLUGIN: cloudflare
+      STAGING: false
+      PROPAGATION: 30
+      EMAIL: ${DEFAULT_EMAIL}
+      DOCKER_MODS: linuxserver/mods:universal-docker|linuxserver/mods:swag-auto-proxy|linuxserver/mods:universal-cloudflared|linuxserver/mods:swag-crowdsec|linuxserver/mods:swag-auto-reload
+      CROWDSEC_API_KEY: ${SWAG_CROWDSEC_API_KEY}
+      CROWDSEC_LAPI_URL: http://crowdsec:8080
+      DOCKER_HOST: dockerproxy
+      CF_ZONE_ID: ${SWAG_CF_ZONE_ID}
+      CF_ACCOUNT_ID: ${SWAG_CF_ACCOUNT_ID}
+      CF_API_TOKEN: ${SWAG_CF_API_TOKEN}
+      CF_TUNNEL_NAME: ${SWAG_CF_TUNNEL_NAME}
+      CF_TUNNEL_PASSWORD=: ${SWAG_CF_TUNNEL_PASSWORD}
+      FILE__CF_TUNNEL_CONFIG: /config/tunnelconfig.yml
+    init: true
+    restart: unless-stopped
+    networks:
+      - securityStackNetworkSwag
+      - arrStackNetwork
+      - managementStackNetwork
+    ports:
+      - 443:443
+    volumes:
+      - ${DOCKERCONFDIR}/swag:/config
+    extra_hosts:
+      - ${SWAG_EXTRA_HOSTS}
+
+  yacht:
+    command: -H tcp://dockerproxy:2375
+    container_name: yacht
+    image: selfhostedpro/yacht
+    environment:
+      DOCKER_HOST: dockerproxy
+      <<: *environment
+    <<: *default_conf
+    <<: *authelia
+    ports:
+      - 8000:8000
+    volumes:
+      - ${DOCKERCONFDIR}/yacht:/config
+
+  portainer:
+    command: -H tcp://dockerproxy:2375
+    container_name: portainer
+    image: portainer/portainer-ce:latest
+    environment:
+      <<: *environment
+      DOCKER_HOST: dockerproxy
+    <<: *default_conf
+    <<: *authelia
+    ports:
+      - 9000:9000
+    volumes:
+      - ${DOCKERCONFDIR}/portainer:/data
+      - ${DOCKERSTORAGEDIR}:/storage
+
+networks:
+  managementStackNetwork:
+    driver: bridge
+    external: true
+  socketProxykNetwork:
+    driver: bridge
+    external: true

@@ -10,7 +10,7 @@ services:
       PUID: ${PUID}
       TZ: ${TZ}
     volumes:
-      - /${DOCKERCONFDIR}/cloudflare-ddns/config.json:/config.json
+      - ${DOCKERCONFDIR}/cloudflare-ddns/config.json:/config.json
     restart: unless-stopped
     networks:
       - shyDockerServer

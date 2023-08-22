@@ -1,0 +1,102 @@
+version: "3.8"
+
+x-default-conf: &default_conf
+  init: true
+  restart: unless-stopped
+  networks:
+    - securityStackNetworkSwag
+
+
+x-environment: &environment
+  PGID: ${PGID}
+  PUID: ${PUID}
+  TZ: ${TZ}
+
+services:
+  dockerproxy:
+    image: ghcr.io/tecnativa/docker-socket-proxy:latest
+    container_name: dockerproxy
+    environment:
+      # 0 to revoke access.
+      # 1 to grant access.
+      ## Granted by Default
+      - EVENTS=1
+      - PING=1
+      - VERSION=1
+      ## Revoked by Default
+      # Security critical
+      - AUTH=0
+      - SECRETS=0
+      - POST=1
+      # Not always needed
+      - BUILD=0
+      - COMMIT=0
+      - CONFIGS=0
+      - CONTAINERS=1 # Traefik, portainer, etc.
+      - DISTRIBUTION=0
+      - EXEC=0
+      - IMAGES=1 # Portainer
+      - INFO=1 # Portainer
+      - NETWORKS=1 # Portainer
+      - NODES=0
+      - PLUGINS=0
+      - SERVICES=1 # Portainer
+      - SESSION=0
+      - SWARM=0
+      - SYSTEM=0
+      - TASKS=1 # Portainer
+      - VOLUMES=1 # Portainer
+    init: true
+    restart: unless-stopped
+    networks:
+      - socketProxykNetwork
+    ports:
+      - 2376:2376
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  crowdsec:
+    image: docker.io/crowdsecurity/crowdsec:latest
+    container_name: crowdsec
+    environment:
+      <<: *environment
+      COLLECTIONS: "crowdsecurity/nginx crowdsecurity/http-cve crowdsecurity/whitelist-good-actors"
+      CUSTOM_HOSTNAME: ${CROWDSEC_CUSTOM_HOSTNAME}
+    <<: *default_conf
+    volumes:
+      - ${DOCKERCONFDIR}/crowdsec/config:/etc/crowdsec:rw
+      - ${DOCKERCONFDIR}/crowdsec/data:/var/lib/crowdsec/data:rw
+      - ${DOCKERCONFDIR}/swag/log/nginx:/var/log/swag:ro
+      - /var/log:/var/log/host:ro
+    security_opt:
+      - no-new-privileges=true
+
+  cloudflare-ddns:
+    image: timothyjmiller/cloudflare-ddns:latest
+    container_name: cloudflare-ddns
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      <<: *environment
+    <<: *default_conf
+    volumes:
+      - ${DOCKERCONFDIR}/cloudflare-ddns/config.json:/config.json
+
+  authelia:
+    image: authelia/authelia
+    container_name: authelia
+    environment:
+      <<: *environment
+    <<: *default_conf
+    ports:
+      - 9091:9091
+    volumes:
+      - ${DOCKERCONFDIR}/authelia:/config
+
+networks:
+  securityStackNetworkSwag:
+    driver: bridge
+    external: true
+  socketProxykNetwork:
+    driver: bridge
+    external: true
