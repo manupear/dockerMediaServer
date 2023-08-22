@@ -4,7 +4,7 @@ x-default-conf: &default_conf
   restart: unless-stopped
   networks:
     - managementStackNetwork
-    - socketProxykNetwork
+    - socketProxyNetwork
 
 x-authelia-conf: &authelia
   labels:
@@ -68,5 +68,5 @@ services:
 networks:
   managementStackNetwork:
     driver: bridge
-  socketProxykNetwork:
+  socketProxyNetwork:
     driver: bridge
