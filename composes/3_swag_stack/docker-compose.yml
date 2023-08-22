@@ -91,11 +91,16 @@ services:
 networks:
   swagStackNetwork:
     driver: bridge
+    external: true
   managementStackNetwork:
     driver: bridge
+    external: true
   arrStackNetwork:
     driver: bridge
+    external: true
   downloadStackNetwork:
     driver: bridge
+    external: true
   generalStackNetwork:
     driver: bridge
+    external: true

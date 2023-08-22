@@ -25,5 +25,7 @@ services:
 networks:
   downloadStackNetwork:
     driver: bridge
+    external: true
   arrStackNetwork:
     driver: bridge
+    external: true

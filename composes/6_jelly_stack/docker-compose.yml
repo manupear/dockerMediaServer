@@ -46,5 +46,7 @@ services:
 networks:
   jellyStackNetwork:
     driver: bridge
+    external: true
   arrStackNetwork:
     driver: bridge
+    external: true

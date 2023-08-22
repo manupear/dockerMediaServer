@@ -44,3 +44,4 @@ services:
 networks:
   socketProxyNetwork:
     driver: bridge
+    external: true

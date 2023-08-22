@@ -68,5 +68,7 @@ services:
 networks:
   managementStackNetwork:
     driver: bridge
+    external: true
   socketProxyNetwork:
     driver: bridge
+    external: true
