@@ -9,7 +9,7 @@ services:
     ports:
       - 2376:2376
     networks:
-      - shyDockerServer
+      - socketProxyNetwork
     environment:
       # 0 to revoke access.
       # 1 to grant access.
@@ -42,6 +42,6 @@ services:
       - VOLUMES=1 # Portainer
 
 networks:
-  shyDockerServer:
+  socketProxyNetwork:
     driver: bridge
     external: true

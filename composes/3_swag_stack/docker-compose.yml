@@ -3,8 +3,7 @@ version: "3.8"
 x-default-conf: &default_conf
   restart: unless-stopped
   networks:
-    - securityStackNetworkSwag
-
+    - swagStackNetwork
 
 x-environment: &environment
   PGID: ${PGID}
@@ -12,46 +11,44 @@ x-environment: &environment
   TZ: ${TZ}
 
 services:
-  dockerproxy:
-    image: ghcr.io/tecnativa/docker-socket-proxy:latest
-    container_name: dockerproxy
+  swag:
+    image: lscr.io/linuxserver/swag:latest
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
     environment:
-      # 0 to revoke access.
-      # 1 to grant access.
-      ## Granted by Default
-      - EVENTS=1
-      - PING=1
-      - VERSION=1
-      ## Revoked by Default
-      # Security critical
-      - AUTH=0
-      - SECRETS=0
-      - POST=1
-      # Not always needed
-      - BUILD=0
-      - COMMIT=0
-      - CONFIGS=0
-      - CONTAINERS=1 # Traefik, portainer, etc.
-      - DISTRIBUTION=0
-      - EXEC=0
-      - IMAGES=1 # Portainer
-      - INFO=1 # Portainer
-      - NETWORKS=1 # Portainer
-      - NODES=0
-      - PLUGINS=0
-      - SERVICES=1 # Portainer
-      - SESSION=0
-      - SWARM=0
-      - SYSTEM=0
-      - TASKS=1 # Portainer
-      - VOLUMES=1 # Portainer
+      <<: *environment
+      URL: ${SWAG_URL}
+      SUBDOMAINS: wildcard
+      VALIDATION: dns
+      CERTPROVIDER: zerossl
+      DNSPLUGIN: cloudflare
+      STAGING: false
+      PROPAGATION: 30
+      EMAIL: ${DEFAULT_EMAIL}
+      DOCKER_MODS: linuxserver/mods:universal-docker|linuxserver/mods:swag-auto-proxy|linuxserver/mods:universal-cloudflared|linuxserver/mods:swag-crowdsec|linuxserver/mods:swag-auto-reload
+      CROWDSEC_API_KEY: ${SWAG_CROWDSEC_API_KEY}
+      CROWDSEC_LAPI_URL: http://crowdsec:8080
+      DOCKER_HOST: dockerproxy
+      CF_ZONE_ID: ${SWAG_CF_ZONE_ID}
+      CF_ACCOUNT_ID: ${SWAG_CF_ACCOUNT_ID}
+      CF_API_TOKEN: ${SWAG_CF_API_TOKEN}
+      CF_TUNNEL_NAME: ${SWAG_CF_TUNNEL_NAME}
+      CF_TUNNEL_PASSWORD=: ${SWAG_CF_TUNNEL_PASSWORD}
+      FILE__CF_TUNNEL_CONFIG: /config/tunnelconfig.yml
     restart: unless-stopped
     networks:
-      - socketProxykNetwork
+      - swagStackNetwork
+      - managementStackNetwork
+      - arrStackNetwork
+      - downloadStackNetwork
+      - generalStackNetwork
     ports:
-      - 2376:2376
+      - 443:443
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${DOCKERCONFDIR}/swag:/config
+    extra_hosts:
+      - ${SWAG_EXTRA_HOSTS}
 
   crowdsec:
     image: docker.io/crowdsecurity/crowdsec:latest
@@ -92,9 +89,17 @@ services:
       - ${DOCKERCONFDIR}/authelia:/config
 
 networks:
-  securityStackNetworkSwag:
+  swagStackNetwork:
     driver: bridge
     external: true
-  socketProxykNetwork:
+  managementStackNetwork:
     driver: bridge
     external: true
+  arrStackNetwork:
+    driver: bridge
+    external: true
+  downloadStackNetwork:
+    driver: bridge
+    external: true
+  generalStackNetwork:
+    driver: bridge

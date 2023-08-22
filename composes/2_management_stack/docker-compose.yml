@@ -1,0 +1,74 @@
+version: "3.8"
+
+x-default-conf: &default_conf
+  restart: unless-stopped
+  networks:
+    - managementStackNetwork
+    - socketProxykNetwork
+
+x-authelia-conf: &authelia
+  labels:
+    - swag=enable
+    - swag_auth=authelia
+
+x-environment: &environment
+  PGID: ${PGID}
+  PUID: ${PUID}
+  TZ: ${TZ}
+  DOCKER_HOST: dockerproxy
+
+services:
+  yacht:
+    command: -H tcp://dockerproxy:2375
+    container_name: yacht
+    image: selfhostedpro/yacht
+    environment:
+      <<: *environment
+    <<: [ *default_conf, *authelia ]
+    ports:
+      - 8000:8000
+    volumes:
+      - ${DOCKERCONFDIR}/yacht:/config
+
+  portainer:
+    command: -H tcp://dockerproxy:2375
+    container_name: portainer
+    image: portainer/portainer-ce:latest
+    environment:
+      <<: *environment
+    <<: [ *default_conf, *authelia ]
+    ports:
+      - 9000:9000
+    volumes:
+      - ${DOCKERCONFDIR}/portainer:/data
+      - ${DOCKERSTORAGEDIR}:/storage
+
+  watchtower:
+    image: containrrr/watchtower
+    command: -H tcp://dockerproxy:2375
+    container_name: watchtower
+    environment:
+      <<: *environment
+      WATCHTOWER_SCHEDULE: "0 0 03 * * *"
+      WATCHTOWER_CLEANUP: "true"
+    <<: *default_conf
+
+  homarr:
+    container_name: homarr
+    image: ghcr.io/ajnart/homarr:latest
+    environment:
+      <<: *environment
+    <<: *default_conf
+    volumes:
+      - ${DOCKERCONFDIR}/homarr/configs:/app/data/configs
+      - ${DOCKERCONFDIR}/homarr/icons:/app/public/icons
+    ports:
+      - 7575:7575
+
+networks:
+  managementStackNetwork:
+    driver: bridge
+    external: true
+  socketProxykNetwork:
+    driver: bridge
+    external: true

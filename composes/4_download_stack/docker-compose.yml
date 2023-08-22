@@ -13,7 +13,7 @@ services:
       - swag=enable
       - swag_auth=authelia
     networks:
-      - shyDockerServer
+      - downloadStackNetwork
       - arrStackNetwork
     volumes:
       - ${DOCKERCONFDIR}/qbittorrent:/config
@@ -23,6 +23,9 @@ services:
     restart: unless-stopped
 
 networks:
-  shyDockerServer:
+  downloadStackNetwork:
+    driver: bridge
+    external: true
+  arrStackNetwork:
     driver: bridge
     external: true
