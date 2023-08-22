@@ -1,7 +1,6 @@
 version: "3.8"
 
 x-default-conf: &default_conf
-  init: true
   restart: unless-stopped
   networks:
     - managementStackNetwork
@@ -43,7 +42,6 @@ services:
       CF_TUNNEL_NAME: ${SWAG_CF_TUNNEL_NAME}
       CF_TUNNEL_PASSWORD=: ${SWAG_CF_TUNNEL_PASSWORD}
       FILE__CF_TUNNEL_CONFIG: /config/tunnelconfig.yml
-    init: true
     restart: unless-stopped
     networks:
       - securityStackNetworkSwag
@@ -63,8 +61,7 @@ services:
     environment:
       DOCKER_HOST: dockerproxy
       <<: *environment
-    <<: *default_conf
-    <<: *authelia
+    <<: [ *default_conf, *authelia ]
     ports:
       - 8000:8000
     volumes:
@@ -77,8 +74,7 @@ services:
     environment:
       <<: *environment
       DOCKER_HOST: dockerproxy
-    <<: *default_conf
-    <<: *authelia
+    <<: [ *default_conf, *authelia ]
     ports:
       - 9000:9000
     volumes:
@@ -90,5 +86,11 @@ networks:
     driver: bridge
     external: true
   socketProxykNetwork:
+    driver: bridge
+    external: true
+  securityStackNetworkSwag:
+    driver: bridge
+    external: true
+  arrStackNetwork:
     driver: bridge
     external: true

@@ -1,7 +1,6 @@
 version: "3.8"
 
 x-default-conf: &default_conf
-  init: true
   restart: unless-stopped
   networks:
     - arrStackNetwork
@@ -22,8 +21,7 @@ services:
     image: lscr.io/linuxserver/bazarr:latest
     environment:
       <<: *environment
-    <<: *default_conf
-    <<: *authelia
+    <<: [ *default_conf, *authelia ]
     ports:
       - 6767:6767
     volumes:
@@ -37,8 +35,7 @@ services:
       - 6768:6767
     environment:
       <<: *environment
-    <<: *default_conf
-    <<: *authelia
+    <<: [ *default_conf, *authelia ]
     volumes:
       - ${DOCKERCONFDIR}/bazarranime:/config
       - ${DOCKERSTORAGEDIR}:/storage
@@ -48,8 +45,7 @@ services:
     image: lscr.io/linuxserver/radarr:latest
     environment:
       <<: *environment
-    <<: *default_conf
-    <<: *authelia
+    <<: [ *default_conf, *authelia ]
     ports:
       - 7878:7878
     volumes:
@@ -61,8 +57,7 @@ services:
     image: lscr.io/linuxserver/radarr:latest
     environment:
       <<: *environment
-    <<: *default_conf
-    <<: *authelia
+    <<: [ *default_conf, *authelia ]
     ports:
       - 7879:7878
     volumes:
@@ -74,8 +69,7 @@ services:
     image: lscr.io/linuxserver/sonarr:develop
     environment:
       <<: *environment
-    <<: *default_conf
-    <<: *authelia
+    <<: [ *default_conf, *authelia ]
     ports:
       - 8989:8989
     volumes:
@@ -87,8 +81,7 @@ services:
     image: lscr.io/linuxserver/sonarr:develop
     environment:
       <<: *environment
-    <<: *default_conf
-    <<: *authelia
+    <<: [ *default_conf, *authelia ]
     ports:
       - 8990:8989
     volumes:
@@ -113,8 +106,7 @@ services:
     image: golift/notifiarr
     environment:
       <<: *environment
-    <<: *default_conf
-    <<: *authelia
+    <<: [ *default_conf, *authelia ]
     ports:
       - 5454:5454
     volumes:
@@ -127,8 +119,7 @@ services:
     image: lscr.io/linuxserver/prowlarr:latest
     environment:
       <<: *environment
-    <<: *default_conf
-    <<: *authelia
+    <<: [ *default_conf, *authelia ]
     ports:
       - 9696:9696
     volumes:
@@ -137,3 +128,4 @@ services:
 networks:
   arrStackNetwork:
     driver: bridge
+    external: true

@@ -1,7 +1,6 @@
 version: "3.8"
 
 x-default-conf: &default_conf
-  init: true
   restart: unless-stopped
   networks:
     - securityStackNetworkSwag
@@ -46,7 +45,6 @@ services:
       - SYSTEM=0
       - TASKS=1 # Portainer
       - VOLUMES=1 # Portainer
-    init: true
     restart: unless-stopped
     networks:
       - socketProxykNetwork
