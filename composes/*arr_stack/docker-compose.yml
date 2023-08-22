@@ -136,4 +136,3 @@ services:
 networks:
   arrStackNetwork:
     driver: bridge
-    external: true

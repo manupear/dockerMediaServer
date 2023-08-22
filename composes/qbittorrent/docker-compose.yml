@@ -14,6 +14,7 @@ services:
       - swag_auth=authelia
     networks:
       - shyDockerServer
+      - arrStackNetwork
     volumes:
       - ${DOCKERCONFDIR}/qbittorrent:/config
       - ${DOCKERSTORAGEDIR}/downloads/torrents:/storage/downloads/torrents

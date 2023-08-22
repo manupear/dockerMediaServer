@@ -29,6 +29,7 @@ services:
       FILE__CF_TUNNEL_CONFIG: /config/tunnelconfig.yml
     networks:
       - shyDockerServer
+      - arrStackNetwork
     ports:
       - 443:443
     extra_hosts:
