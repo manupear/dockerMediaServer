@@ -43,6 +43,7 @@ services:
       - arrStackNetwork
       - downloadStackNetwork
       - generalStackNetwork
+      - socketProxyNetwork
     ports:
       - 443:443
     volumes:
@@ -102,5 +103,8 @@ networks:
     driver: bridge
     external: true
   generalStackNetwork:
+    driver: bridge
+    external: true
+  socketProxyNetwork:
     driver: bridge
     external: true
