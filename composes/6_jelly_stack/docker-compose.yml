@@ -1,0 +1,52 @@
+version: "3.8"
+
+x-default-conf: &default_conf
+  restart: unless-stopped
+  networks:
+    - arrStackNetwork
+    - jellyStackNetwork
+
+x-authelia-conf: &authelia
+  labels:
+    - swag=enable
+    - swag_auth=authelia
+
+x-environment: &environment
+  PGID: ${PGID}
+  PUID: ${PUID}
+  TZ: ${TZ}
+
+services:
+  jellyfin:
+    container_name: jellyfin
+    image: lscr.io/linuxserver/jellyfin:latest
+    environment:
+      <<: *environment
+    <<: [ *default_conf, *authelia ]
+    ports:
+      - 8096:8096
+    volumes:
+      - ${DOCKERCONFDIR}/jellyfin:/config
+      - ${DOCKERSTORAGEDIR}/medialibrary/movies-anime:/data/anime_movies
+      - ${DOCKERSTORAGEDIR}/medialibrary/movies:/data/movies
+      - ${DOCKERSTORAGEDIR}/medialibrary/tv-anime:/data/anime_tvshows
+      - ${DOCKERSTORAGEDIR}/medialibrary/tv:/data/tvshows
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      <<: *environment
+    <<: [ *default_conf, *authelia ]
+    ports:
+      - 5055:5055
+    volumes:
+      - ${DOCKERCONFDIR}/jellyseerr:/app/config
+
+networks:
+  jellyStackNetwork:
+    driver: bridge
+    external: true
+  arrStackNetwork:
+    driver: bridge
+    external: true

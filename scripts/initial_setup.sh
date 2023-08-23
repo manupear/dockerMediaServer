@@ -43,8 +43,14 @@ echo \
 sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-echo "Creating bridge network shyDockerServer..."
-docker network create -d bridge shyDockerServer
+echo "Creating bridge networks..."
+docker network create -d bridge socketProxyNetwork
+docker network create -d bridge managementStackNetwork
+docker network create -d bridge swagStackNetwork
+docker network create -d bridge downloadStackNetwork
+docker network create -d bridge arrStackNetwork
+docker network create -d bridge jellyStackNetwork
+docker network create -d bridge generalStackNetwork
 
 ### GRAFANA LOKI DOCKER PLUGIN INSTALL ###
 docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
