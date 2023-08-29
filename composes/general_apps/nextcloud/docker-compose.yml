@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  nextcloud:
+    image: lscr.io/linuxserver/nextcloud:latest
+    container_name: nextcloud
+    environment:
+      PGID: ${PGID}
+      PUID: ${PUID}
+      TZ: ${TZ}
+    volumes:
+      - ${DOCKERCONFDIR}/nextcloud/appdata:/config
+      - ${DOCKERCONFDIR}/nextcloud/config:/data
+    ports:
+      - 5667:443
+    restart: unless-stopped
+    networks:
+      - generalStackNetwork
+    labels:
+      - swag=enable
+      - swag_auth=authelia
+
+networks:
+  generalStackNetwork:
+    driver: bridge
+    external: true
