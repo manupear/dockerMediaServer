@@ -11,6 +11,17 @@ x-environment: &environment
   TZ: ${TZ}
 
 services:
+  authelia:
+    image: authelia/authelia
+    container_name: authelia
+    environment:
+      <<: *environment
+    <<: *default_conf
+    ports:
+      - 9091:9091
+    volumes:
+      - ${DOCKERCONFDIR}/authelia:/config
+
   swag:
     image: lscr.io/linuxserver/swag:latest
     container_name: swag
@@ -77,17 +88,6 @@ services:
     <<: *default_conf
     volumes:
       - ${DOCKERCONFDIR}/cloudflare-ddns/config.json:/config.json
-
-  authelia:
-    image: authelia/authelia
-    container_name: authelia
-    environment:
-      <<: *environment
-    <<: *default_conf
-    ports:
-      - 9091:9091
-    volumes:
-      - ${DOCKERCONFDIR}/authelia:/config
 
 networks:
   swagStackNetwork:
