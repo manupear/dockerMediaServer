@@ -1,7 +1,8 @@
 version: '3'
 services:
-  actual_server:
+  actual_budget:
     image: actualbudget/actual-server:latest
+    container_name: actual_budget
     environment:
       PGID: ${PGID}
       PUID: ${PUID}

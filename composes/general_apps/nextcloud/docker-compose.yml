@@ -1,5 +1,10 @@
 version: "3.8"
 
+x-default-conf: &default_conf
+  restart: unless-stopped
+  networks:
+    - generalStackNetwork
+
 services:
   nextcloud:
     image: lscr.io/linuxserver/nextcloud:latest
@@ -11,11 +16,7 @@ services:
     volumes:
       - ${DOCKERCONFDIR}/nextcloud/appdata:/config
       - ${DOCKERCONFDIR}/nextcloud/config:/data
-    ports:
-      - 443:443
-    restart: unless-stopped
-    networks:
-      - generalStackNetwork
+    <<: *default_conf
     labels:
       - swag=enable
       - swag_auth=authelia
