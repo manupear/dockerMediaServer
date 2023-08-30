@@ -5,39 +5,30 @@ x-default-conf: &default_conf
   networks:
     - generalStackNetwork
 
-x-authelia-conf: &authelia
-  labels:
-    - swag=enable
-    - swag_auth=authelia
-
-x-environment: &environment
-  PGID: ${PGID}
-  PUID: ${PUID}
-  TZ: ${TZ}
-
 services:
   ryot:
     image: "ghcr.io/ignisda/ryot:latest"
     container_name: ryot
     user: "${PUID}:${PGID}"
     environment:
-      <<: *environment
+      TZ: ${TZ}
       SERVER_INSECURE_COOKIE: true
-      POSTGRES_PASSWORD: ${RYOT_POSTGRES_PWD}
-      DATABASE_URL: "postgres://postgres:${RYOT_POSTGRES_PWD}@ryot_postgres_db:5432/postgres"
+      POSTGRES_PASSWORD: postgres
+      DATABASE_URL: postgres://postgres:postgres@ryot_postgres_db:5432/postgres
     <<: *default_conf
+    depends_on:
+      - ryot_postgres_db
     volumes:
       - ${DOCKERCONFDIR}/ryot:/data
     ports:
       - "8192:8000"
-    pull_policy: always
 
   ryot_postgres_db:
     image: postgres:15-alpine
     container_name: ryot_postgres_db
     environment:
       TZ: ${TZ}
-      POSTGRES_PASSWORD: ${RYOT_POSTGRES_PWD}
+      POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
     <<: *default_conf
