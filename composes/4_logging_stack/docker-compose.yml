@@ -35,7 +35,7 @@ services:
       <<: *environment
     <<: *default_conf
     ports:
-      - "3100:3100"
+      - "3102:3100"
     volumes:
       - ${DOCKERCONFDIR}/grafana/loki:/etc/loki
     command: -config.file=/etc/loki/local-config.yaml

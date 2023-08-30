@@ -80,6 +80,7 @@ services:
     image: mariadb
     hostname: firefly_iii_db
     container_name: firefly_iii_db
+    user: "${PUID}:${PGID}"
     environment:
       <<: *environment
       MYSQL_RANDOM_ROOT_PASSWORD: yes

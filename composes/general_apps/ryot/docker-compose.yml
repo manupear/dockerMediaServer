@@ -19,21 +19,21 @@ services:
   ryot:
     image: "ghcr.io/ignisda/ryot:latest"
     container_name: ryot
+    user: "${PUID}"
     environment:
       <<: *environment
-      SERVER_INSECURE_COOKIE: false
+      SERVER_INSECURE_COOKIE: true
       POSTGRES_PASSWORD: ${RYOT_POSTGRES_PWD}
-      DATABASE_URL: "ryot_postgres_db://shyonaePostgresUser:${POSTGRES_PASSWORD}@ryot_postgres_db:5432/postgres"
+      DATABASE_URL: "postgres://shyonaePostgresUser:${RYOT_POSTGRES_PWD}@ryot_postgres_db:5432/postgres"
     <<: *default_conf
     ports:
       - "8192:8000"
-    volumes:
-      - ${DOCKERCONFDIR}/ryot:/data
     pull_policy: always
 
   ryot_postgres_db:
     image: postgres:15-alpine
     container_name: ryot_postgres_db
+    user: "${PUID}"
     environment:
       <<: *environment
       POSTGRES_PASSWORD: ${RYOT_POSTGRES_PWD}

@@ -12,7 +12,7 @@ services:
       - ${DOCKERCONFDIR}/nextcloud/appdata:/config
       - ${DOCKERCONFDIR}/nextcloud/config:/data
     ports:
-      - 5667:443
+      - 443:443
     restart: unless-stopped
     networks:
       - generalStackNetwork
