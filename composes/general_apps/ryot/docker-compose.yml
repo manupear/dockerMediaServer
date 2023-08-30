@@ -26,6 +26,8 @@ services:
       POSTGRES_PASSWORD: ${RYOT_POSTGRES_PWD}
       DATABASE_URL: "postgres://postgres:${RYOT_POSTGRES_PWD}@ryot_postgres_db:5432/postgres"
     <<: *default_conf
+    volumes:
+      - ${DOCKERCONFDIR}/ryot:/data
     ports:
       - "8192:8000"
     pull_policy: always
