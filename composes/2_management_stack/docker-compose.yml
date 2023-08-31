@@ -53,6 +53,17 @@ services:
     ports:
       - 7575:7575
 
+  uptime-kuma:
+    image: louislam/uptime-kuma
+    container_name: uptime-kuma
+    environment:
+      <<: *environment
+    <<: *default_conf
+    volumes:
+      - ${DOCKERCONFDIR}/uptime-kuma:/app/data
+    ports:
+      - 3001:3001
+
 networks:
   managementStackNetwork:
     driver: bridge
