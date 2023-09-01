@@ -25,7 +25,7 @@ services:
       - 8623:80
 
   vaultwarden_db:
-    image: postgres:15-alpine
+    image: postgres
     container_name: vaultwarden_db
     environment:
       TZ: ${TZ}
