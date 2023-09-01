@@ -3,6 +3,7 @@
 - firefly3 -> proxy conf
 - uptime kuma -> proxy conf + test container
 - linuxserver / bookstack
+- FIX SWAG ISSUES!
 
 # LESS IMPORTANT
 - find a good backup solution

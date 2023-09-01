@@ -12,8 +12,10 @@ services:
     <<: *default_conf
     ports:
       - 8045:8080
-      - 9091:9090
+      - 9092:9090
     command: headscale serve
+    depends_on:
+      - headscale_db
     volumes:
       - ${DOCKERCONFDIR}/headscale/container-config:/etc/headscale
       - ${DOCKERCONFDIR}/headscale/container-data/data:/var/lib/headscale
@@ -30,12 +32,10 @@ services:
     volumes:
       - ${DOCKERCONFDIR}/vaultwarden/postgres_storage:/var/lib/postgresql/data
 
-  headscale-ui:
+  headscale_ui:
     image: ghcr.io/gurucomputing/headscale-ui:latest
-    container_name: headscale-ui
+    container_name: headscale_ui
     <<: *default_conf
-    ports:
-      - 9443:443
 
 networks:
   headscaleNetwork:
