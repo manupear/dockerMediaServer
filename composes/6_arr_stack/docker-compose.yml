@@ -56,6 +56,8 @@ services:
     environment:
       <<: *environment
     <<: [*default_conf, *authelia]
+    ports:
+      - 7879:7878
     volumes:
       - ${DOCKERCONFDIR}/radarranime:/config
       - ${DOCKERSTORAGEDIR}:/storage
@@ -78,6 +80,8 @@ services:
     environment:
       <<: *environment
     <<: [*default_conf, *authelia]
+    ports:
+      - 8990:8989
     volumes:
       - ${DOCKERCONFDIR}/sonarranime:/config
       - ${DOCKERSTORAGEDIR}:/storage

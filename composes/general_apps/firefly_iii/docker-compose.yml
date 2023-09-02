@@ -60,8 +60,6 @@ services:
     <<: *default_conf
     volumes:
       - ${DOCKERCONFDIR}/firefly_iii/firefly_iii_upload/:/var/www/html/storage/upload
-    ports:
-      - 8085:8080
     depends_on:
       - firefly_iii_db
 

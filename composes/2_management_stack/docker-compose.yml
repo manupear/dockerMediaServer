@@ -58,7 +58,7 @@ services:
     container_name: uptime-kuma
     environment:
       <<: *environment
-    <<: *default_conf
+    <<: [ *default_conf, *authelia ]
     volumes:
       - ${DOCKERCONFDIR}/uptime-kuma:/app/data
     ports:

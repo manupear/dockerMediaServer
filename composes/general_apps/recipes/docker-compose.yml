@@ -26,7 +26,7 @@ services:
       SQL_DEBUG: 0
       DEBUG_TOOLBAR: 0
       ALLOWED_HOSTS: '*'
-      SECRET_KEY: lcAXHQ4UEoYAqKCNeSG6mzDkApf0FFkHoZnE2E9ZFXd3uMQyJ6
+      SECRET_KEY: ${RECIPES_SECRET_KEY}
       TIMEZONE: Europe/Rome
       DB_ENGINE: django.db.backends.postgresql
       POSTGRES_HOST: recipes_postgres_db
