@@ -30,7 +30,6 @@ services:
       - arrStackNetwork
       - downloadStackNetwork
       - generalStackNetwork
-      - socketProxyNetwork
 
   wireguard-ui:
     build: .
