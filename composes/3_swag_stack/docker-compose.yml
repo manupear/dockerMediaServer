@@ -55,8 +55,6 @@ services:
       - downloadStackNetwork
       - generalStackNetwork
       - socketProxyNetwork
-      - vaultNetwork
-      - headscaleNetwork
     ports:
       - 443:443
     volumes:
@@ -108,11 +106,5 @@ networks:
     driver: bridge
     external: true
   socketProxyNetwork:
-    driver: bridge
-    external: true
-  vaultNetwork:
-    driver: bridge
-    external: true
-  headscaleNetwork:
     driver: bridge
     external: true
