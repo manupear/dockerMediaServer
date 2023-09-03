@@ -64,6 +64,18 @@ services:
     ports:
       - 3001:3001
 
+  docklogkeeper:
+    container_name: docklogkeeper
+    image: nightlord189/docklogkeeper:latest
+    volumes:
+      - ${DOCKERCONFDIR}/docklogkeeper:/logs
+    environment:
+      <<: *environment
+      PASSWORD: ${DOCKLOGKEEPER_PWD}
+    <<: *default_conf
+    ports:
+      - 3010:3010
+
 networks:
   managementStackNetwork:
     driver: bridge
