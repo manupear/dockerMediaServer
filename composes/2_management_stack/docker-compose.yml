@@ -8,8 +8,8 @@ x-default-conf: &default_conf
 
 x-authelia-conf: &authelia
   labels:
-    - swag=enable
-    - swag_auth=authelia
+- swag=enable
+  - swag_auth=authelia
 
 x-environment: &environment
   PGID: ${PGID}
@@ -64,18 +64,14 @@ services:
     ports:
       - 3001:3001
 
-  docklogkeeper:
-    container_name: docklogkeeper
-    image: nightlord189/docklogkeeper:latest
-    command: -H tcp://dockerproxy:2375
-    volumes:
-      - ${DOCKERCONFDIR}/docklogkeeper:/logs
+  dozzle:
+    container_name: dozzle
+    image: amir20/dozzle:latest
     environment:
       <<: *environment
-      PASSWORD: ${DOCKLOGKEEPER_PWD}
-    <<: *default_conf
-    ports:
-      - 3010:3010
+    <<: [ *default_conf, *authelia ]
+    #ports:
+    #  - 9999:8080
 
 networks:
   managementStackNetwork:

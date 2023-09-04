@@ -17,6 +17,8 @@ services:
     environment:
       <<: *environment
     <<: *default_conf
+    labels:
+      - swag=enable
     ports:
       - 9091:9091
     volumes:
