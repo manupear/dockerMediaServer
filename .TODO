@@ -1,6 +1,13 @@
 # IMPORTANT
 - linuxserver / bookstack
 - fix ryot webhook not working with jellyfin
+- setup gitea
+- fix authelia config file: https://docs.ibracorp.io/authelia_archived/configuration-files/authelia-config-file
+- use redis with authelia
+- ntfy.sh
+- duplicacy
+- scrutiny
+- homepage
 
 # LESS IMPORTANT
 - find a good backup solution
