@@ -24,7 +24,7 @@ services:
       POSTGRES_PASSWORD: ${HOMECHART_DB_PASSWORD}
     <<: *default_conf
     volumes:
-      - ${dockerconfdir}/homechart/db_data:/var/lib/postgresql/data
+      - ${DOCKERCONFDIR}/homechart/db_data:/var/lib/postgresql/data
 
 networks:
   generalStackNetwork:
