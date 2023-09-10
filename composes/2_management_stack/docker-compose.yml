@@ -89,6 +89,20 @@ services:
     # ports:
     #   - "3875:3875"
 
+  duplicati:
+    image: lscr.io/linuxserver/duplicati:latest
+    container_name: duplicati
+    environment:
+      UMASK: ${UMASK}
+      <<: *environment
+    <<: [ *default_conf, *authelia ]
+    volumes:
+      - ${DOCKERCONFDIR}/duplicati/config:/config
+      - ${DOCKERCONFDIR}/duplicati/backups:/backups
+      - ${DOCKERCONFDIR}:/source
+    # ports:
+    #   - 8200:8200
+
 networks:
   managementStackNetwork:
     driver: bridge
