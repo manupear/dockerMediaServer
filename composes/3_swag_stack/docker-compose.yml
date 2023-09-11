@@ -57,6 +57,7 @@ services:
       - downloadStackNetwork
       - generalStackNetwork
       - socketProxyNetwork
+      - guacamoleStackNetwork
     ports:
       - 443:443
     volumes:
@@ -108,5 +109,8 @@ networks:
     driver: bridge
     external: true
   socketProxyNetwork:
+    driver: bridge
+    external: true
+  guacamoleStackNetwork:
     driver: bridge
     external: true
