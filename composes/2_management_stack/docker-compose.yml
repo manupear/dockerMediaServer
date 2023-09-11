@@ -82,7 +82,7 @@ services:
     <<: [ *default_conf, *authelia ]
     volumes:
       - ${DOCKERCONFDIR}/duplicati/config:/config
-      - ${DOCKERCONFDIR}/../duplicati/backups:/backups
+      - /var/local/duplicati/backups:/backups
       - ${DOCKERCONFDIR}:/source
     # ports:
     #   - 8200:8200
