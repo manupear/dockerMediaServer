@@ -26,6 +26,7 @@ services:
     environment:
       <<: *environment
       GUACD_HOSTNAME: guacd
+      MYSQL_HOSTNAME: guacamole_db
       MYSQL_DATABASE: guacamole_db
       MYSQL_PASSWORD: ${GUACAMOLE_DB_PASSWORD}
       MYSQL_USER: guacamole
