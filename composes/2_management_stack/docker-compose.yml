@@ -32,15 +32,12 @@ services:
       - ${DOCKERCONFDIR}/portainer:/data
       - ${DOCKERSTORAGEDIR}:/storage
 
-  watchtower:
-    image: containrrr/watchtower
-    command: -H tcp://dockerproxy:2375
-    container_name: watchtower
+  whatsupdocker:
+    image: fmartinou/whats-up-docker
+    container_name: whatsupdocker
     environment:
       <<: *environment
-      WATCHTOWER_SCHEDULE: "0 0 03 * * *"
-      WATCHTOWER_CLEANUP: "true"
-    <<: *default_conf
+    <<: [ *default_conf, *authelia ]
 
   homarr:
     container_name: homarr
