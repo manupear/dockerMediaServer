@@ -22,6 +22,7 @@ services:
     command: -H tcp://dockerproxy:2375
     container_name: portainer
     image: portainer/portainer-ce:latest
+    user: "${PUID}:${PGID}"
     environment:
       <<: *environment
     <<: [ *default_conf, *authelia ]
