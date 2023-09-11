@@ -30,13 +30,12 @@ services:
       MYSQL_DATABASE: guacamole_db
       MYSQL_PASSWORD: ${GUACAMOLE_DB_PASSWORD}
       MYSQL_USER: guacamole
+      MYSQL_DRIVER: mysql
+      MYSQL_SSL_MODE: disabled
     <<: *default_conf
     labels:
       - swag=enable
       - swag_auth=authelia
-    links:
-      - guacd:guacd
-      - guacamole_db:mysql
     # ports:
     # - 8080/tcp
 
