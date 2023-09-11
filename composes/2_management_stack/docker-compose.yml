@@ -38,6 +38,7 @@ services:
     environment:
       <<: *environment
       DOCKER_HOST: "tcp://dockerproxy:2375"
+      WATCHTOWER_NOTIFICATION_URL: ${WATCHTOWER_MAIL_URL}
       WATCHTOWER_SCHEDULE: "0 0 03 * * *"
       WATCHTOWER_CLEANUP: "true"
     <<: *default_conf
