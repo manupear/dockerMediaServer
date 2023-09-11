@@ -68,6 +68,7 @@ services:
     container_name: dozzle
     image: amir20/dozzle:latest
     environment:
+      DOZZLE_REMOTE_HOST: tcp://dockerproxy:2375
       <<: *environment
     <<: [ *default_conf, *authelia ]
     #ports:
