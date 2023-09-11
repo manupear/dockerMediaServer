@@ -1,0 +1,58 @@
+version: "3.8"
+
+x-default-conf: &default_conf
+  restart: unless-stopped
+  networks:
+    - guacamoleStackNetwork
+
+x-environment: &environment
+  PGID: ${PGID}
+  PUID: ${PUID}
+  TZ: ${TZ}
+
+services:
+  guacd:
+    container_name: guacd
+    image: guacamole/guacd
+    <<: *default_conf
+    # ports 4822
+
+  guacamole:
+    container_name: guacamole_compose
+    image: guacamole/guacamole
+    depends_on:
+      - guacd
+      - guacamole_db
+    environment:
+      <<: *environment
+      GUACD_HOSTNAME: guacd
+      MYSQL_DATABASE: guacamole_db
+      MYSQL_PASSWORD: ${GUACAMOLE_DB_PASSWORD}
+      MYSQL_USER: guacamole
+    <<: *default_conf
+    labels:
+      - swag=enable
+      - swag_auth=authelia
+    links:
+      - guacd:guacd
+      - guacamole_db:mysql
+    # ports:
+    # - 8080/tcp
+
+  guacamole_db:
+    image: lscr.io/linuxserver/mariadb
+    container_name: guacamole_db
+    environment:
+      <<: *environment
+      MYSQL_ROOT_PASSWORD: ${GUACAMOLE_DB_PASSWORD}
+      MYSQL_DATABASE: guacamoledb
+      MYSQL_USER: guacamole
+      MYSQL_PASSWORD: ${GUACAMOLE_DB_PASSWORD}
+    <<: *default_conf
+    volumes:
+      - ${DOCKERCONFDIR}/guacamole/guacamole_db:/config
+
+networks:
+  guacamoleStackNetwork:
+    driver: bridge
+    external: true
