@@ -36,10 +36,9 @@ services:
     image: fmartinou/whats-up-docker
     container_name: whatsupdocker
     environment:
+      WUD_WATCHER_LOCAL_SOCKET: tcp://dockerproxy:2375
       TZ: ${TZ}
     <<: [ *default_conf, *authelia ]
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
 
   homarr:
     container_name: homarr
