@@ -97,7 +97,7 @@ services:
     container_name: duckdns
     environment:
       <<: *environment
-      SUBDOMAINS: ${DUBKDNS_SUBDOMAIN}
+      SUBDOMAINS: ${DUCKDNS_SUBDOMAIN}
       TOKEN: ${DUCKDNS_TOKEN}
     <<: *default_conf
 
