@@ -1,4 +1,5 @@
 version: "3.8"
+
 services:
   wireguard:
     image: lscr.io/linuxserver/wireguard:latest
@@ -10,9 +11,9 @@ services:
       PGID: ${PGID}
       PUID: ${PUID}
       TZ: ${TZ}
-      SERVERURL: auto
+      SERVERURL: ${DUCKDNS_SUBDOMAIN}
       SERVERPORT: 51820
-      PEERS: peer1test
+      PEERS: phone,steamdeck
       PEERDNS: auto
     volumes:
       - ${DOCKERCONFDIR}/wireguard:/config
@@ -28,6 +29,8 @@ services:
       - arrStackNetwork
       - downloadStackNetwork
       - generalStackNetwork
+      - socketProxyNetwork
+      - guacamoleStackNetwork
 
 networks:
   swagStackNetwork:
@@ -43,5 +46,11 @@ networks:
     driver: bridge
     external: true
   generalStackNetwork:
+    driver: bridge
+    external: true
+  socketProxyNetwork:
+    driver: bridge
+    external: true
+  guacamoleStackNetwork:
     driver: bridge
     external: true
