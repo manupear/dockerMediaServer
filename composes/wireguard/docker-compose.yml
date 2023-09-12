@@ -6,7 +6,6 @@ services:
     container_name: wireguard
     cap_add:
       - NET_ADMIN
-      - SYS_MODULE
     environment:
       PGID: ${PGID}
       PUID: ${PUID}
@@ -14,7 +13,7 @@ services:
       SERVERURL: ${DUCKDNS_SUBDOMAIN}
       SERVERPORT: 51820
       PEERS: phone,steamdeck
-      PEERDNS: auto
+      PEERDNS: 1.1.1.1, 8.8.8.8, 8.8.4.4
     volumes:
       - ${DOCKERCONFDIR}/wireguard:/config
       - /lib/modules:/lib/modules
