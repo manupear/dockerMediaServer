@@ -73,8 +73,8 @@ services:
       DOZZLE_REMOTE_HOST: tcp://dockerproxy:2375
       <<: *environment
     <<: [ *default_conf, *authelia ]
-    #ports:
-    #  - 9999:8080
+    ports:
+      - 9999:8080
 
   duplicati:
     image: lscr.io/linuxserver/duplicati:latest
@@ -87,8 +87,8 @@ services:
       - ${DOCKERCONFDIR}/duplicati/config:/config
       - /var/local/duplicati/backups:/backups
       - ${DOCKERCONFDIR}:/source
-    # ports:
-    #   - 8200:8200
+    ports:
+      - 8200:8200
 
 networks:
   managementStackNetwork:
