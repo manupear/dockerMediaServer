@@ -5,6 +5,7 @@
 - ntfy.sh
 - scrutiny
 - homepage
+- script that scrapes all containers ip addresses and sends a discord notifications whether there's a change, or maybe a telegram notif
 
 # LESS IMPORTANT
 - buy new hard drive to use for nextcloud + check why authelia doesn't work with it
