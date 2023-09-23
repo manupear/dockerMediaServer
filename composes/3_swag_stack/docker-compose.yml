@@ -39,7 +39,7 @@ services:
       STAGING: false
       PROPAGATION: 30
       EMAIL: ${DEFAULT_EMAIL}
-      DOCKER_MODS: linuxserver/mods:universal-docker|linuxserver/mods:swag-auto-proxy|linuxserver/mods:universal-cloudflared|linuxserver/mods:swag-crowdsec|linuxserver/mods:swag-auto-reload
+      DOCKER_MODS: linuxserver/mods:universal-docker|linuxserver/mods:swag-auto-proxy|linuxserver/mods:universal-cloudflared|linuxserver/mods:swag-crowdsec|linuxserver/mods:swag-auto-reload|linuxserver/mods:swag-dashboard
       CROWDSEC_API_KEY: ${SWAG_CROWDSEC_API_KEY}
       CROWDSEC_LAPI_URL: http://crowdsec:8080
       DOCKER_HOST: dockerproxy
@@ -57,6 +57,7 @@ services:
       - downloadStackNetwork
       - generalStackNetwork
       - socketProxyNetwork
+      - guacamoleStackNetwork
     ports:
       - 443:443
     volumes:
@@ -91,6 +92,33 @@ services:
     volumes:
       - ${DOCKERCONFDIR}/cloudflare-ddns/config.json:/config.json
 
+  duckdns:
+    image: lscr.io/linuxserver/duckdns:latest
+    container_name: duckdns
+    environment:
+      <<: *environment
+      SUBDOMAINS: ${DUCKDNS_SUBDOMAIN}
+      TOKEN: ${DUCKDNS_TOKEN}
+    <<: *default_conf
+
+  swag_duckdns:
+    image: lscr.io/linuxserver/swag
+    container_name: swag_duckdns
+    cap_add:
+      - NET_ADMIN
+    environment:
+      <<: *environment
+      DOCKER_MODS: linuxserver/mods:universal-docker|linuxserver/mods:swag-crowdsec
+      CROWDSEC_API_KEY: ${SWAG_CROWDSEC_API_KEY}
+      CROWDSEC_LAPI_URL: http://crowdsec:8080
+      URL: ${DUCKDNS_SUBDOMAIN}
+      SUBDOMAINS: wildcard
+      VALIDATION: duckdns
+      DUCKDNSTOKEN: ${DUCKDNS_TOKEN}
+    <<: *default_conf
+    volumes:
+      - ${DOCKERCONFDIR}/swag_duckdns:/config
+
 networks:
   swagStackNetwork:
     driver: bridge
@@ -108,5 +136,8 @@ networks:
     driver: bridge
     external: true
   socketProxyNetwork:
+    driver: bridge
+    external: true
+  guacamoleStackNetwork:
     driver: bridge
     external: true
