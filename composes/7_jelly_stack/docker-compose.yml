@@ -31,7 +31,7 @@ services:
       - ${DOCKERSTORAGEDIR}/medialibrary/movies:/data/movies
       - ${DOCKERSTORAGEDIR}/medialibrary/tv-anime:/data/anime_tvshows
       - ${DOCKERSTORAGEDIR}/medialibrary/tv:/data/tvshows
-      - /usr/local/bin/ffmpeg:/usr/local/bin/ffmpeg
+      - /usr/local/bin/:/usr/local/bin/
 
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
