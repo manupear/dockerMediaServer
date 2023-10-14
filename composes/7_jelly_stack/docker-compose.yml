@@ -19,7 +19,7 @@ x-environment: &environment
 services:
   jellyfin:
     container_name: jellyfin
-    image: lscr.io/linuxserver/jellyfin:latest
+    image: jellyfin-rffmpeg
     environment:
       <<: *environment
     <<: [*default_conf, *authelia]
@@ -31,9 +31,7 @@ services:
       - ${DOCKERSTORAGEDIR}/medialibrary/movies:/data/movies
       - ${DOCKERSTORAGEDIR}/medialibrary/tv-anime:/data/anime_tvshows
       - ${DOCKERSTORAGEDIR}/medialibrary/tv:/data/tvshows
-      - /usr/local/bin/ffmpeg:/usr/local/bin/ffmpeg
-      - /usr/local/bin/ffprobe:/usr/local/bin/ffprobe
-      - /usr/local/bin/rffmpeg:/usr/local/bin/rffmpeg
+      - ${DOCKERCONFDIR}/jellyfin/rffmpeg.yml:/etc/rffmpeg/rffmpeg.yml
 
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
