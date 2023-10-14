@@ -22,7 +22,7 @@ services:
     image: lscr.io/linuxserver/jellyfin:latest
     environment:
       <<: *environment
-    <<: [ *default_conf, *authelia ]
+    <<: [*default_conf, *authelia]
     ports:
       - 8096:8096
     volumes:
@@ -31,13 +31,14 @@ services:
       - ${DOCKERSTORAGEDIR}/medialibrary/movies:/data/movies
       - ${DOCKERSTORAGEDIR}/medialibrary/tv-anime:/data/anime_tvshows
       - ${DOCKERSTORAGEDIR}/medialibrary/tv:/data/tvshows
+      - /usr/local/bin/ffmpeg:/usr/local/bin/ffmpeg
 
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
     container_name: jellyseerr
     environment:
       <<: *environment
-    <<: [ *default_conf, *authelia ]
+    <<: [*default_conf, *authelia]
     ports:
       - 5055:5055
     volumes:
