@@ -19,16 +19,16 @@ volumes:
     driver_opts:
       type: nfs
       device: :/config/cache
-      o: addr=192.168.1.7:20490,rw,nfsvers=4,sync,actimeo=1
+      o: addr=192.168.1.7,rw,nfsvers=4,sync,actimeo=1
   jellyfin-transcodes:
     driver: local
     driver_opts:
       type: nfs
       device: :/config/transcodes
-      o: addr=192.168.1.7:20490,rw,nfsvers=4,sync,actimeo=1
+      o: addr=192.168.1.7,rw,nfsvers=4,sync,actimeo=1
   jellyfin-subtitles:
     driver: local
     driver_opts:
       type: nfs
       device: :/config/data/subtitles
-      o: addr=192.168.1.7:20490,rw,nfsvers=4,sync,actimeo=1
+      o: addr=192.168.1.7,rw,nfsvers=4,sync,actimeo=1

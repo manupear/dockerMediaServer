@@ -27,6 +27,9 @@ services:
       - 8096:8096
     volumes:
       - ${DOCKERCONFDIR}/jellyfin:/config
+      - ${DOCKERCONFDIR}/jellyfin/config/cache:/config/cache:z
+      - ${DOCKERCONFDIR}/jellyfin/config/data/transcodes:/config/transcodes:z
+      - ${DOCKERCONFDIR}/jellyfin/config/data/data/subtitles:/config/data/subtitles:z
       - ${DOCKERSTORAGEDIR}/medialibrary/movies-anime:/data/anime_movies
       - ${DOCKERSTORAGEDIR}/medialibrary/movies:/data/movies
       - ${DOCKERSTORAGEDIR}/medialibrary/tv-anime:/data/anime_tvshows
