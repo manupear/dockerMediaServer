@@ -49,7 +49,7 @@ services:
       NFS_EXPORT_2: /config/data/subtitles  *(rw,sync,no_subtree_check,no_root_squash)
     <<: *default_conf
     ports:
-      - 20490:2049
+      - 2049:2049
     volumes:
       - ${DOCKERCONFDIR}/jellyfin/config/cache:/config/cache:z
       - ${DOCKERCONFDIR}/jellyfin/config/data/transcodes:/config/transcodes:z
