@@ -6,11 +6,7 @@ RUN apt update && apt install -y openssh-client python3-click python3-yaml wget 
     && ln /usr/local/bin/rffmpeg /usr/local/bin/ffmpeg \ 
     && ln /usr/local/bin/rffmpeg /usr/local/bin/ffprobe \ 
     && mkdir -p /etc/rffmpeg \ 
-    && mkdir -p /run/shm \
-    && apt purge wget -y \ 
-    && rm -rf /var/lib \
-    && apt autoremove --purge -y \ 
-    && apt clean
+    && mkdir -p /run/shm
 
 #USER 1012:1002
 
