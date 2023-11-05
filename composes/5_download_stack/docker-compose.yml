@@ -2,14 +2,13 @@ version: "3.8"
 
 services:
   qbittorrent:
-    image: lscr.io/linuxserver/qbittorrent:latest
+    image: lscr.io/linuxserver/qbittorrent:4.5.5
     container_name: qbittorrent
     environment:
       PGID: ${PGID}
       PUID: ${PUID}
       UMASK: ${UMASK}
       TZ: ${TZ}
-      WEBUI_PORT: 8080
     labels:
       - swag=enable
       - swag_auth=authelia
@@ -18,7 +17,7 @@ services:
       - arrStackNetwork
     volumes:
       - ${DOCKERCONFDIR}/qbittorrent:/config
-      - ${DOCKERSTORAGEDIR}/downloads/torrents:/storage/downloads/torrents
+      - ${DOCKERSTORAGEDIR}:/storage
     ports:
       - 8080:8080
     restart: unless-stopped

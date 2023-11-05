@@ -19,7 +19,7 @@ x-environment: &environment
 services:
   jellyfin:
     container_name: jellyfin
-    image: jellyfin-rffmpeg
+    image: lscr.io/linuxserver/jellyfin:latest
     environment:
       <<: *environment
     <<: [*default_conf, *authelia]
@@ -27,36 +27,10 @@ services:
       - 8096:8096
     volumes:
       - ${DOCKERCONFDIR}/jellyfin:/config
-      - ${DOCKERCONFDIR}/jellyfin/config/cache:/config/cache:z
-      - ${DOCKERCONFDIR}/jellyfin/config/data/transcodes:/config/transcodes:z
-      - ${DOCKERCONFDIR}/jellyfin/config/data/data/subtitles:/config/data/subtitles:z
       - ${DOCKERSTORAGEDIR}/medialibrary/movies-anime:/data/anime_movies
       - ${DOCKERSTORAGEDIR}/medialibrary/movies:/data/movies
       - ${DOCKERSTORAGEDIR}/medialibrary/tv-anime:/data/anime_tvshows
       - ${DOCKERSTORAGEDIR}/medialibrary/tv:/data/tvshows
-      - ${DOCKERCONFDIR}/jellyfin/rffmpeg:/etc/rffmpeg
-
-  nfs-server:
-    container_name: jellyfin_nfs_server
-    image: ghcr.io/obeone/nfs-server:latest
-    cap_add:
-      - SYS_ADMIN
-      - SYS_MODULE
-    environment:
-      TZ: ${TZ}
-      NFS_EXPORT_0: /config/cache           *(rw,sync,no_subtree_check,no_root_squash)
-      NFS_EXPORT_1: /config/transcodes      *(rw,sync,no_subtree_check,no_root_squash)
-      NFS_EXPORT_2: /config/data/subtitles  *(rw,sync,no_subtree_check,no_root_squash)
-    <<: *default_conf
-    ports:
-      - 2049:2049
-    volumes:
-      - ${DOCKERCONFDIR}/jellyfin/config/cache:/config/cache:z
-      - ${DOCKERCONFDIR}/jellyfin/config/data/transcodes:/config/transcodes:z
-      - ${DOCKERCONFDIR}/jellyfin/config/data/data/subtitles:/config/data/subtitles:z
-      - /lib/modules:/lib/modules:ro
-    security_opt:
-      - apparmor=erichough-nfs
 
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
