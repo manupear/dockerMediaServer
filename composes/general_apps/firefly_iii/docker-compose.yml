@@ -79,6 +79,34 @@ services:
     volumes:
       - ${DOCKERCONFDIR}/firefly_iii/firefly_iii_db/:/var/lib/mysql
 
+  firefly_iii_importer:
+    image: fireflyiii/data-importer:latest
+    hostname: firefly_iii_importer
+    container_name: firefly_iii_importer
+    environment:
+      TZ: ${TZ}
+      FIREFLY_III_URL: "http://firefly_iii_app"
+      FIREFLY_III_ACCESS_TOKEN: ${FIREFLY3_DATAIMPORTER_ACCESSTOKEN}
+      NORDIGEN_ID: ${NORDIGEN_SECRET_ID}
+      NORDIGEN_KEY: ${NORDIGEN_SECRET_KEY}
+      NORDIGEN_SANDBOX: false
+      USE_CACHE: false
+      IGNORE_DUPLICATE_ERRORS: false
+      CAN_POST_AUTOIMPORT: false
+      CAN_POST_FILES: false
+      CONNECTION_TIMEOUT: 31.41
+      BROADCAST_DRIVER: log
+      CACHE_DRIVER: file
+      QUEUE_CONNECTION: sync
+      SESSION_DRIVER: file
+      SESSION_LIFETIME: 120
+      IS_EXTERNAL: false
+    <<: *default_conf
+    ports:
+      - "4556:8080"
+    depends_on:
+      - firefly_iii_app
+
   firefly_iii_cron:
     image: alpine
     container_name: firefly_iii_cron
@@ -86,7 +114,7 @@ services:
       TZ: ${TZ}
       FIREFLY3_APP_KEY: ${FIREFLY3_APP_KEY}
     <<: *default_conf
-    command: sh -c "echo \"0 3 * * * wget -qO- http://firefly_iii_app:8085/api/v1/cron/${FIREFLY3_APP_KEY}\" | crontab - && crond -f -L /dev/stdout" 
+    command: sh -c "echo \"0 3 * * * wget -qO- http://firefly_iii_app:8085/api/v1/cron/${FIREFLY3_APP_KEY}\" | crontab - && crond -f -L /dev/stdout"
 
 networks:
   generalStackNetwork:
