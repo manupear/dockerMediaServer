@@ -1,5 +1,15 @@
 version: "3.8"
 
+x-default-conf: &default_conf
+  restart: unless-stopped
+  networks:
+    - swagStackNetwork
+
+x-environment: &environment
+  PGID: ${PGID}
+  PUID: ${PUID}
+  TZ: ${TZ}
+
 services:
   wireguard:
     image: lscr.io/linuxserver/wireguard:latest
@@ -7,9 +17,7 @@ services:
     cap_add:
       - NET_ADMIN
     environment:
-      PGID: ${PGID}
-      PUID: ${PUID}
-      TZ: ${TZ}
+      <<: *environment
       SERVERURL: ${DUCKDNS_SUBDOMAIN}
       SERVERPORT: 51820
       PEERS: phone,steamdeck
@@ -30,6 +38,33 @@ services:
       - generalStackNetwork
       - socketProxyNetwork
       - guacamoleStackNetwork
+
+  duckdns:
+    image: lscr.io/linuxserver/duckdns:latest
+    container_name: duckdns
+    environment:
+      <<: *environment
+      SUBDOMAINS: ${DUCKDNS_SUBDOMAIN}
+      TOKEN: ${DUCKDNS_TOKEN}
+    <<: *default_conf
+
+  swag_duckdns:
+    image: lscr.io/linuxserver/swag
+    container_name: swag_duckdns
+    cap_add:
+      - NET_ADMIN
+    environment:
+      <<: *environment
+      DOCKER_MODS: linuxserver/mods:universal-docker|linuxserver/mods:swag-crowdsec
+      CROWDSEC_API_KEY: ${SWAG_CROWDSEC_API_KEY}
+      CROWDSEC_LAPI_URL: http://crowdsec:8080
+      URL: ${DUCKDNS_SUBDOMAIN}
+      SUBDOMAINS: wildcard
+      VALIDATION: duckdns
+      DUCKDNSTOKEN: ${DUCKDNS_TOKEN}
+    <<: *default_conf
+    volumes:
+      - ${DOCKERCONFDIR}/swag_duckdns:/config
 
 networks:
   swagStackNetwork:
