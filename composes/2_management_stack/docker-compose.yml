@@ -8,8 +8,8 @@ x-default-conf: &default_conf
 
 x-authelia-conf: &authelia
   labels:
-  - swag=enable
-  - swag_auth=authelia
+    - swag=enable
+    - swag_auth=authelia
 
 x-environment: &environment
   PGID: ${PGID}
@@ -25,7 +25,7 @@ services:
     user: "${PUID}:${PGID}"
     environment:
       <<: *environment
-    <<: [ *default_conf, *authelia ]
+    <<: [*default_conf, *authelia]
     ports:
       - 9000:9000
     volumes:
@@ -60,7 +60,7 @@ services:
     container_name: uptime-kuma
     environment:
       <<: *environment
-    <<: [ *default_conf, *authelia ]
+    <<: [*default_conf, *authelia]
     volumes:
       - ${DOCKERCONFDIR}/uptime-kuma:/app/data
     ports:
@@ -72,7 +72,7 @@ services:
     environment:
       DOZZLE_REMOTE_HOST: tcp://dockerproxy:2375
       <<: *environment
-    <<: [ *default_conf, *authelia ]
+    <<: [*default_conf, *authelia]
     ports:
       - 9999:8080
 
@@ -82,13 +82,31 @@ services:
     environment:
       UMASK: ${UMASK}
       <<: *environment
-    <<: [ *default_conf, *authelia ]
+    <<: [*default_conf, *authelia]
     volumes:
       - ${DOCKERCONFDIR}/duplicati/config:/config
       - /var/local/duplicati/backups:/backups
       - ${DOCKERCONFDIR}:/source
     ports:
       - 8200:8200
+
+  cosmos-server:
+    command: -H tcp://dockerproxy:2375
+    image: azukaar/cosmos-server:latest
+    container_name: cosmos-server
+    hostname: cosmos-server
+    environment:
+      <<: *environment
+    <<: *default_conf
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - ${DOCKERCONFDIR}/cosmos-server:/config
+      - ${DOCKERCONFDIR}:/mnt/host/appdata
+      - ${DOCKERSTORAGEDIR}:/mnt/host/storage
+    ports:
+      - "8067:80"
+      - "4453:443"
+      - "4242:4242/udp"
 
 networks:
   managementStackNetwork:
