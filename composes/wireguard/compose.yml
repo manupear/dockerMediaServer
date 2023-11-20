@@ -23,7 +23,7 @@ services:
       PEERS: phone,steamdeck
       PEERDNS: 1.1.1.1, 8.8.8.8, 8.8.4.4
     volumes:
-      - ${DOCKERCONFDIR}/wireguard:/config
+      - wireguard:/config
       - /lib/modules:/lib/modules
     ports:
       - 51820:51820/udp
