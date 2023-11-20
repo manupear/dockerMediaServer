@@ -84,9 +84,9 @@ services:
       <<: *environment
     <<: [*default_conf, *authelia]
     volumes:
-      - duplicati:/config
-      - /var/local/duplicati/backups:/backups
-      - ${DOCKERCONFDIR}:/source
+      - duplicati/config:/config
+      - duplicati/backups:/backups
+      - duplicati:/source
     ports:
       - 8200:8200
 
@@ -117,6 +117,13 @@ volumes:
       o: bind
       type: none
       device: /home/media/docker-server/appdata/homarr
+  duplicati:
+    name: duplicati
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/media/docker-server/appdata/duplicati
   portainer:
     name: portainer
     driver: local
