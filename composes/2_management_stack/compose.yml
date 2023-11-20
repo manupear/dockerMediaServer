@@ -84,7 +84,7 @@ services:
       <<: *environment
     <<: [*default_conf, *authelia]
     volumes:
-      - ${DOCKERCONFDIR}/duplicati/config:/config
+      - duplicati:/config
       - /var/local/duplicati/backups:/backups
       - ${DOCKERCONFDIR}:/source
     ports:
@@ -131,6 +131,13 @@ volumes:
       o: bind
       type: none
       device: /home/media/docker-server/appdata/uptime-kuma
+  duplicati:
+    name: duplicati
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/media/docker-server/appdata/duplicati/config
 
 networks:
   managementStackNetwork:
