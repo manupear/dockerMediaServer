@@ -46,11 +46,11 @@ services:
       ALLOW_WEBHOOKS: false
       STATIC_CRON_TOKEN: ${FIREFLY3_APP_KEY}
       DKR_BUILD_LOCALE: false
-      DKR_CHECK_SQLITE: true
-      DKR_RUN_MIGRATION: true
-      DKR_RUN_UPGRADE: true
-      DKR_RUN_VERIFY: true
-      DKR_RUN_REPORT: true
+      DKR_CHECK_SQLITE: false
+      DKR_RUN_MIGRATION: false
+      DKR_RUN_UPGRADE: false
+      DKR_RUN_VERIFY: false
+      DKR_RUN_REPORT: false
       DKR_RUN_PASSPORT_INSTALL: true
       APP_NAME: "FireflyIII"
       BROADCAST_DRIVER: "log"
@@ -61,23 +61,25 @@ services:
     ports:
       - 8007:8080
     volumes:
-      - firefly_iii:/var/www/html/storage/upload
-    depends_on:
-      - firefly_iii_db
+      - /home/media/docker-server/appdata/firefly_iii/firefly_iii_upload:/var/www/html/storage/upload
 
   firefly_iii_db:
     image: lscr.io/linuxserver/mariadb
     hostname: firefly_iii_db
     container_name: firefly_iii_db
     environment:
+      PGID: ${PGID}
+      PUID: ${PUID}
       TZ: ${TZ}
       MYSQL_RANDOM_ROOT_PASSWORD: yes
       MYSQL_USER: "firefly"
       MYSQL_PASSWORD: ${FIREFLY3_DB_PWD}
       MYSQL_DATABASE: "firefly"
     <<: *default_conf
+    ports:
+      - 3306:3306
     volumes:
-      - firefly_iii_db:/var/lib/mysql
+      - /home/media/docker-server/appdata/firefly_iii/firefly_iii_db:/var/lib/mysql
 
   firefly_iii_importer:
     image: fireflyiii/data-importer:latest
@@ -115,22 +117,6 @@ services:
       FIREFLY3_APP_KEY: ${FIREFLY3_APP_KEY}
     <<: *default_conf
     command: sh -c "echo \"0 3 * * * wget -qO- http://firefly_iii_app:8085/api/v1/cron/${FIREFLY3_APP_KEY}\" | crontab - && crond -f -L /dev/stdout"
-
-volumes:
-  firefly_iii:
-    name: firefly_iii
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/firefly_iii/firefly_iii_upload
-  firefly_iii_db:
-    name: firefly_iii_db
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/firefly_iii/firefly_iii_db
 
 networks:
   generalStackNetwork:
