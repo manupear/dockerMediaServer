@@ -138,13 +138,6 @@ volumes:
       o: bind
       type: none
       device: /home/media/docker-server/appdata/uptime-kuma
-  duplicati:
-    name: duplicati
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/duplicati/config
 
 networks:
   managementStackNetwork:
