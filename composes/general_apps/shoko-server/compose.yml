@@ -15,17 +15,8 @@ services:
     networks:
       - jellyStackNetwork
     volumes:
-      - shoko-server:/home/shoko/.shoko
+      - ${DOCKERCONFDIR}/shoko-server:/home/shoko/.shoko
       - ${DOCKERSTORAGEDIR}/medialibrary:/mnt
-
-volumes:
-  shoko-server:
-    name: shoko-server
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/shoko-server
 
 networks:
   jellyStackNetwork:

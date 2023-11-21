@@ -23,7 +23,7 @@ services:
       PEERS: phone,steamdeck
       PEERDNS: 1.1.1.1, 8.8.8.8, 8.8.4.4
     volumes:
-      - /home/media/docker-server/appdata/wireguard:/config
+      - ${DOCKERCONFDIR}/wireguard:/config
       - /lib/modules:/lib/modules
     ports:
       - 51820:51820/udp
@@ -64,7 +64,7 @@ services:
       DUCKDNSTOKEN: ${DUCKDNS_TOKEN}
     <<: *default_conf
     volumes:
-      - /home/media/docker-server/appdata/swag_duckdns:/config
+      - ${DOCKERCONFDIR}/swag_duckdns:/config
 
 networks:
   swagStackNetwork:

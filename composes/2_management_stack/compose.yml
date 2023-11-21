@@ -29,7 +29,7 @@ services:
     ports:
       - 9000:9000
     volumes:
-      - portainer:/data
+      - ${DOCKERCONFDIR}/portainer:/data
       - ${DOCKERSTORAGEDIR}:/storage
 
   # watchtower:
@@ -46,12 +46,11 @@ services:
   homarr:
     container_name: homarr
     image: ghcr.io/ajnart/homarr:latest
-    user: ${PGID}:${PUID}
     environment:
       <<: *environment
     <<: *default_conf
     volumes:
-      - homarr:/app
+      - ${DOCKERCONFDIR}/homarr:/app
     ports:
       - 7575:7575
 
@@ -62,7 +61,7 @@ services:
       <<: *environment
     <<: [*default_conf, *authelia]
     volumes:
-      - uptime-kuma:/app/data
+      - ${DOCKERCONFDIR}/uptime-kuma:/app/data
     ports:
       - 3001:3001
 
@@ -84,9 +83,9 @@ services:
       <<: *environment
     <<: [*default_conf, *authelia]
     volumes:
-      - duplicati_config:/config
-      - duplicati_backups:/backups
-      - duplicati:/source
+      - ${DOCKERCONFDIR}/duplicati/config:/config
+      - ${DOCKERCONFDIR}/duplicati/backups:/backups
+      - ${DOCKERCONFDIR}/duplicati/source:/source
     ports:
       - 8200:8200
 
@@ -108,50 +107,6 @@ services:
   #     - "8067:80"
   #     - "4453:443"
   #     - "4242:4242/udp"
-
-volumes:
-  homarr:
-    name: homarr
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/homarr
-  duplicati:
-    name: duplicati
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/duplicati/source
-  duplicati_backups:
-    name: duplicati_backups
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/duplicati/backups
-  duplicati_config:
-    name: duplicati_config
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/duplicati/config
-  portainer:
-    name: portainer
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/portainer
-  uptime-kuma:
-    name: uptime-kuma
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/uptime-kuma
 
 networks:
   managementStackNetwork:

@@ -50,16 +50,7 @@ services:
       MYSQL_PASSWORD: ${GUACAMOLE_DB_PASSWORD}
     <<: *default_conf
     volumes:
-      - guacamole_db:/config
-
-volumes:
-  guacamole_db:
-    name: guacamole_db
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/guacamole/guacamole_db
+      - ${DOCKERCONFDIR}/guacamole/guacamole_db:/config
 
 networks:
   guacamoleStackNetwork:

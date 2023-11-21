@@ -25,7 +25,7 @@ services:
     ports:
       - 6767:6767
     volumes:
-      - bazarr:/config
+      - ${DOCKERCONFDIR}/bazarr:/config
       - ${DOCKERSTORAGEDIR}:/storage
 
   radarr:
@@ -37,7 +37,7 @@ services:
     ports:
       - 7878:7878
     volumes:
-      - radarr:/config
+      - ${DOCKERCONFDIR}/radarr:/config
       - ${DOCKERSTORAGEDIR}:/storage
 
   sonarr:
@@ -49,7 +49,7 @@ services:
     ports:
       - 8989:8989
     volumes:
-      - sonarr:/config
+      - ${DOCKERCONFDIR}/sonarr:/config
       - ${DOCKERSTORAGEDIR}:/storage
 
   flaresolverr:
@@ -74,7 +74,7 @@ services:
     ports:
       - 5454:5454
     volumes:
-      - notifiarr:/config
+      - ${DOCKERCONFDIR}/notifiarr:/config
       - /var/run/utmp:/var/run/utmp
       - /etc/machine-id:/etc/machine-id
 
@@ -87,7 +87,7 @@ services:
     ports:
       - 9696:9696
     volumes:
-      - prowlarr:/config
+      - ${DOCKERCONFDIR}/prowlarr:/config
 
   autobrr:
     container_name: autobrr
@@ -97,53 +97,9 @@ services:
       <<: *environment
     <<: *default_conf
     volumes:
-      - autobrr:/config
+      - ${DOCKERCONFDIR}/autobrr:/config
     ports:
       - 7474:7474
-
-volumes:
-  autobrr:
-    name: autobrr
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/autobrr/config
-  prowlarr:
-    name: prowlarr
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/prowlarr
-  notifiarr:
-    name: notifiarr
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/notifiarr
-  sonarr:
-    name: sonarr
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/sonarr
-  radarr:
-    name: radarr
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/radarr
-  bazarr:
-    name: bazarr
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/bazarr
 
 networks:
   arrStackNetwork:

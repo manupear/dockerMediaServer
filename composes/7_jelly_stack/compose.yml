@@ -26,7 +26,7 @@ services:
     ports:
       - 8096:8096
     volumes:
-      - jellyfin:/config
+      - ${DOCKERCONFDIR}/jellyfin:/config
       - ${DOCKERSTORAGEDIR}/medialibrary:/data
 
   jellyseerr:
@@ -38,23 +38,7 @@ services:
     ports:
       - 5055:5055
     volumes:
-      - jellyseerr:/app/config
-
-volumes:
-  jellyfin:
-    name: jellyfin
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/jellyfin
-  jellyseerr:
-    name: jellyseerr
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/jellyseerr
+      - ${DOCKERCONFDIR}/jellyseerr:/app/config
 
 networks:
   jellyStackNetwork:

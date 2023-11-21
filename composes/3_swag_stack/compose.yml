@@ -22,7 +22,7 @@ services:
     ports:
       - 9091:9091
     volumes:
-      - authelia:/config
+      - ${DOCKERCONFDIR}/authelia:/config
 
   swag:
     image: lscr.io/linuxserver/swag:latest
@@ -65,7 +65,7 @@ services:
     ports:
       - 443:443
     volumes:
-      - swag:/config
+      - ${DOCKERCONFDIR}/swag:/config
     extra_hosts:
       - ${SWAG_EXTRA_HOSTS}
 
@@ -78,8 +78,8 @@ services:
       CUSTOM_HOSTNAME: ${CROWDSEC_CUSTOM_HOSTNAME}
     <<: *default_conf
     volumes:
-      - crowdsec/config:/etc/crowdsec:rw
-      - crowdsec/data:/var/lib/crowdsec/data:rw
+      - ${DOCKERCONFDIR}/crowdsec/config:/etc/crowdsec:rw
+      - ${DOCKERCONFDIR}/crowdsec/data:/var/lib/crowdsec/data:rw
       - swag/log/nginx:/var/log/swag:ro
       - /var/log:/var/log/host:ro
     security_opt:
@@ -94,37 +94,7 @@ services:
       <<: *environment
     <<: *default_conf
     volumes:
-      - cloudflare-ddns/config.json:/config.json
-
-volumes:
-  cloudflare-ddns:
-    name: cloudflare-ddns
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/cloudflare-ddns
-  crowdsec:
-    name: cloudflare
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/crowdsec
-  swag:
-    name: swag
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/swag
-  authelia:
-    name: authelia
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/media/docker-server/appdata/authelia
+      - ${DOCKERCONFDIR}/cloudflare-ddns/config.json:/config.json
 
 networks:
   swagStackNetwork:

@@ -61,8 +61,8 @@ services:
     ports:
       - 8007:8080
     volumes:
-      - /home/media/docker-server/appdata/firefly_iii/firefly_iii_upload:/var/www/html/storage/upload
-      - /home/media/docker-server/appdata/firefly_iii/database.sqlite:/var/www/html/storage/database/database.sqlite
+      - ${DOCKERCONFDIR}/firefly_iii/firefly_iii_upload:/var/www/html/storage/upload
+      - ${DOCKERCONFDIR}/appdata/firefly_iii/database.sqlite:/var/www/html/storage/database/database.sqlite
 
   # firefly_iii_db:
   #   image: lscr.io/linuxserver/mariadb
