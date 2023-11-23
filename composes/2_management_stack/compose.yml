@@ -72,7 +72,7 @@ services:
       <<: *environment
     <<: *default_conf
     labels:
-      - docker-volume-backup.stop-during-backup
+      - docker-volume-backup.stop-during-backup=true
     ports:
       - 9999:8080
 
