@@ -73,6 +73,7 @@ services:
     image: docker.io/crowdsecurity/crowdsec:v1.5.5
     platform: linux/amd64
     container_name: crowdsec
+    user: ${PUID}:${PGID}
     environment:
       <<: *environment
       COLLECTIONS: "crowdsecurity/nginx crowdsecurity/http-cve crowdsecurity/whitelist-good-actors"
