@@ -88,6 +88,7 @@ services:
   cloudflare-ddns:
     image: timothyjmiller/cloudflare-ddns:latest
     container_name: cloudflare-ddns
+    user: ${PUID}:${PGID}
     security_opt:
       - no-new-privileges:true
     environment:
