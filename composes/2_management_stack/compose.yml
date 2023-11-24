@@ -86,6 +86,7 @@ services:
       BACKUP_COMPRESSION: "gz"
       GZIP_PARALLELISM: 1
       BACKUP_FILENAME: "backup-%Y-%m-%dT%H-%M-%S.{{ .Extension }}"
+      BACKUP_LATEST_SYMLINK: backup-latest.tar.gz
       BACKUP_SKIP_BACKENDS_FROM_PRUNE: s3,webdav,ssh,azure,dropbox
       BACKUP_ARCHIVE: "/archive"
       BACKUP_RETENTION_DAYS: "7"
@@ -93,7 +94,7 @@ services:
       BACKUP_PRUNING_PREFIX: "backup-"
       EXEC_FORWARD_OUTPUT: "true"
       EXEC_LABEL: "database"
-    restart: unless-stopped
+    restart: always
     networks:
       - managementStackNetwork
       - socketProxyNetwork
