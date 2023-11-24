@@ -80,6 +80,7 @@ services:
   docker-volume-backup:
     image: offen/docker-volume-backup:latest
     container_name: docker-volume-backup
+    user: 0:100 # needed to write to the nfs shared folder
     environment:
       <<: *environment
       BACKUP_CRON_EXPRESSION: "0 4 * * *"
