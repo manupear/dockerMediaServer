@@ -44,6 +44,8 @@ services:
       TZ: ${TZ}
       DOCKER_HOST: tcp://dockerproxy:2375
     <<: *default_conf
+    labels:
+      - docker-volume-backup.stop-during-backup=true
     volumes:
       - ${DOCKERCONFDIR}/homarr/configs:/app/data/configs
       - ${DOCKERCONFDIR}/homarr/icons:/app/public/icons
