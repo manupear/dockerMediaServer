@@ -46,7 +46,7 @@ services:
     image: lscr.io/linuxserver/radarr:latest
     environment:
       <<: *environment
-    <<: [*default_conf, *authelia]
+    <<: [*default_conf, *autheliaPlusBackup]
     ports:
       - 7879:7878
     volumes:
@@ -58,7 +58,7 @@ services:
     image: lscr.io/linuxserver/sonarr:develop
     environment:
       <<: *environment
-    <<: [*default_conf, *authelia]
+    <<: [*default_conf, *autheliaPlusBackup]
     ports:
       - 8990:8989
     volumes:
