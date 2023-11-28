@@ -95,7 +95,6 @@ services:
       BACKUP_PRUNING_LEEWAY: "1m"
       BACKUP_PRUNING_PREFIX: "backup-"
       EXEC_FORWARD_OUTPUT: "true"
-      EXEC_LABEL: "database"
     restart: always
     labels:
       - docker-volume-backup.copy-post=/bin/sh -c 'adduser -S -D 0 -G users && mv /archive/backup-* /nfs_backups/'

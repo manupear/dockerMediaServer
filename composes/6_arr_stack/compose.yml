@@ -126,6 +126,34 @@ services:
     ports:
       - 7474:7474
 
+  unpackerr:
+    image: golift/unpackerr
+    container_name: unpackerr
+    volumes:
+      - ${DOCKERSTORAGEDIR}:/storage
+    <<: *default_conf
+    user: ${PUID}:${PGID}
+    environment:
+      - TZ=${TZ}
+      # Sonarr Config
+      - UN_SONARR_0_URL=http://sonarr:8989
+      - UN_SONARR_0_API_KEY=${UNPACKERR_SONARR_APIKEY}
+      - UN_SONARR_0_PATHS_0=/storage
+      - UN_SONARR_0_PROTOCOLS=torrent
+      - UN_SONARR_0_TIMEOUT=10s
+      - UN_SONARR_0_DELETE_ORIG=false
+      - UN_SONARR_0_DELETE_DELAY=5m
+      # Radarr Config
+      - UN_RADARR_0_URL=http://radarr:7878
+      - UN_RADARR_0_API_KEY=${UNPACKERR_RADARR_APIKEY}
+      - UN_RADARR_0_PATHS_0=/storage
+      - UN_RADARR_0_PROTOCOLS=torrent
+      - UN_RADARR_0_TIMEOUT=10s
+      - UN_RADARR_0_DELETE_ORIG=false
+      - UN_RADARR_0_DELETE_DELAY=5m
+    security_opt:
+      - no-new-privileges:true
+
 networks:
   arrStackNetwork:
     driver: bridge
