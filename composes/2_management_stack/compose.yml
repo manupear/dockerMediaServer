@@ -82,8 +82,8 @@ services:
   docker-volume-backup:
     image: offen/docker-volume-backup:latest
     container_name: docker-volume-backup
+    user: 0:100
     environment:
-      DOCKER_HOST: tcp://dockerproxy_exec:2375
       BACKUP_CRON_EXPRESSION: "0 04 * * *"
       BACKUP_COMPRESSION: "gz"
       GZIP_PARALLELISM: 1
@@ -96,17 +96,15 @@ services:
       BACKUP_PRUNING_PREFIX: "backup-"
       EXEC_FORWARD_OUTPUT: "true"
     restart: always
-    labels:
-      - docker-volume-backup.copy-post=/bin/sh -c 'adduser -S -D 0 -G users && mv /archive/backup-* /nfs_backups/'
     networks:
       - managementStackNetwork
       - socketProxyNetwork
     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${DOCKERCONFDIR}:/backup:ro
-      - ${DOCKERCONFDIR}/docker-volume-backup/archive:/archive:rw
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-      - /nfs/backups/docker-volumes-backups:/nfs_backups:rw
+      - /nfs/backups/docker-volumes-backups:/archive:rw
 
 networks:
   managementStackNetwork:
