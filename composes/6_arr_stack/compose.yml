@@ -153,8 +153,6 @@ services:
       - UN_RADARR_0_TIMEOUT=10s
       - UN_RADARR_0_DELETE_ORIG=false
       - UN_RADARR_0_DELETE_DELAY=5m
-    labels:
-      - docker-volume-backup.stop-during-backup=true
     security_opt:
       - no-new-privileges:true
 

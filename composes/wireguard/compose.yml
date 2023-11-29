@@ -10,10 +10,6 @@ x-environment: &environment
   PUID: ${PUID}
   TZ: ${TZ}
 
-x-backup: &backup
-  labels:
-    - docker-volume-backup.stop-during-backup=true
-
 services:
   # wireguard:
   #   image: lscr.io/linuxserver/wireguard:latest

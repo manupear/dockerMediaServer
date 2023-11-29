@@ -15,7 +15,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: linkwarden_postgres_db
     labels:
-      - docker-volume-backup.archive-pre=bash -c 'pg_dump -U postgres -F t linkwarden_postgres_db | gzip >/var/lib/postgresql/data/backups/linkwarden_postgres_db-dump-$(date +%Y-%m-%d).tar.gz'
+      - docker-volume-backup.archive-pre=bash -c 'rm -rf /var/lib/postgresql/data/backups/linkwarden_postgres_db-dump* && pg_dump -U postgres -F t linkwarden_postgres_db | gzip >/var/lib/postgresql/data/backups/linkwarden_postgres_db-dump-$(date +%Y-%m-%d).tar.gz'
     <<: *default_conf
     volumes:
       - ${DOCKERCONFDIR}/linkwarden/postgresql:/var/lib/postgresql/data
