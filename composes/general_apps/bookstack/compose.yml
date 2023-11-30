@@ -27,7 +27,7 @@ services:
       MAIL_PORT: 465
       MAIL_ENCRYPTION: tls
       MAIL_USERNAME: ${DEFAULT_EMAIL}
-      # MAIL_PASSWORD: onlyifneeded
+      MAIL_PASSWORD: ${BOOKSTACK_EMAIL_APP_PASSWORD}
       MAIL_FROM: yabaistack@yabaiserver.org
       MAIL_FROM_NAME: YabaiStack
     <<: *default_conf
