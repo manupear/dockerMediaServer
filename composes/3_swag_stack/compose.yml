@@ -80,8 +80,8 @@ services:
       - guacamoleStackNetwork
     labels:
       - docker-volume-backup.stop-during-backup=true
-    ports:
-      - 443:443
+        #ports:
+        #- 443:443
     volumes:
       - ${DOCKERCONFDIR}/swag:/config
     extra_hosts:

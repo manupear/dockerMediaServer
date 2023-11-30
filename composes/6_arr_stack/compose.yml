@@ -117,7 +117,6 @@ services:
   autobrr:
     container_name: autobrr
     image: ghcr.io/autobrr/autobrr:latest
-    user: ${PUID}:${PGID}
     environment:
       <<: *environment
     <<: *default_conf
