@@ -28,6 +28,7 @@ services:
 
   redis:
     image: redis:latest
+    user: ${PUID}:${PGID}
     container_name: redis
     ports:
       - "6379:6379"

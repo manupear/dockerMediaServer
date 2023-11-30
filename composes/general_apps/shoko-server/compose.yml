@@ -18,7 +18,7 @@ services:
       - docker-volume-backup.stop-during-backup=true
     volumes:
       - ${DOCKERCONFDIR}/shoko-server:/home/shoko/.shoko
-      - ${DOCKERSTORAGEDIR}/medialibrary:/mnt
+      - ${DOCKERSTORAGEDIR}:/mnt
 
 networks:
   jellyStackNetwork:
