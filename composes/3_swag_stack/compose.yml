@@ -28,6 +28,7 @@ services:
 
   redis:
     image: redis:latest
+    user: ${PUID}:${PGID}
     container_name: redis
     ports:
       - "6379:6379"
@@ -80,8 +81,8 @@ services:
       - guacamoleStackNetwork
     labels:
       - docker-volume-backup.stop-during-backup=true
-        #ports:
-        #- 443:443
+    ports:
+      - 443:443
     volumes:
       - ${DOCKERCONFDIR}/swag:/config
     extra_hosts:
