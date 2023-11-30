@@ -37,7 +37,7 @@ services:
       - "/nfs/library:/romm/library"
       - "/nfs/library/resources:/romm/resources"
       - "${DOCKERCONFDIR}/romm/logs:/romm/logs"
-      - "${DOCKERCONFDIR}/romm/config.yml:/romm/config.yml"
+      - ${DOCKERCONFDIR}/romm/config.yml:/romm/config.yml
     labels:
       - docker-volume-backup.stop-during-backup=true
     ports:
