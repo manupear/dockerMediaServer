@@ -5,11 +5,17 @@ x-default-conf: &default_conf
   networks:
     - generalStackNetwork
 
+x-environment: &environment
+  PGID: ${PGID}
+  PUID: ${PUID}
+  TZ: ${TZ}
+
 services:
   bookstack:
     image: lscr.io/linuxserver/bookstack
     container_name: bookstack
     environment:
+      <<: *environment
       APP_URL: ${BOOKSTACK_APP_URL}
       DB_HOST: bookstack_db
       DB_PORT: 3306
@@ -30,6 +36,7 @@ services:
     image: lscr.io/linuxserver/mariadb
     container_name: bookstack_db
     environment:
+      <<: *environment
       MYSQL_ROOT_PASSWORD: ${BOOKSTACK_DB_PASSWORD}
       MYSQL_DATABASE: bookstackapp
       MYSQL_USER: bookstack

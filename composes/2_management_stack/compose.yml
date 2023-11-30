@@ -13,6 +13,9 @@ x-authelia-conf: &autheliaPlusBackup
     - docker-volume-backup.stop-during-backup=true
 
 x-environment: &environment
+  PGID: ${PGID}
+  PUID: ${PUID}
+  TZ: ${TZ}
   DOCKER_HOST: dockerproxy
 
 services:
@@ -35,6 +38,9 @@ services:
     container_name: homarr
     image: ghcr.io/ajnart/homarr:latest
     environment:
+      PGID: ${PGID}
+      PUID: ${PUID}
+      TZ: ${TZ}
       DOCKER_HOST: tcp://dockerproxy:2375
     <<: *default_conf
     labels:

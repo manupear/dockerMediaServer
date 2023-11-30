@@ -5,11 +5,17 @@ x-default-conf: &default_conf
   networks:
     - swagStackNetwork
 
+x-environment: &environment
+  PGID: ${PGID}
+  PUID: ${PUID}
+  TZ: ${TZ}
 
 services:
   authelia:
     image: authelia/authelia
     container_name: authelia
+    environment:
+      <<: *environment
     <<: *default_conf
     labels:
       - docker-volume-backup.stop-during-backup=true
@@ -44,6 +50,7 @@ services:
     cap_add:
       - NET_ADMIN
     environment:
+      <<: *environment
       URL: ${SWAG_URL}
       SUBDOMAINS: wildcard
       VALIDATION: dns
@@ -84,7 +91,9 @@ services:
     image: docker.io/crowdsecurity/crowdsec:v1.5.5
     platform: linux/amd64
     container_name: crowdsec
+    user: ${PUID}:${PGID}
     environment:
+      <<: *environment
       COLLECTIONS: "crowdsecurity/nginx crowdsecurity/http-cve crowdsecurity/whitelist-good-actors"
       CUSTOM_HOSTNAME: ${CROWDSEC_CUSTOM_HOSTNAME}
     <<: *default_conf

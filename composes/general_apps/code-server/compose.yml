@@ -5,6 +5,9 @@ services:
     image: lscr.io/linuxserver/code-server:latest
     container_name: code-server
     environment:
+      PGID: ${PGID}
+      PUID: ${PUID}
+      TZ: ${TZ}
       DEFAULT_WORKSPACE: /config/workspace
     restart: unless-stopped
     networks:

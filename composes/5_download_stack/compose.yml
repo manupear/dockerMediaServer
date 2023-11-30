@@ -5,6 +5,8 @@ services:
     image: lscr.io/linuxserver/qbittorrent:4.5.5
     container_name: qbittorrent
     environment:
+      PGID: ${PGID}
+      PUID: ${PUID}
       UMASK: ${UMASK}
       TZ: ${TZ}
     labels:

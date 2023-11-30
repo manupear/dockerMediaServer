@@ -11,10 +11,17 @@ x-authelia-conf: &autheliaPlusBackup
     - swag_auth=authelia
     - docker-volume-backup.stop-during-backup=true
 
+x-environment: &environment
+  PGID: ${PGID}
+  PUID: ${PUID}
+  TZ: ${TZ}
+
 services:
   bazarr:
     container_name: bazarr
     image: lscr.io/linuxserver/bazarr:latest
+    environment:
+      <<: *environment
     <<: [*default_conf, *autheliaPlusBackup]
     ports:
       - 6767:6767
@@ -25,6 +32,8 @@ services:
   radarr:
     container_name: radarr
     image: lscr.io/linuxserver/radarr:latest
+    environment:
+      <<: *environment
     <<: [*default_conf, *autheliaPlusBackup]
     ports:
       - 7878:7878
@@ -35,6 +44,8 @@ services:
   radarranime:
     container_name: radarranime
     image: lscr.io/linuxserver/radarr:latest
+    environment:
+      <<: *environment
     <<: [*default_conf, *autheliaPlusBackup]
     ports:
       - 7879:7878
@@ -45,6 +56,8 @@ services:
   sonarranime:
     container_name: sonarranime
     image: lscr.io/linuxserver/sonarr:develop
+    environment:
+      <<: *environment
     <<: [*default_conf, *autheliaPlusBackup]
     ports:
       - 8990:8989
@@ -55,6 +68,8 @@ services:
   sonarr:
     container_name: sonarr
     image: lscr.io/linuxserver/sonarr:develop
+    environment:
+      <<: *environment
     <<: [*default_conf, *autheliaPlusBackup]
     ports:
       - 8989:8989
@@ -69,6 +84,7 @@ services:
       CAPTCHA_SOLVER: none
       LOG_HTML: false
       LOG_LEVEL: info
+      <<: *environment
     <<: *default_conf
     ports:
       - 8191:8191
@@ -77,6 +93,8 @@ services:
     container_name: notifiarr
     hostname: notifiarr
     image: golift/notifiarr
+    environment:
+      <<: *environment
     <<: [*default_conf, *autheliaPlusBackup]
     ports:
       - 5454:5454
@@ -88,6 +106,8 @@ services:
   prowlarr:
     container_name: prowlarr
     image: lscr.io/linuxserver/prowlarr:latest
+    environment:
+      <<: *environment
     <<: [*default_conf, *autheliaPlusBackup]
     ports:
       - 9696:9696
@@ -97,6 +117,8 @@ services:
   autobrr:
     container_name: autobrr
     image: ghcr.io/autobrr/autobrr:latest
+    environment:
+      <<: *environment
     <<: *default_conf
     labels:
       - docker-volume-backup.stop-during-backup=true
@@ -111,6 +133,7 @@ services:
     volumes:
       - ${DOCKERSTORAGEDIR}:/storage
     <<: *default_conf
+    user: ${PUID}:${PGID}
     environment:
       - TZ=${TZ}
       # Sonarr Config

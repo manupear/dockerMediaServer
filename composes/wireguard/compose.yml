@@ -5,6 +5,11 @@ x-default-conf: &default_conf
   networks:
     - swagStackNetwork
 
+x-environment: &environment
+  PGID: ${PGID}
+  PUID: ${PUID}
+  TZ: ${TZ}
+
 services:
   # wireguard:
   #   image: lscr.io/linuxserver/wireguard:latest
@@ -68,6 +73,7 @@ services:
     image: lscr.io/linuxserver/duckdns:latest
     container_name: duckdns
     environment:
+      <<: *environment
       SUBDOMAINS: ${DUCKDNS_SUBDOMAIN}
       TOKEN: ${DUCKDNS_TOKEN}
     <<: *default_conf
@@ -78,6 +84,7 @@ services:
     cap_add:
       - NET_ADMIN
     environment:
+      <<: *environment
       DOCKER_MODS: linuxserver/mods:universal-docker|linuxserver/mods:swag-crowdsec
       CROWDSEC_API_KEY: ${SWAG_CROWDSEC_API_KEY}
       CROWDSEC_LAPI_URL: http://crowdsec:8080
