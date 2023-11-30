@@ -12,17 +12,10 @@ x-authelia-conf: &autheliaPlusBackup
     - swag_auth=authelia
     - docker-volume-backup.stop-during-backup=true
 
-x-environment: &environment
-  PGID: ${PGID}
-  PUID: ${PUID}
-  TZ: ${TZ}
-
 services:
   jellyfin:
     container_name: jellyfin
     image: lscr.io/linuxserver/jellyfin:latest
-    environment:
-      <<: *environment
     <<: [*default_conf, *autheliaPlusBackup]
     ports:
       - 8096:8096
@@ -33,8 +26,6 @@ services:
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
     container_name: jellyseerr
-    environment:
-      <<: *environment
     <<: [*default_conf, *autheliaPlusBackup]
     ports:
       - 5055:5055
