@@ -9,12 +9,13 @@ services:
   romm:
     image: zurdi15/romm:latest
     container_name: romm
+    user: ${PUID}:${PGID}
     environment:
       - ROMM_DB_DRIVER=sqlite
       - IGDB_CLIENT_ID=${ROMM_IGDB_CLIENTID}
       - IGDB_CLIENT_SECRET=${ROMM_IGDB_CLIENTPASSWORD}
       - STEAMGRIDDB_API_KEY=${ROMM_STEAMGRIDDB_APIKEY}
-      - ROMM_AUTH_ENABLED=true
+      - ROMM_AUTH_ENABLED=false
       - ROMM_AUTH_SECRET_KEY=${ROMM_SECRET_KEY}
       - ROMM_AUTH_USERNAME=shyonae
       - ROMM_AUTH_PASSWORD=${ROMM_ADMIN_PASSWORD}
