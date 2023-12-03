@@ -167,7 +167,6 @@ services:
       - "9443:9443"
     labels:
       - swag=enable
-      - swag_auth=authelia
     depends_on:
       - postgresql
       - authentik-redis
