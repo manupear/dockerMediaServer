@@ -89,7 +89,6 @@ services:
 
   crowdsec:
     image: docker.io/crowdsecurity/crowdsec:v1.5.5
-    platform: linux/amd64
     container_name: crowdsec
     user: ${PUID}:${PGID}
     environment:
@@ -106,6 +105,93 @@ services:
       - docker-volume-backup.stop-during-backup=true
     security_opt:
       - no-new-privileges=true
+
+  ### AUTHENTIK ###
+
+  postgresql:
+    image: docker.io/library/postgres:12-alpine
+    container_name: authentik-postgres
+    <<: *default_conf
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    volumes:
+      - ${DOCKERCONFDIR}/authentik/database:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${PG_PASS:?database password required}
+      POSTGRES_USER: ${PG_USER:-authentik}
+      POSTGRES_DB: ${PG_DB:-authentik}
+
+  authentik-redis:
+    image: docker.io/library/redis:alpine
+    container_name: authentik-redis
+    networks:
+      auth:
+    command: --save 60 1 --loglevel warning
+    <<: *default_conf
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 3s
+    volumes:
+      - ${DOCKERCONFDIR}/authentik/redis:/data
+
+  server:
+    image: ghcr.io/goauthentik/server:2023.10.1
+    container_name: authentik-server
+    <<: *default_conf
+    command: server
+    environment:
+      AUTHENTIK_REDIS__HOST: authentik-redis
+      AUTHENTIK_POSTGRESQL__HOST: postgresql
+      AUTHENTIK_POSTGRESQL__USER: authentik
+      AUTHENTIK_POSTGRESQL__NAME: authentik
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${AUTHENTIK_PG_PASS}
+      AUTHENTIK_EMAIL__HOST: smtp.gmail.com
+      AUTHENTIK_EMAIL__PORT: 465
+      AUTHENTIK_EMAIL__USERNAME: ${DEFAULT_EMAIL}
+      AUTHENTIK_EMAIL__PASSWORD: ${AUTHENTIK_EMAIL_APP_PWD}
+      AUTHENTIK_EMAIL__USE_TLS: true
+      AUTHENTIK_EMAIL__USE_SSL: true
+      AUTHENTIK_EMAIL__TIMEOUT: 10
+      AUTHENTIK_EMAIL__FROM: authentik@yabaiserver.org
+    volumes:
+      - ${DOCKERCONFDIR}/authentik/server/media:/media
+      - ${DOCKERCONFDIR}/authentik/server/custom-templates:/templates
+    env_file:
+      - .env
+    ports:
+      - "9000:9000"
+      - "9443:9443"
+    depends_on:
+      - postgresql
+      - authentik-redis
+
+  worker:
+    image: ghcr.io/goauthentik/server:2023.10.1
+    container_name: authentik-worker
+    <<: *default_conf
+    command: worker
+    environment:
+      AUTHENTIK_REDIS__HOST: redis
+      AUTHENTIK_POSTGRESQL__HOST: postgresql
+      AUTHENTIK_POSTGRESQL__USER: authentik
+      AUTHENTIK_POSTGRESQL__NAME: authentik
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${AUTHENTIK_PG_PASS}
+      DOCKER_HOST: tcp://dockerproxy:2375
+    user: root
+    volumes:
+      - ${DOCKERCONFDIR}/authentik/worker/media:/media
+      - ${DOCKERCONFDIR}/authentik/worker/certs:/certs
+      - ${DOCKERCONFDIR}/authentik/worker/custom-templates:/templates
+    depends_on:
+      - postgresql
+      - authentik-redis
 
 networks:
   swagStackNetwork:
