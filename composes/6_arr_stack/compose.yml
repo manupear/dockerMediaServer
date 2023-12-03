@@ -22,7 +22,10 @@ services:
     image: lscr.io/linuxserver/bazarr:latest
     environment:
       <<: *environment
-    <<: [*default_conf, *autheliaPlusBackup]
+    <<: *default_conf
+    labels:
+      - swag=enable
+      - swag_auth=authentik
     ports:
       - 6767:6767
     volumes:

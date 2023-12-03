@@ -175,6 +175,9 @@ services:
     image: ghcr.io/goauthentik/server:2023.10.1
     container_name: authentik-worker
     <<: *default_conf
+    networks:
+      - socketProxyNetwork
+      - swagStackNetwork
     command: worker
     environment:
       AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY}
