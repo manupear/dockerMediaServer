@@ -35,7 +35,7 @@ services:
     <<: *default_conf
     labels:
       - swag=enable
-      - swag_auth=authelia
+      - swag_auth=authentik
       - docker-volume-backup.stop-during-backup=true
     ports:
       - 8080:8080

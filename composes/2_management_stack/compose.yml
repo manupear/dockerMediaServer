@@ -9,7 +9,7 @@ x-default-conf: &default_conf
 x-authelia-conf: &autheliaPlusBackup
   labels:
     - swag=enable
-    - swag_auth=authelia
+    - swag_auth=authentik
     - docker-volume-backup.stop-during-backup=true
 
 x-environment: &environment

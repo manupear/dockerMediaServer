@@ -11,7 +11,7 @@ services:
       TZ: ${TZ}
     labels:
       - swag=enable
-      - swag_auth=authelia
+      - swag_auth=authentik
       - docker-volume-backup.stop-during-backup=true
     networks:
       - downloadStackNetwork

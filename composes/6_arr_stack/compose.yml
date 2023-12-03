@@ -8,7 +8,7 @@ x-default-conf: &default_conf
 x-authelia-conf: &autheliaPlusBackup
   labels:
     - swag=enable
-    - swag_auth=authelia
+    - swag_auth=authentik
     - docker-volume-backup.stop-during-backup=true
 
 x-environment: &environment
@@ -22,10 +22,7 @@ services:
     image: lscr.io/linuxserver/bazarr:latest
     environment:
       <<: *environment
-    <<: *default_conf
-    labels:
-      - swag=enable
-      - swag_auth=authentik
+    <<: [*default_conf, *autheliaPlusBackup]
     ports:
       - 6767:6767
     volumes:
