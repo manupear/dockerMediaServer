@@ -161,8 +161,6 @@ services:
     volumes:
       - ${DOCKERCONFDIR}/authentik/server/media:/media
       - ${DOCKERCONFDIR}/authentik/server/custom-templates:/templates
-    env_file:
-      - .env
     ports:
       - "9000:9000"
       - "9443:9443"
