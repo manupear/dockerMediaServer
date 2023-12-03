@@ -128,8 +128,6 @@ services:
   authentik-redis:
     image: docker.io/library/redis:alpine
     container_name: authentik-redis
-    networks:
-      auth:
     command: --save 60 1 --loglevel warning
     <<: *default_conf
     healthcheck:
@@ -184,7 +182,6 @@ services:
       AUTHENTIK_POSTGRESQL__NAME: authentik
       AUTHENTIK_POSTGRESQL__PASSWORD: ${AUTHENTIK_PG_PASS}
       DOCKER_HOST: tcp://dockerproxy:2375
-    user: root
     volumes:
       - ${DOCKERCONFDIR}/authentik/worker/media:/media
       - ${DOCKERCONFDIR}/authentik/worker/certs:/certs
