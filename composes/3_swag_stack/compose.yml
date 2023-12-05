@@ -119,7 +119,7 @@ services:
       retries: 5
       timeout: 5s
     labels:
-      - docker-volume-backup.archive-pre=bash -c 'rm -rf /var/lib/postgresql/data/backups/authentik_postgres_db-dump* && pg_dump -U authentik -F t authentik | gzip >/var/lib/postgresql/data/backups/authentik_postgres_db-dump-$(date +%Y-%m-%d).tar.gz'
+      - docker-volume-backup.archive-pre=bash -c 'mkdir -p /var/lib/postgresql/data/backups && rm -rf /var/lib/postgresql/data/backups/authentik_postgres_db-dump* && pg_dump -U authentik -F t authentik | gzip >/var/lib/postgresql/data/backups/authentik_postgres_db-dump-$(date +%Y-%m-%d).tar.gz'
     volumes:
       - ${DOCKERCONFDIR}/authentik/database:/var/lib/postgresql/data
     environment:
