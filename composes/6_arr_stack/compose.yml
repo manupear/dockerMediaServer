@@ -127,6 +127,15 @@ services:
     ports:
       - 7474:7474
 
+  omegabrr:
+    container_name: omegabrr
+    user: ${PUID}:${PGID}
+    image: ghcr.io/autobrr/omegabrr:latest
+    ports:
+      - "7441:7441"
+    volumes:
+      - ${DOCKERCONFDIR}/omegabrr:/config
+
   unpackerr:
     image: golift/unpackerr
     container_name: unpackerr
