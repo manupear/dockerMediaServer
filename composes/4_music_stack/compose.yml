@@ -39,7 +39,7 @@ services:
     <<: *default_conf
     volumes:
       - ${DOCKERCONFDIR}/beets:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKERSTORAGEDIR}/medialibrary/music:/music
 
 networks:
   musicStackNetwork:
