@@ -11,6 +11,10 @@ services:
       ND_SCANSCHEDULE: 1h
       ND_LOGLEVEL: info
       ND_SESSIONTIMEOUT: 24h
+      ND_LASTFM_APIKEY: ${ND_LASTFM_APIKEY}
+      ND_LASTFM_SECRET: ${ND_LASTFM_SECRET}
+      ND_SPOTIFY_ID: ${ND_SPOTIFY_ID}
+      ND_SPOTIFY_SECRET: ${ND_SPOTIFY_SECRET}
     labels:
       - docker-volume-backup.stop-during-backup=true
     networks:
