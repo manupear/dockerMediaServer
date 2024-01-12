@@ -1,13 +1,18 @@
 version: "3.8"
 
+x-default-conf: &default_conf
+  restart: unless-stopped
+  networks:
+    - musicStackNetwork
+  labels:
+    - docker-volume-backup.stop-during-backup=true
+
 services:
   navidrome:
     container_name: navidrome
     image: deluan/navidrome:latest
     user: ${PUID}:${PGID}
-    ports:
-      - "4533:4533"
-    restart: unless-stopped
+    <<: *default_conf
     environment:
       ND_SCANSCHEDULE: 1h
       ND_LOGLEVEL: info
@@ -16,15 +21,27 @@ services:
       ND_LASTFM_SECRET: ${ND_LASTFM_SECRET}
       ND_SPOTIFY_ID: ${ND_SPOTIFY_ID}
       ND_SPOTIFY_SECRET: ${ND_SPOTIFY_SECRET}
-    labels:
-      - docker-volume-backup.stop-during-backup=true
-    networks:
-      - generalStackNetwork
+    ports:
+      - "4533:4533"
     volumes:
       - ${DOCKERCONFDIR}/navidrome:/data
       - ${DOCKERSTORAGEDIR}/medialibrary/music:/music:ro
 
+  beets:
+    container_name: beets
+    image: lscr.io/linuxserver/beets:latest
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    ports:
+      - 8337:8337
+    <<: *default_conf
+    volumes:
+      - ${DOCKERCONFDIR}/beets:/config
+      - ${DOCKERSTORAGEDIR}:/storage
+
 networks:
-  generalStackNetwork:
+  musicStackNetwork:
     driver: bridge
     external: true
