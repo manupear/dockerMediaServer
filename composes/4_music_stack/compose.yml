@@ -40,6 +40,7 @@ services:
     volumes:
       - ${DOCKERCONFDIR}/beets:/config
       - ${DOCKERSTORAGEDIR}/medialibrary/music:/music
+      - ${DOCKERSTORAGEDIR}/downloads/torrents/music:/downloads
 
 networks:
   musicStackNetwork:
