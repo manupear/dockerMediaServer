@@ -21,6 +21,10 @@ services:
       ND_LASTFM_SECRET: ${ND_LASTFM_SECRET}
       ND_SPOTIFY_ID: ${ND_SPOTIFY_ID}
       ND_SPOTIFY_SECRET: ${ND_SPOTIFY_SECRET}
+    labels:
+      - swag=enable
+      # - swag_auth=authentik
+      - docker-volume-backup.stop-during-backup=true
     ports:
       - "4533:4533"
     volumes:
@@ -54,8 +58,7 @@ services:
     volumes:
       - ${DOCKERCONFDIR}/betanin/data:/b/.local/share/betanin/
       - ${DOCKERCONFDIR}/betanin/config:/b/.config/betanin/
-      - ${DOCKERCONFDIR}/betanin/beets:/b/.config/beets
-      - ${DOCKERSTORAGEDIR}/medialibrary/music:/music/
+      - ${DOCKERCONFDIR}/betanin/beets:/b/.config/beets/
       - ${DOCKERSTORAGEDIR}:/storage
 
 networks:

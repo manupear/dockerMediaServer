@@ -116,7 +116,7 @@ services:
 
   autobrr:
     container_name: autobrr
-    image: ghcr.io/autobrr/autobrr:v1.34.1
+    image: ghcr.io/autobrr/autobrr:v1.35.0
     environment:
       <<: *environment
     <<: *default_conf
@@ -126,16 +126,6 @@ services:
       - ${DOCKERCONFDIR}/autobrr:/config
     ports:
       - 7474:7474
-
-  omegabrr:
-    container_name: omegabrr
-    user: ${PUID}:${PGID}
-    image: ghcr.io/autobrr/omegabrr:latest
-    <<: *default_conf
-    ports:
-      - "7441:7441"
-    volumes:
-      - ${DOCKERCONFDIR}/omegabrr:/config
 
   unpackerr:
     image: golift/unpackerr

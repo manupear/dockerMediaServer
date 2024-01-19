@@ -80,6 +80,7 @@ services:
       - generalStackNetwork
       - socketProxyNetwork
       - guacamoleStackNetwork
+      - musicStackNetwork
     labels:
       - docker-volume-backup.stop-during-backup=true
       - "com.centurylinklabs.watchtower.monitor-only=true"
@@ -230,5 +231,8 @@ networks:
     driver: bridge
     external: true
   guacamoleStackNetwork:
+    driver: bridge
+    external: true
+  musicStackNetwork:
     driver: bridge
     external: true
