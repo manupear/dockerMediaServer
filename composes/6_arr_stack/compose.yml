@@ -116,7 +116,7 @@ services:
 
   autobrr:
     container_name: autobrr
-    image: ghcr.io/autobrr/autobrr:v1.35.0
+    image: ghcr.io/autobrr/autobrr:v1.36.0
     environment:
       <<: *environment
     <<: *default_conf
