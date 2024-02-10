@@ -1,40 +1,53 @@
 version: "3.8"
 
+x-default-conf: &default_conf
+  restart: unless-stopped
+  networks:
+    - generalStackNetwork
+
+x-environment: &environment
+  PGID: ${PGID}
+  PUID: ${PUID}
+  TZ: ${TZ}
+
 services:
   gaseous-server:
     container_name: gaseous-server
     image: gaseousgames/gaseousserver:latest
-    restart: unless-stopped
-    networks:
-      - gaseous
+    user: ${PUID}:${PGID}
+    environment:
+      <<: *environment
+      dbhost: gaseous_db
+      dbuser: root
+      dbpass: ${GASEOUS_DB_ROOT_PASSWORD}
+      igdbclientid: ${ROMM_IGDB_CLIENTID}
+      igdbclientsecret: ${ROMM_IGDB_CLIENTPASSWORD}
+    <<: *default_conf
     depends_on:
-      - gsdb
+      - gaseous_db
     ports:
       - 5198:80
     volumes:
-      - gs:/root/.gaseous-server
+      - ${DOCKERCONFDIR}/gaseous/gaseous_data:/root/.gaseous-server
+
+  gaseous_db:
+    image: lscr.io/linuxserver/mariadb
+    container_name: gaseous_db
     environment:
-      - TZ=Australia/Sydney
-      - dbhost=gsdb
-      - dbuser=root
-      - dbpass=gaseous
-      - igdbclientid=<clientid>
-      - igdbclientsecret=<clientsecret>
-  gsdb:
-    container_name: gsdb
-    image: mariadb
-    restart: unless-stopped
-    networks:
-      - gaseous
+      <<: *environment
+      MARIADB_ROOT_PASSWORD: ${GASEOUS_DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: gaseous
+      MYSQL_USER: gaseous
+      MYSQL_PASSWORD: ${GASEOUS_DB_PASSWORD}
+    <<: *default_conf
+    labels:
+      - docker-volume-backup.archive-pre=/bin/sh -c 'rm -rf /tmp/gaseous_db-dump* && mysqldump --all-databases > /tmp/gaseous_db-dump-$(date +"%Y_%m_%d-%I_%M_%p").sql'
     volumes:
-      - gsdb:/var/lib/mysql
-    environment:
-      - MARIADB_ROOT_PASSWORD=gaseous
-      - MARIADB_USER=gaseous
-      - MARIADB_PASSWORD=gaseous
+      - ${DOCKERCONFDIR}/gaseous/gaseous_db_data:gsdb:/var/lib/mysql
+      - ${DOCKERCONFDIR}/gaseous/gaseous_db_data/backups:/tmp
+      - ${DOCKERCONFDIR}/gaseous/gaseous_db_data/.my.cnf:/root/.my.cnf
+
 networks:
-  gaseous:
+  generalStackNetwork:
     driver: bridge
-volumes:
-  gs:
-  gsdb:
+    external: true
