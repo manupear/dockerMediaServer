@@ -16,10 +16,11 @@ services:
     image: gaseousgames/gaseousserver:latest
     environment:
       <<: *environment
-      dbhost: gaseous_db
+      dbhost: http://gaseous
       dbuser: root
       dbpass: ${GASEOUS_DB_ROOT_PASSWORD}
       dbname: gaseous_db
+      dbport: 3306
       igdbclientid: ${ROMM_IGDB_CLIENTID}
       igdbclientsecret: ${ROMM_IGDB_CLIENTPASSWORD}
     <<: *default_conf
@@ -29,7 +30,7 @@ services:
       - 5198:80
     volumes:
       - ${DOCKERCONFDIR}/gaseous/gaseous_data:/root/.gaseous-server
-      - /smb/library:/library
+      - /smb/library:/library:ro
 
   gaseous_db:
     image: lscr.io/linuxserver/mariadb
