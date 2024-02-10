@@ -29,6 +29,7 @@ services:
       - 5198:80
     volumes:
       - ${DOCKERCONFDIR}/gaseous/gaseous_data:/root/.gaseous-server
+      - /smb/library:/library
 
   gaseous_db:
     image: lscr.io/linuxserver/mariadb
