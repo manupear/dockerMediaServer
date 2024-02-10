@@ -44,7 +44,7 @@ services:
     labels:
       - docker-volume-backup.archive-pre=/bin/sh -c 'rm -rf /tmp/gaseous_db-dump* && mysqldump --all-databases > /tmp/gaseous_db-dump-$(date +"%Y_%m_%d-%I_%M_%p").sql'
     volumes:
-      - ${DOCKERCONFDIR}/gaseous/gaseous_db_data:gsdb:/var/lib/mysql
+      - ${DOCKERCONFDIR}/gaseous/gaseous_db_data:/var/lib/mysql
       - ${DOCKERCONFDIR}/gaseous/gaseous_db_data/backups:/tmp
       - ${DOCKERCONFDIR}/gaseous/gaseous_db_data/.my.cnf:/root/.my.cnf
 
