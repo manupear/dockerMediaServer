@@ -14,7 +14,6 @@ services:
   gaseous-server:
     container_name: gaseous-server
     image: gaseousgames/gaseousserver:latest
-    user: ${PUID}:{PGID}
     environment:
       <<: *environment
       dbhost: gaseous_db
@@ -39,7 +38,7 @@ services:
     hostname: gaseous_db
     environment:
       <<: *environment
-      MARIADB_ROOT_PASSWORD: ${GASEOUS_DB_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${GASEOUS_DB_ROOT_PASSWORD}
       MYSQL_DATABASE: gaseous
       MYSQL_USER: gaseous
       MYSQL_PASSWORD: ${GASEOUS_DB_PASSWORD}
