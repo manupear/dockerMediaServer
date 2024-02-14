@@ -44,11 +44,10 @@ services:
       MYSQL_PASSWORD: ${GASEOUS_DB_PASSWORD}
     <<: *default_conf
     labels:
-      - docker-volume-backup.archive-pre=/bin/sh -c 'rm -rf /tmp/gaseous_db-dump* && mysqldump --all-databases > /tmp/gaseous_db-dump-$(date +"%Y_%m_%d-%I_%M_%p").sql'
+      - docker-volume-backup.archive-pre=/bin/sh -c 'rm -rf /tmp/gaseous_db-dump* && mysqldump -uroot -p"${GASEOUS_DB_ROOT_PASSWORD}" --all-databases > /tmp/gaseous_db-dump-$(date +"%Y_%m_%d-%I_%M_%p").sql'
     volumes:
       - ${DOCKERCONFDIR}/gaseous/gaseous_db_data:/config
       - ${DOCKERCONFDIR}/gaseous/gaseous_db_data/backups:/tmp
-      - ${DOCKERCONFDIR}/gaseous/gaseous_db_data/.my.cnf:/root/.my.cnf:ro
 
 networks:
   generalStackNetwork:
