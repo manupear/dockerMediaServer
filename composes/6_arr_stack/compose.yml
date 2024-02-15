@@ -67,7 +67,7 @@ services:
 
   sonarr:
     container_name: sonarr
-    image: lscr.io/linuxserver/sonarr:develop
+    image: lscr.io/linuxserver/sonarr:latest
     environment:
       <<: *environment
     <<: [*default_conf, *autheliaPlusBackup]
