@@ -92,9 +92,9 @@ services:
       - ${SWAG_EXTRA_HOSTS}
 
   crowdsec:
-    image: docker.io/crowdsecurity/crowdsec:v1.5.5
+    image: docker.io/crowdsecurity/crowdsec:v1.6.0
     container_name: crowdsec
-    user: ${PUID}:${PGID}
+    # user: ${PUID}:${PGID}
     environment:
       <<: *environment
       COLLECTIONS: "crowdsecurity/nginx crowdsecurity/http-cve crowdsecurity/whitelist-good-actors"

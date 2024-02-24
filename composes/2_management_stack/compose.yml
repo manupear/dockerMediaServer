@@ -103,7 +103,7 @@ services:
     container_name: docker-volume-backup
     user: 0:100
     environment:
-      BACKUP_CRON_EXPRESSION: "05 23 * * *"
+      BACKUP_CRON_EXPRESSION: "30 23 * * *"
       BACKUP_COMPRESSION: "gz"
       GZIP_PARALLELISM: 1
       BACKUP_FILENAME: backup-%Y-%m-%dT%H-%M-%S.tar.gz
@@ -113,7 +113,7 @@ services:
       BACKUP_RETENTION_DAYS: "7"
       BACKUP_PRUNING_LEEWAY: "1m"
       BACKUP_PRUNING_PREFIX: "backup-"
-      EXEC_FORWARD_OUTPUT: "true"
+      EXEC_FORWARD_OUTPUT: "false"
     restart: always
     networks:
       - managementStackNetwork
