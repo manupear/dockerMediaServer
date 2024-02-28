@@ -51,11 +51,10 @@ services:
       MYSQL_PASSWORD: ${BOOKSTACK_DB_PASSWORD}
     <<: *default_conf
     labels:
-      - docker-volume-backup.archive-pre=/bin/sh -c 'rm -rf /tmp/bookstack_db-dump* && mysqldump --all-databases > /tmp/bookstack_db-dump-$(date +"%Y_%m_%d-%I_%M_%p").sql'
+      - docker-volume-backup.archive-pre=/bin/sh -c 'rm -rf /tmp/bookstack_db-dump* && mysqldump -uroot -p"${BOOKSTACK_DB_PASSWORD}" --all-databases > /tmp/bookstack_db-dump-$(date +"%Y_%m_%d-%I_%M_%p").sql'
     volumes:
       - ${DOCKERCONFDIR}/bookstack/bookstack_db_data:/config
       - ${DOCKERCONFDIR}/bookstack/bookstack_db_data/backups:/tmp
-      - ${DOCKERCONFDIR}/bookstack/bookstack_db_data/.my.cnf:/root/.my.cnf
 
 networks:
   generalStackNetwork:

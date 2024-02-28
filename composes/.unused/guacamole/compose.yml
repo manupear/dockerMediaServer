@@ -38,7 +38,7 @@ services:
       - swag_auth=authentik
       - docker-volume-backup.stop-during-backup=true
     ports:
-      - 8080:8080
+      - 8081:8080
 
   guacamole_db:
     image: lscr.io/linuxserver/mariadb
