@@ -43,7 +43,7 @@ services:
     #   service: cpu # set to one of [nvenc, quicksync, rkmpp, vaapi, vaapi-wsl] for accelerated transcoding
     command: ["start.sh", "microservices"]
     volumes:
-      - /smb/backups/Immich/microservices-data:/usr/src/app/upload
+      - ${DOCKERCONFDIR}/immich/microservices-data:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
     environment:
       <<: *environment
@@ -83,7 +83,7 @@ services:
     labels:
       - docker-volume-backup.archive-pre=bash -c 'mkdir -p /var/lib/postgresql/data/backups && rm -rf /var/lib/postgresql/data/backups/immich_postgres_db-dump* && pg_dump -U postgres -F t immich | gzip >/var/lib/postgresql/data/backups/immich_postgres_db-dump-$(date +%Y-%m-%d).tar.gz'
     volumes:
-      - /smb/backups/Immich/database-data:/var/lib/postgresql/data
+      - ${DOCKERCONFDIR}/immich/database-data:/var/lib/postgresql/data
     <<: *default_conf
 
 networks:
