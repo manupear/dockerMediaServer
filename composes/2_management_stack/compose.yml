@@ -6,12 +6,11 @@ x-default-conf: &default_conf
     - managementStackNetwork
     - socketProxyNetwork
 
-x-authelia-conf: &autheliaPlusBackupMonitorOnly
+x-authentil-conf: &authentikPlusBackupMonitorOnly
   labels:
     - swag=enable
     - swag_auth=authentik
     - docker-volume-backup.stop-during-backup=true
-    - "com.centurylinklabs.watchtower.monitor-only=true"
 
 x-environment: &environment
   PGID: ${PGID}
@@ -27,7 +26,7 @@ services:
     image: portainer/portainer-ce:latest
     environment:
       <<: *environment
-    <<: [*default_conf, *autheliaPlusBackupMonitorOnly]
+    <<: [*default_conf, *authentikPlusBackupMonitorOnly]
     ports:
       - 9000:9000
     volumes:

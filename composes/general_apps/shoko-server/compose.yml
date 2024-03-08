@@ -16,7 +16,6 @@ services:
       - jellyStackNetwork
     labels:
       - docker-volume-backup.stop-during-backup=true
-      - "com.centurylinklabs.watchtower.monitor-only=true"
     volumes:
       - ${DOCKERCONFDIR}/shoko-server:/home/shoko/.shoko
       - ${DOCKERSTORAGEDIR}:/mnt
