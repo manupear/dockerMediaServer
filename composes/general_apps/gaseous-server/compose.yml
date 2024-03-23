@@ -6,9 +6,7 @@ x-default-conf: &default_conf
     - generalStackNetwork
 
 x-environment: &environment
-  PGID: ${PGID}
-  PUID: ${PUID}
-  TZ: ${TZ}
+  
 
 services:
   gaseous-server:
