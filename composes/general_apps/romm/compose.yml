@@ -29,8 +29,8 @@ services:
       - SCHEDULED_UPDATE_MAME_XML_CRON=0 5 * * * # Cron expression for the scheduled update (default: 0 5 * * * - At 5:00 AM every day)
     <<: *default_conf
     volumes:
-      - /nfs/library:/romm/library
-      - /nfs/library/resources:/romm/resources
+      - /smb/library:/romm/library
+      - /smb/library/resources:/romm/resources
       - ${DOCKERCONFDIR}/romm/logs:/romm/logs
       - ${DOCKERCONFDIR}/romm/database:/romm/database
       - ${DOCKERCONFDIR}/romm/config.yml:/romm/config.yml
