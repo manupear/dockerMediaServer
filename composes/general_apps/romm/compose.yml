@@ -7,9 +7,11 @@ x-default-conf: &default_conf
 
 services:
   romm:
-    image: zurdi15/romm:latest
+    image: rommapp/romm:latest
     container_name: romm
     user: ${PUID}:${PGID}
+    depends_on: 
+      - romm_db
     environment:
       - IGDB_CLIENT_ID=${ROMM_IGDB_CLIENTID}
       - IGDB_CLIENT_SECRET=${ROMM_IGDB_CLIENTPASSWORD}
