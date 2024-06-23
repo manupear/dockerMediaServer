@@ -5,6 +5,11 @@ x-default-conf: &default_conf
   restart: unless-stopped
   networks:
     - generalStackNetwork
+  logging:
+    driver: "json-file"
+    options:
+      max-file: "2"
+      max-size: "100m"
 
 services:
   postgres:

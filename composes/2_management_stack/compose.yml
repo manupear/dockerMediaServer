@@ -6,10 +6,17 @@ x-default-conf: &default_conf
     - managementStackNetwork
     - socketProxyNetwork
 
-x-authentil-conf: &authentikPlusBackupMonitorOnly
+x-logging-conf: &logging
+  logging:
+    driver: "json-file"
+    options:
+      max-file: "2"
+      max-size: "100m"
+
+x-authentik-conf: &authentikPlusBackupMonitorOnly
   labels:
-    - swag=enable
-    - swag_auth=authentik
+    # - swag=enable
+    # - swag_auth=authentik
     - docker-volume-backup.stop-during-backup=true
 
 x-environment: &environment
@@ -27,6 +34,11 @@ services:
     environment:
       <<: *environment
     <<: [*default_conf, *authentikPlusBackupMonitorOnly]
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "2"
+        max-size: "100m"
     ports:
       - 9000:9000
     volumes:
@@ -114,6 +126,11 @@ services:
       BACKUP_PRUNING_PREFIX: "backup-"
       EXEC_FORWARD_OUTPUT: "false"
     restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "2"
+        max-size: "100m"
     networks:
       - managementStackNetwork
       - socketProxyNetwork

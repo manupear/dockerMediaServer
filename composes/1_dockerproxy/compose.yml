@@ -8,6 +8,11 @@ services:
     restart: unless-stopped
     networks:
       - socketProxyNetwork
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "2"
+        max-size: "100m"
     environment:
       # 0 to revoke access.
       # 1 to grant access.

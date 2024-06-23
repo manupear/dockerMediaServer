@@ -4,6 +4,11 @@ x-default-conf: &default_conf
   restart: unless-stopped
   networks:
     - swagStackNetwork
+  logging:
+    driver: "json-file"
+    options:
+      max-file: "2"
+      max-size: "100m"
 
 x-environment: &environment
   PGID: ${PGID}
@@ -70,6 +75,11 @@ services:
       CF_TUNNEL_PASSWORD=: ${SWAG_CF_TUNNEL_PASSWORD}
       FILE__CF_TUNNEL_CONFIG: /config/tunnelconfig.yml
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "2"
+        max-size: "100m"
     networks:
       - swagStackNetwork
       - managementStackNetwork

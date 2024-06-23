@@ -17,6 +17,11 @@ services:
       - downloadStackNetwork
       - arrStackNetwork
       - musicStackNetwork
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "2"
+        max-size: "100m"
     volumes:
       - ${DOCKERCONFDIR}/qbittorrent:/config
       - ${DOCKERSTORAGEDIR}:/storage

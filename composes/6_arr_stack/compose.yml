@@ -4,11 +4,16 @@ x-default-conf: &default_conf
   restart: unless-stopped
   networks:
     - arrStackNetwork
+  logging:
+    driver: "json-file"
+    options:
+      max-file: "2"
+      max-size: "100m"
 
 x-authelia-conf: &autheliaPlusBackup
   labels:
-    - swag=enable
-    - swag_auth=authentik
+    # - swag=enable
+    # - swag_auth=authentik
     - docker-volume-backup.stop-during-backup=true
 
 x-environment: &environment

@@ -4,6 +4,11 @@ x-default-conf: &default_conf
   restart: always
   networks:
     - immichStackNetwork
+  logging:
+    driver: "json-file"
+    options:
+      max-file: "2"
+      max-size: "100m"
 
 x-environment: &environment
   PGID: ${PGID}
