@@ -90,18 +90,18 @@ services:
     volumes:
       - ${DOCKERCONFDIR}/prowlarr:/config
 
-  autobrr:
-    container_name: autobrr
-    image: ghcr.io/autobrr/autobrr:latest
-    environment:
-      <<: *environment
-    <<: *default_conf
-    labels:
-      - docker-volume-backup.stop-during-backup=true
-    volumes:
-      - ${DOCKERCONFDIR}/autobrr:/config
-    ports:
-      - 7474:7474
+  # autobrr:
+  #   container_name: autobrr
+  #   image: ghcr.io/autobrr/autobrr:latest
+  #   environment:
+  #     <<: *environment
+  #   <<: *default_conf
+  #   labels:
+  #     - docker-volume-backup.stop-during-backup=true
+  #   volumes:
+  #     - ${DOCKERCONFDIR}/autobrr:/config
+  #   ports:
+  #     - 7474:7474
 
   unpackerr:
     image: golift/unpackerr

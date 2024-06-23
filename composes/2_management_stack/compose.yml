@@ -33,57 +33,57 @@ services:
       - ${DOCKERCONFDIR}/portainer:/data
       - ${DOCKERSTORAGEDIR}:/storage
 
-  ## HOMARR ##
-  homarr:
-    container_name: homarr
-    image: ghcr.io/ajnart/homarr:latest
-    environment:
-      PGID: ${PGID}
-      PUID: ${PUID}
-      TZ: ${TZ}
-      DOCKER_HOST: tcp://dockerproxy:2375
-    <<: *default_conf
-    labels:
-      - docker-volume-backup.stop-during-backup=true
-    volumes:
-      - ${DOCKERCONFDIR}/homarr/configs:/app/data/configs
-      - ${DOCKERCONFDIR}/homarr/icons:/app/public/icons
-      - ${DOCKERCONFDIR}/homarr/data:/data
-    ports:
-      - 7575:7575
+  # ## HOMARR ##
+  # homarr:
+  #   container_name: homarr
+  #   image: ghcr.io/ajnart/homarr:latest
+  #   environment:
+  #     PGID: ${PGID}
+  #     PUID: ${PUID}
+  #     TZ: ${TZ}
+  #     DOCKER_HOST: tcp://dockerproxy:2375
+  #   <<: *default_conf
+  #   labels:
+  #     - docker-volume-backup.stop-during-backup=true
+  #   volumes:
+  #     - ${DOCKERCONFDIR}/homarr/configs:/app/data/configs
+  #     - ${DOCKERCONFDIR}/homarr/icons:/app/public/icons
+  #     - ${DOCKERCONFDIR}/homarr/data:/data
+  #   ports:
+  #     - 7575:7575
 
-  ## UPTIME KUMA ##
-  uptime-kuma:
-    image: louislam/uptime-kuma
-    container_name: uptime-kuma
-    environment:
-      <<: *environment
-    <<: *default_conf
-    volumes:
-      - ${DOCKERCONFDIR}/uptime-kuma:/app/data
-    labels:
-      - docker-volume-backup.stop-during-backup=true
-    ports:
-      - 3001:3001
+  # ## UPTIME KUMA ##
+  # uptime-kuma:
+  #   image: louislam/uptime-kuma
+  #   container_name: uptime-kuma
+  #   environment:
+  #     <<: *environment
+  #   <<: *default_conf
+  #   volumes:
+  #     - ${DOCKERCONFDIR}/uptime-kuma:/app/data
+  #   labels:
+  #     - docker-volume-backup.stop-during-backup=true
+  #   ports:
+  #     - 3001:3001
 
-  ## WHATSUPDOCKER ##
-  whatsupdocker:
-    image: fmartinou/whats-up-docker
-    container_name: whatsupdocker
-    environment:
-      <<: *environment
-      DOCKER_HOST: tcp://dockerproxy:2375
-      WUD_AUTH_OIDC_AUTHENTIK_CLIENTID: ${WUD_AUTH_OIDC_AUTHENTIK_CLIENTID}
-      WUD_AUTH_OIDC_AUTHENTIK_CLIENTSECRET: ${WUD_AUTH_OIDC_AUTHENTIK_CLIENTSECRET}
-      WUD_AUTH_OIDC_AUTHENTIK_DISCOVERY: ${WUD_AUTH_OIDC_AUTHENTIK_DISCOVERY}
-      WUD_AUTH_OIDC_AUTHENTIK_REDIRECT: true
-    <<: *default_conf
-    volumes:
-      - ${DOCKERCONFDIR}/whatsupdocker:/store
-    labels:
-      - docker-volume-backup.stop-during-backup=true
-    ports:
-      - 3043:3000
+  # ## WHATSUPDOCKER ##
+  # whatsupdocker:
+  #   image: fmartinou/whats-up-docker
+  #   container_name: whatsupdocker
+  #   environment:
+  #     <<: *environment
+  #     DOCKER_HOST: tcp://dockerproxy:2375
+  #     WUD_AUTH_OIDC_AUTHENTIK_CLIENTID: ${WUD_AUTH_OIDC_AUTHENTIK_CLIENTID}
+  #     WUD_AUTH_OIDC_AUTHENTIK_CLIENTSECRET: ${WUD_AUTH_OIDC_AUTHENTIK_CLIENTSECRET}
+  #     WUD_AUTH_OIDC_AUTHENTIK_DISCOVERY: ${WUD_AUTH_OIDC_AUTHENTIK_DISCOVERY}
+  #     WUD_AUTH_OIDC_AUTHENTIK_REDIRECT: true
+  #   <<: *default_conf
+  #   volumes:
+  #     - ${DOCKERCONFDIR}/whatsupdocker:/store
+  #   labels:
+  #     - docker-volume-backup.stop-during-backup=true
+  #   ports:
+  #     - 3043:3000
 
   ## DOZZLE ##
   # dozzle:
