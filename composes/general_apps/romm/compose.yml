@@ -19,6 +19,7 @@ services:
       - ROMM_AUTH_SECRET_KEY=${ROMM_SECRET_KEY}
       - ROMM_AUTH_USERNAME=shyonae
       - ROMM_AUTH_PASSWORD=${ROMM_ADMIN_PASSWORD}
+      - MOBYGAMES_API_KEY=${MOBYGAMES_API_KEY}
       - DB_HOST=romm_db
       - DB_NAME=romm_db # Should match MYSQL_DATABASE in mariadb
       - DB_USER=romm # Should match MYSQL_USER in mariadb

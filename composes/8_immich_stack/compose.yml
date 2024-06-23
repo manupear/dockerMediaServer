@@ -21,7 +21,7 @@ services:
     image: ghcr.io/immich-app/immich-server:release
     command: ["start.sh", "immich"]
     volumes:
-      - /smb/backups/Immich/upload:/usr/src/app/upload
+      - /nfs/backups/Immich/upload:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
     environment:
       <<: *environment
@@ -42,7 +42,7 @@ services:
     #   service: quicksync # set to one of [nvenc, quicksync, rkmpp, vaapi, vaapi-wsl] for accelerated transcoding
     command: ["start.sh", "microservices"]
     volumes:
-      - /smb/backups/Immich/upload:/usr/src/app/upload
+      - /nfs/backups/Immich/upload:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
     environment:
       <<: *environment
