@@ -1,12 +1,7 @@
 services:
-  code-server:
-    image: lscr.io/linuxserver/code-server:latest
-    container_name: code-server
-    environment:
-      PGID: ${PGID}
-      PUID: ${PUID}
-      TZ: ${TZ}
-      DEFAULT_WORKSPACE: /config/workspace
+  homebox:
+    image: ghcr.io/sysadminsmedia/homebox:latest-rootless
+    container_name: homebox
     restart: unless-stopped
     networks:
       - generalStackNetwork
@@ -17,11 +12,17 @@ services:
       options:
         max-file: "2"
         max-size: "100m"
+    environment:
+      PGID: ${PGID}
+      PUID: ${PUID}
+      TZ: ${TZ}
+      HBOX_LOG_LEVEL: info
+      HBOX_LOG_FORMAT: text
+      HBOX_WEB_MAX_UPLOAD_SIZE: 10
     volumes:
-      - ${DOCKERCONFDIR}/code-server:/config
-      - ${DOCKER_REPO_DIR}:/config/workspace/dockerMediaServer
+      - ${DOCKERCONFDIR}/homebox:/data/
     ports:
-      - 8443:8443
+      - 3100:7745
 
 networks:
   generalStackNetwork:

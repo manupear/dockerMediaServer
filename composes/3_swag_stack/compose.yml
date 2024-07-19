@@ -1,5 +1,3 @@
-version: "3.8"
-
 x-default-conf: &default_conf
   restart: unless-stopped
   networks:
@@ -97,6 +95,25 @@ services:
       - ${DOCKERCONFDIR}/swag:/config
     extra_hosts:
       - ${SWAG_EXTRA_HOSTS}
+
+  cloudflare-ddns:
+    image: favonia/cloudflare-ddns:latest
+    container_name: cloudflare-ddns
+    cap_add:
+      - SETUID
+      - SETGID
+    cap_drop:
+      - all
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    <<: *default_conf
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - CF_API_TOKEN=${SWAG_CF_API_TOKEN}
+      - DOMAINS=${SWAG_URL}
+      - PROXIED=true
 
   crowdsec:
     image: docker.io/crowdsecurity/crowdsec:v1.6.0

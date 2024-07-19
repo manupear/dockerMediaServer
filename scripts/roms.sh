@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set the directory to start the search from
-search_dir="/nfs/library/roms/SNES"
+search_dir="/smb/library/roms/SNES"
 # Use find and grep to search for files NOT containing "Europe" or "Japan" in their name
 found_files=()
 

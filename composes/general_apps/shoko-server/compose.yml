@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   shoko_server:
     shm_size: 256m

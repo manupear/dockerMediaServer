@@ -1,6 +1,6 @@
 #!/bin/bash
 
-folder_path="./appdata"  # Replace with the path to your folder
+folder_path="$HOME/docker-server/appdata"  # Replace with the path to your folder
 
 # Define the age limit for log files (1 day in seconds)
 age_limit=$((24 * 60 * 60))
