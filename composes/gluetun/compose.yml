@@ -1,0 +1,24 @@
+services:
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    environment:
+      VPN_SERVICE_PROVIDER: mullvad
+      VPN_TYPE: wireguard
+      WIREGUARD_PRIVATE_KEY: ${GLUETUN_WIREGUARD_PRIVATE_KEY}
+      WIREGUARD_ADDRESSES: ${GLUETUN_WIREGUARD_ADDRESSES}
+      HTTPPROXY: "on"
+      HTTPPROXY_USER: ${GLUETUN_HTTPPROXY_USER}
+      HTTPPROXY_PASSWORD: ${GLUETUN_HTTPPROXY_PASSWORD}
+    networks:
+      - generalStackNetwork
+    restart: unless-stopped
+    ports:
+      - "51628:8888/tcp"
+
+networks:
+  generalStackNetwork:
+    driver: bridge
+    external: true
