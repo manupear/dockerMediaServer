@@ -103,10 +103,12 @@ services:
   cup:
     image: ghcr.io/sergi0g/cup:latest
     container_name: cup
-    command: ["serve", "-p", "9000", "-H", "tcp://dockerproxy:2375"]
+    command: "serve -p 9000"
     environment:
       <<: *environment
     <<: [*default_conf, *labels, *logging]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 9045:9000
 
