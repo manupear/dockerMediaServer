@@ -13,8 +13,6 @@ x-logging-conf: &logging
 
 x-authentik-conf: &labels
   labels:
-    # - swag=enable
-    # - swag_auth=authentik
     - docker-volume-backup.stop-during-backup=true
 
 x-environment: &environment
@@ -102,21 +100,15 @@ services:
   #     - 9999:8080
 
   ## DOCKING STATION ##
-  docking-station:
-    image: loolzzz/docking-station:latest
-    container_name: docking-station
+  cup:
+    image: ghcr.io/sergi0g/cup:latest
+    container_name: cup
+    command: serve -p 9000
     environment:
       <<: *environment
-      WEB_PORT: 3046
     <<: [*default_conf, *labels, *logging]
-    volumes:
-      - ${DOCKERCONFDIR}/docking-station/config:/config
-      - ${DOCKERCONFDIR}/docking-station/data:/data
-      - ${DOCKERCONFDIR}/docking-station/logs:/logs
-      - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_COMPOSE_DIR}:${DOCKER_COMPOSE_DIR}
     ports:
-      - 3046:3046
+      - 9000:9000
 
   ## DOCKER VOLUME BACKUP ##
   docker-volume-backup:
