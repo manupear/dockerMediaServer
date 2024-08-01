@@ -13,10 +13,10 @@ x-environment: &environment
   PUID: ${PUID}
   TZ: ${TZ}
   DB_PASSWORD: ${IMMICH_DB_PASSWORD}
-  DB_HOSTNAME: immich_postgres
+  DB_HOSTNAME: immich2_postgres
   DB_USERNAME: ${IMMICH_DB_USERNAME}
   DB_DATABASE_NAME: ${IMMICH_DB_NAME}
-  REDIS_HOSTNAME: immich_redis
+  REDIS_HOSTNAME: immich2_redis
 
 services:
   immich-server:
