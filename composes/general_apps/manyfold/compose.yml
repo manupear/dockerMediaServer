@@ -1,12 +1,14 @@
 services:
-  code-server:
-    image: lscr.io/linuxserver/code-server:latest
-    container_name: code-server
+  manyfold:
+    image: lscr.io/linuxserver/manyfold:latest
+    container_name: manyfold
     environment:
       PGID: ${PGID}
       PUID: ${PUID}
       TZ: ${TZ}
-      DEFAULT_WORKSPACE: /config/workspace
+      DATABASE_URL: "sqlite3:/config/manyfold.sqlite3"
+      REDIS_URL: "redis://redis:6379"
+      SECRET_KEY_BASE: ${AUTHENTIK_SECRET_KEY}
     restart: unless-stopped
     networks:
       - generalStackNetwork
@@ -18,10 +20,10 @@ services:
         max-file: "2"
         max-size: "100m"
     volumes:
-      - ${DOCKERCONFDIR}/code-server:/config
-      - ${DOCKER_REPO_DIR}:/config/workspace/dockerMediaServer
+      - ${DOCKERCONFDIR}/manyfold/config:/config
+      - ${DOCKERSTORAGEDIR}/stl_files:/libraries
     ports:
-      - 8443:8443
+      - 3214:3214
 
 networks:
   generalStackNetwork:

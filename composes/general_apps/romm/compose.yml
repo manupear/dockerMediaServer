@@ -1,0 +1,65 @@
+x-default-conf: &default_conf
+  restart: unless-stopped
+  networks:
+    - generalStackNetwork
+  logging:
+    driver: "json-file"
+    options:
+      max-file: "2"
+      max-size: "100m"
+
+services:
+  romm:
+    image: rommapp/romm:latest
+    container_name: romm
+    user: ${PUID}:${PGID}
+    depends_on:
+      - romm_db
+    environment:
+      - IGDB_CLIENT_ID=${ROMM_IGDB_CLIENTID}
+      - IGDB_CLIENT_SECRET=${ROMM_IGDB_CLIENTPASSWORD}
+      - STEAMGRIDDB_API_KEY=${ROMM_STEAMGRIDDB_APIKEY}
+      - ROMM_AUTH_SECRET_KEY=${ROMM_SECRET_KEY}
+      - ROMM_AUTH_USERNAME=shyonae
+      - ROMM_AUTH_PASSWORD=${ROMM_ADMIN_PASSWORD}
+      - MOBYGAMES_API_KEY=${MOBYGAMES_API_KEY}
+      - DB_HOST=romm_db
+      - DB_NAME=romm_db # Should match MYSQL_DATABASE in mariadb
+      - DB_USER=romm # Should match MYSQL_USER in mariadb
+      - DB_PASSWD=${ROMM_DB_PASSWORD} # Should match MYSQL_PASSWORD in mariadb
+    <<: *default_conf
+    volumes:
+      - /smb/library:/romm/library
+      - /smb/library/resources:/romm/resources
+      - ${DOCKERCONFDIR}/romm/logs:/romm/logs
+      - ${DOCKERCONFDIR}/romm/assets:/romm/assets
+      - ${DOCKERCONFDIR}/romm/config.yml:/romm/config/config.yml
+      - ${DOCKERCONFDIR}/romm/romm_redis_data:/redis-data # Cached data for background tasks
+    labels:
+      - docker-volume-backup.stop-during-backup=true
+    ports:
+      - 5689:8080
+
+  romm_db:
+    image: lscr.io/linuxserver/mariadb:latest
+    container_name: romm_db
+    hostname: romm_db
+    environment:
+      PGID: ${PGID}
+      PUID: ${PUID}
+      TZ: ${TZ}
+      MYSQL_ROOT_PASSWORD: ${ROMM_DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: romm_db
+      MYSQL_USER: romm
+      MYSQL_PASSWORD: ${ROMM_DB_PASSWORD}
+    <<: *default_conf
+    labels:
+      - docker-volume-backup.archive-pre=/bin/sh -c 'rm -rf /tmp/romm_db-dump* && mysqldump -uroot -p"${ROMM_DB_ROOT_PASSWORD}" --all-databases > /tmp/romm_db-dump-$(date +"%Y_%m_%d-%I_%M_%p").sql'
+    volumes:
+      - ${DOCKERCONFDIR}/romm/romm_db_data:/config
+      - ${DOCKERCONFDIR}/romm/romm_db_data/backups:/tmp
+
+networks:
+  generalStackNetwork:
+    driver: bridge
+    external: true

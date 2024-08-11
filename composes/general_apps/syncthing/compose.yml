@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   syncthing:
     image: lscr.io/linuxserver/syncthing:latest
@@ -11,9 +9,14 @@ services:
       - TZ=${TZ}
     volumes:
       - ${DOCKERCONFDIR}/syncthing:/config
-      - ${DOCKERBACKUPSDIR}:/backups
+      - ${DOCKERBACKUPSDIR}/syncthing:/backups
     networks:
       - generalStackNetwork
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "2"
+        max-size: "100m"
     ports:
       - 8384:8384
       - 22000:22000/tcp

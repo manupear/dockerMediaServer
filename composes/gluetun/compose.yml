@@ -1,0 +1,29 @@
+# This container is used as an HTTP proxy
+# https://github.com/qdm12/gluetun-wiki/blob/main/setup/connect-a-lan-device-to-gluetun.md
+
+services:
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    environment:
+      VPN_SERVICE_PROVIDER: mullvad
+      VPN_TYPE: wireguard
+      WIREGUARD_PRIVATE_KEY: ${GLUETUN_WIREGUARD_PRIVATE_KEY}
+      WIREGUARD_ADDRESSES: ${GLUETUN_WIREGUARD_ADDRESSES}
+      HTTPPROXY: "on"
+      SERVER_COUNTRIES: "Ukraine"
+      HTTPPROXY_USER: ${GLUETUN_HTTPPROXY_USER}
+      HTTPPROXY_PASSWORD: ${GLUETUN_HTTPPROXY_PASSWORD}
+      HTTPPROXY_LOG: "on"
+    networks:
+      - generalStackNetwork
+    restart: unless-stopped
+    ports:
+      - "51628:8888/tcp"
+
+networks:
+  generalStackNetwork:
+    driver: bridge
+    external: true

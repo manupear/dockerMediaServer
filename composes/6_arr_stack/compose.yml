@@ -1,14 +1,17 @@
-version: "3.8"
-
 x-default-conf: &default_conf
   restart: unless-stopped
   networks:
     - arrStackNetwork
+  logging:
+    driver: "json-file"
+    options:
+      max-file: "2"
+      max-size: "100m"
 
 x-authelia-conf: &autheliaPlusBackup
   labels:
-    - swag=enable
-    - swag_auth=authentik
+    # - swag=enable
+    # - swag_auth=authentik
     - docker-volume-backup.stop-during-backup=true
 
 x-environment: &environment
@@ -90,18 +93,18 @@ services:
     volumes:
       - ${DOCKERCONFDIR}/prowlarr:/config
 
-  autobrr:
-    container_name: autobrr
-    image: ghcr.io/autobrr/autobrr:v1.36.0
-    environment:
-      <<: *environment
-    <<: *default_conf
-    labels:
-      - docker-volume-backup.stop-during-backup=true
-    volumes:
-      - ${DOCKERCONFDIR}/autobrr:/config
-    ports:
-      - 7474:7474
+  # autobrr:
+  #   container_name: autobrr
+  #   image: ghcr.io/autobrr/autobrr:latest
+  #   environment:
+  #     <<: *environment
+  #   <<: *default_conf
+  #   labels:
+  #     - docker-volume-backup.stop-during-backup=true
+  #   volumes:
+  #     - ${DOCKERCONFDIR}/autobrr:/config
+  #   ports:
+  #     - 7474:7474
 
   unpackerr:
     image: golift/unpackerr

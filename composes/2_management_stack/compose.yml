@@ -1,17 +1,19 @@
-version: "3.8"
-
 x-default-conf: &default_conf
   restart: unless-stopped
   networks:
     - managementStackNetwork
     - socketProxyNetwork
 
-x-authelia-conf: &autheliaPlusBackupMonitorOnly
+x-logging-conf: &logging
+  logging:
+    driver: "json-file"
+    options:
+      max-file: "2"
+      max-size: "100m"
+
+x-authentik-conf: &labels
   labels:
-    - swag=enable
-    - swag_auth=authentik
     - docker-volume-backup.stop-during-backup=true
-    - "com.centurylinklabs.watchtower.monitor-only=true"
 
 x-environment: &environment
   PGID: ${PGID}
@@ -27,45 +29,45 @@ services:
     image: portainer/portainer-ce:latest
     environment:
       <<: *environment
-    <<: [*default_conf, *autheliaPlusBackupMonitorOnly]
+    <<: [*default_conf, *labels, *logging]
     ports:
       - 9000:9000
     volumes:
       - ${DOCKERCONFDIR}/portainer:/data
       - ${DOCKERSTORAGEDIR}:/storage
 
-  ## HOMARR ##
-  homarr:
-    container_name: homarr
-    image: ghcr.io/ajnart/homarr:latest
-    environment:
-      PGID: ${PGID}
-      PUID: ${PUID}
-      TZ: ${TZ}
-      DOCKER_HOST: tcp://dockerproxy:2375
-    <<: *default_conf
-    labels:
-      - docker-volume-backup.stop-during-backup=true
-    volumes:
-      - ${DOCKERCONFDIR}/homarr/configs:/app/data/configs
-      - ${DOCKERCONFDIR}/homarr/icons:/app/public/icons
-      - ${DOCKERCONFDIR}/homarr/data:/data
-    ports:
-      - 7575:7575
+  # ## HOMARR ##
+  # homarr:
+  #   container_name: homarr
+  #   image: ghcr.io/ajnart/homarr:latest
+  #   environment:
+  #     PGID: ${PGID}
+  #     PUID: ${PUID}
+  #     TZ: ${TZ}
+  #     DOCKER_HOST: tcp://dockerproxy:2375
+  #   <<: *default_conf
+  #   labels:
+  #     - docker-volume-backup.stop-during-backup=true
+  #   volumes:
+  #     - ${DOCKERCONFDIR}/homarr/configs:/app/data/configs
+  #     - ${DOCKERCONFDIR}/homarr/icons:/app/public/icons
+  #     - ${DOCKERCONFDIR}/homarr/data:/data
+  #   ports:
+  #     - 7575:7575
 
-  ## UPTIME KUMA ##
-  uptime-kuma:
-    image: louislam/uptime-kuma
-    container_name: uptime-kuma
-    environment:
-      <<: *environment
-    <<: *default_conf
-    volumes:
-      - ${DOCKERCONFDIR}/uptime-kuma:/app/data
-    labels:
-      - docker-volume-backup.stop-during-backup=true
-    ports:
-      - 3001:3001
+  # ## UPTIME KUMA ##
+  # uptime-kuma:
+  #   image: louislam/uptime-kuma
+  #   container_name: uptime-kuma
+  #   environment:
+  #     <<: *environment
+  #   <<: *default_conf
+  #   volumes:
+  #     - ${DOCKERCONFDIR}/uptime-kuma:/app/data
+  #   labels:
+  #     - docker-volume-backup.stop-during-backup=true
+  #   ports:
+  #     - 3001:3001
 
   # ## WHATSUPDOCKER ##
   # whatsupdocker:
@@ -87,43 +89,48 @@ services:
   #     - 3043:3000
 
   ## DOZZLE ##
-  dozzle:
-    container_name: dozzle
-    image: amir20/dozzle:latest
-    environment:
-      DOZZLE_REMOTE_HOST: tcp://dockerproxy:2375
-      <<: *environment
-    <<: *default_conf
-    ports:
-      - 9999:8080
+  # dozzle:
+  #   container_name: dozzle
+  #   image: amir20/dozzle:latest
+  #   environment:
+  #     DOZZLE_REMOTE_HOST: tcp://dockerproxy:2375
+  #     <<: *environment
+  #   <<: *default_conf
+  #   ports:
+  #     - 9999:8080
 
   ## DOCKER VOLUME BACKUP ##
   docker-volume-backup:
     image: offen/docker-volume-backup:latest
     container_name: docker-volume-backup
-    user: 0:100
+    user: 1000:100
     environment:
-      BACKUP_CRON_EXPRESSION: "30 23 * * *"
+      DOCKER_HOST: "tcp://dockerproxy:2375"
+      BACKUP_CRON_EXPRESSION: "30 06 * * *"
       BACKUP_COMPRESSION: "gz"
       GZIP_PARALLELISM: 1
-      BACKUP_FILENAME: backup-%Y-%m-%dT%H-%M-%S.tar.gz
-      BACKUP_LATEST_SYMLINK: backup-latest.tar.gz
+      BACKUP_FILENAME: backup-mainhpsff-%Y-%m-%dT%H-%M-%S.tar.gz
+      # BACKUP_LATEST_SYMLINK: backup-mainhpsff-latest.tar.gz
       BACKUP_SKIP_BACKENDS_FROM_PRUNE: s3,webdav,ssh,azure,dropbox
       BACKUP_ARCHIVE: "/archive"
       BACKUP_RETENTION_DAYS: "7"
       BACKUP_PRUNING_LEEWAY: "1m"
-      BACKUP_PRUNING_PREFIX: "backup-"
+      BACKUP_PRUNING_PREFIX: "backup-mainhpsff"
       EXEC_FORWARD_OUTPUT: "false"
     restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "2"
+        max-size: "100m"
     networks:
       - managementStackNetwork
       - socketProxyNetwork
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${DOCKERCONFDIR}:/backup:ro
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-      - /nfs/backups/docker-volumes-backups:/archive:rw
+      - /smb/backups/dockerBackups:/archive:rw
 
 networks:
   managementStackNetwork:

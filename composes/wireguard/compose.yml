@@ -1,9 +1,12 @@
-version: "3.8"
-
 x-default-conf: &default_conf
   restart: unless-stopped
   networks:
     - swagStackNetwork
+  logging:
+    driver: "json-file"
+    options:
+      max-file: "2"
+      max-size: "100m"
 
 x-environment: &environment
   PGID: ${PGID}
@@ -17,6 +20,7 @@ services:
     environment:
       WG_HOST: ${DUCKDNS_SUBDOMAIN}
       PASSWORD: ${WGEASY_PASSWORD}
+      WG_DEFAULT_ADDRESS: 10.8.0.x
       WG_DEFAULT_DNS: 1.1.1.1, 8.8.8.8, 8.8.4.4
     cap_add:
       - NET_ADMIN
@@ -32,6 +36,7 @@ services:
       - generalStackNetwork
       - socketProxyNetwork
       - guacamoleStackNetwork
+      - immichStackNetwork
     volumes:
       - ${DOCKERCONFDIR}/wg-easy:/etc/wireguard
     labels:
@@ -61,7 +66,7 @@ services:
       CROWDSEC_API_KEY: ${SWAG_CROWDSEC_API_KEY}
       CROWDSEC_LAPI_URL: http://crowdsec:8080
       URL: ${DUCKDNS_SUBDOMAIN}
-      SUBDOMAINS: wildcard
+      # SUBDOMAINS: wildcard
       VALIDATION: duckdns
       DUCKDNSTOKEN: ${DUCKDNS_TOKEN}
     <<: *default_conf
@@ -90,5 +95,8 @@ networks:
     driver: bridge
     external: true
   guacamoleStackNetwork:
+    driver: bridge
+    external: true
+  immichStackNetwork:
     driver: bridge
     external: true

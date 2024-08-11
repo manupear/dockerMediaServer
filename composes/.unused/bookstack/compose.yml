@@ -1,5 +1,3 @@
-version: "3.8"
-
 x-default-conf: &default_conf
   restart: unless-stopped
   networks:
@@ -33,7 +31,7 @@ services:
     <<: *default_conf
     labels:
       - swag=enable
-      - swag_auth=authentik
+      - swag_auth=authelia
       - docker-volume-backup.stop-during-backup=true
     volumes:
       - ${DOCKERCONFDIR}/bookstack/bookstack_app_data:/config

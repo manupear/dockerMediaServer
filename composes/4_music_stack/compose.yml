@@ -1,11 +1,14 @@
-version: "3.8"
-
 x-default-conf: &default_conf
   restart: unless-stopped
   networks:
     - musicStackNetwork
   labels:
     - docker-volume-backup.stop-during-backup=true
+  logging:
+    driver: "json-file"
+    options:
+      max-file: "2"
+      max-size: "100m"
 
 services:
   navidrome:

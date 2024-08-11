@@ -1,14 +1,9 @@
-version: "3.8"
-
 x-default-conf: &default_conf
   restart: unless-stopped
   networks:
     - generalStackNetwork
 
 x-environment: &environment
-  PGID: ${PGID}
-  PUID: ${PUID}
-  TZ: ${TZ}
 
 services:
   gaseous-server:

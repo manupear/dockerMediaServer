@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   dockerproxy:
     image: ghcr.io/tecnativa/docker-socket-proxy:latest
@@ -8,6 +7,11 @@ services:
     restart: unless-stopped
     networks:
       - socketProxyNetwork
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "2"
+        max-size: "100m"
     environment:
       # 0 to revoke access.
       # 1 to grant access.
@@ -26,12 +30,11 @@ services:
       - CONFIGS=0
       - CONTAINERS=1 # Traefik, portainer, etc.
       - DISTRIBUTION=0
-      # THIS IS WHY THE DOCKER BACKUP CONTAINER DOESN'T EXECUTE STUFF, FIX IT OR CREATE ANOTHER PROXY CONTAINER!
-      - EXEC=0
+      - EXEC=1 # docker volume backup
       - IMAGES=1 # Portainer
       - INFO=1 # Portainer
       - NETWORKS=1 # Portainer
-      - NODES=0
+      - NODES=1 # docker volume backup
       - PLUGINS=0
       - SERVICES=1 # Portainer
       - SESSION=0
