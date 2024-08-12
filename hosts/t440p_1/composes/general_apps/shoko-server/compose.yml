@@ -24,6 +24,6 @@ services:
       - ${DOCKERSTORAGEDIR}:/mnt
 
 networks:
-  jellyStackNetwork:
+  generalStackNetwork:
     driver: bridge
     external: true
