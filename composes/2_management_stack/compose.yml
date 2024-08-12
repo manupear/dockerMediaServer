@@ -109,13 +109,13 @@ services:
       BACKUP_CRON_EXPRESSION: "30 06 * * *"
       BACKUP_COMPRESSION: "gz"
       GZIP_PARALLELISM: 1
-      BACKUP_FILENAME: backup-mainhpsff-%Y-%m-%dT%H-%M-%S.tar.gz
+      BACKUP_FILENAME: backup-t440p1-%Y-%m-%dT%H-%M-%S.tar.gz
       # BACKUP_LATEST_SYMLINK: backup-mainhpsff-latest.tar.gz
       BACKUP_SKIP_BACKENDS_FROM_PRUNE: s3,webdav,ssh,azure,dropbox
       BACKUP_ARCHIVE: "/archive"
       BACKUP_RETENTION_DAYS: "7"
       BACKUP_PRUNING_LEEWAY: "1m"
-      BACKUP_PRUNING_PREFIX: "backup-mainhpsff"
+      BACKUP_PRUNING_PREFIX: "backup-t440p1"
       EXEC_FORWARD_OUTPUT: "false"
     restart: always
     logging:
