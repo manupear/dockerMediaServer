@@ -1,0 +1,8 @@
+my-docker:
+  host: dockerproxy
+  port: 2375
+
+title: One sky, one destiny.
+
+providers:
+  openweathermap: {{HOMEPAGE_VAR_OPEN_WEATHER_MAP_API_KEY}}

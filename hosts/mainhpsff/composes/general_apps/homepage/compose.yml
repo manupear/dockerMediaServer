@@ -9,6 +9,7 @@ services:
     ports:
       - 3045:3000
     volumes:
+      - ./config/docker.yaml:/app/config/docker.yaml 
       - ${DOCKERCONFDIR}/homepage/config:/app/config 
     networks:
       - generalStackNetwork
