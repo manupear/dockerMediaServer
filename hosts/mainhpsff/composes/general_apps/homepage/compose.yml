@@ -11,11 +11,15 @@ services:
     volumes:
       - ${DOCKERCONFDIR}/homepage/config:/app/config 
     networks:
-    -  generalStackNetwork
+      - generalStackNetwork
+      - socketProxyNetwork
     labels:
-        - docker-volume-backup.stop-during-backup=true
+      - docker-volume-backup.stop-during-backup=true
 
 networks:
   generalStackNetwork:
+    driver: bridge
+    external: true
+  socketProxyNetwork:
     driver: bridge
     external: true
