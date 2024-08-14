@@ -22,20 +22,6 @@ x-environment: &environment
   DOCKER_HOST: dockerproxy
 
 services:
-  ## PORTAINER##
-  portainer:
-    command: -H tcp://dockerproxy:2375
-    container_name: portainer
-    image: portainer/portainer-ce:latest
-    environment:
-      <<: *environment
-    <<: [*default_conf, *labels, *logging]
-    ports:
-      - 9000:9000
-    volumes:
-      - ${DOCKERCONFDIR}/portainer:/data
-      - ${DOCKERSTORAGEDIR}:/storage
-
   ## DOCKER VOLUME BACKUP ##
   docker-volume-backup:
     image: offen/docker-volume-backup:latest
