@@ -33,7 +33,7 @@ services:
       - DATABASE_URL=postgresql://postgres:${LINKWARDEN_DB_PASSWORD}@linkwarden_postgres_db:5432/postgres
     <<: *default_conf
     ports:
-      - 3000:3000
+      - 3007:3000
     volumes:
       - ${DOCKERCONFDIR}/linkwarden/data:/data/data
     labels:

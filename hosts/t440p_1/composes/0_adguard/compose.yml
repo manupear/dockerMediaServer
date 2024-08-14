@@ -1,0 +1,50 @@
+services:
+  adguardhome:
+    container_name: adguardhome
+    image: adguard/adguardhome:latest
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    networks:
+      adguardNetwork:
+        ipv4_address: 192.168.1.199 # Fix the IP address inside your range
+    ports:
+      # plain DNS
+      - "53:53/tcp"
+      - "53:53/udp"
+      # AdGuard Home as a DHCP server
+      - "67:67/udp"
+      - "68:68/udp"
+      - "68:68/tcp"
+      # AdGuard Home's admin panel as well as run AdGuard Home as an HTTPS/DNS-over-HTTPS server
+      - "80:80/tcp"
+      - "443:443/tcp"
+      - "443:443/udp"
+      - "3000:3000/tcp"
+      # AdGuard Home as a DNS-over-TLS server
+      - "853:853/tcp"
+      # AdGuard Home as a DNS-over-QUIC server
+      # - '853:853/udp'
+      # AdGuard Home as a DNSCrypt server
+      # - '5443:5443/tcp'
+      # - '5443:5443/udp'
+      # debugging profiles
+      # - '6060:6060/tcp'
+    volumes:
+      - ${DOCKERCONFDIR}/adguard/config:/opt/adguardhome/conf
+      - ${DOCKERCONFDIR}/adguard/work:/opt/adguardhome/work
+
+networks:
+  adguardNetwork:
+    driver: macvlan
+    driver_opts:
+      parent: enp0s25
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24
+          gateway: 192.168.1.1
+          ip_range: 192.168.1.192/27
+          aux_addresses:
+            host: 192.168.1.222
