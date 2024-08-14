@@ -1,13 +1,15 @@
+---
+
 - Important stuff
     - Proxmox:
-       icon: proxmox.png
-       href: https://192.168.1.123:8006
-       description: main Proxmox server
-    - Proxmox Backup Server
-       icon: proxmox-light.png
-       href: https://192.168.1.13:8007
-       description: main PBS, running along main Proxmox
-    - YabaiMediaVault
-       icon: openmediavault.png
-       href: http://192.168.1.12
-       description: NAS setup
+        icon: proxmox.png
+        href: https://192.168.1.123:8006
+        description: main Proxmox server
+    - Proxmox Backup Server:
+        icon: proxmox-light.png
+        href: https://192.168.1.13:8007
+        description: main PBS, running along main Proxmox
+    - YabaiMediaVault:
+        icon: openmediavault.png
+        href: http://192.168.1.12
+        description: NAS setup
