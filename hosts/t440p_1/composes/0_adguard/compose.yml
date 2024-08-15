@@ -7,6 +7,8 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+    labels:
+      - docker-volume-backup.stop-during-backup=true
     networks:
       adguardNetwork:
         ipv4_address: 192.168.1.199 # Fix the IP address inside your range
