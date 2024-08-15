@@ -1,5 +1,57 @@
 ---
 
+- HP SFF Monitoring:
+    - CPU:
+        widget:
+            type: glances
+            url: http://glances:61208
+            version: 4 
+            metric: cpu
+    - Memory:
+        widget:
+            type: glances
+            url: http://glances:61208
+            version: 4 
+            metric: memory
+    - Network:
+        widget:
+            type: glances
+            url: http://glances:61208
+            version: 4 
+            metric: network:eth0
+    - Process:
+        widget:
+            type: glances
+            url: http://glances:61208
+            version: 4 
+            metric: process
+
+- T440p_1 Monitoring:
+    - CPU:
+        widget:
+            type: glances
+            url: http://192.168.1.8:61208
+            version: 4 
+            metric: cpu
+    - Memory:
+        widget:
+            type: glances
+            url: http://192.168.1.8:61208
+            version: 4 
+            metric: memory
+    - Network:
+        widget:
+            type: glances
+            url: http://192.168.1.8:61208
+            version: 4 
+            metric: network:eth0
+    - Process:
+        widget:
+            type: glances
+            url: http://192.168.1.8:61208
+            version: 4 
+            metric: process
+
 - Important stuff:
     - Proxmox:
         icon: proxmox.png

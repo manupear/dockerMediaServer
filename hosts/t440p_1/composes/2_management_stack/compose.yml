@@ -28,7 +28,6 @@ services:
     container_name: docker-volume-backup
     user: 1000:100
     environment:
-      DOCKER_HOST: "tcp://dockerproxy:2375"
       BACKUP_CRON_EXPRESSION: "30 05 * * *"
       BACKUP_COMPRESSION: "gz"
       GZIP_PARALLELISM: 1
@@ -50,6 +49,7 @@ services:
       - managementStackNetwork
       - socketProxyNetwork
     volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - ${DOCKERCONFDIR}:/backup:ro
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro

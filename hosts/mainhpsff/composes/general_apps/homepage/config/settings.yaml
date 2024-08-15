@@ -27,3 +27,11 @@ layout:
   Important stuff:
     style: row
     columns: 4
+  HP SFF Monitoring:
+    useEqualHeights: true
+    style: row
+    columns: 4
+  T440p_1 Monitoring:
+    useEqualHeights: true
+    style: row
+    columns: 4

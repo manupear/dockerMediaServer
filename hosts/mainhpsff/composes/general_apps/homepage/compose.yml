@@ -26,6 +26,7 @@ services:
       - ${DOCKERCONFDIR}/homepage/config:/app/config 
     networks:
       - generalStackNetwork
+      - managementStackNetwork
       - socketProxyNetwork
     labels:
       - docker-volume-backup.stop-during-backup=true
