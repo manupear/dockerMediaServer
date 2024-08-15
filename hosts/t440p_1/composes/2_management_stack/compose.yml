@@ -26,7 +26,6 @@ services:
   docker-volume-backup:
     image: offen/docker-volume-backup:latest
     container_name: docker-volume-backup
-    user: 1000:100
     environment:
       BACKUP_CRON_EXPRESSION: "30 05 * * *"
       BACKUP_COMPRESSION: "gz"
