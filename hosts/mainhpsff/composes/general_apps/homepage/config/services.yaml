@@ -1,15 +1,50 @@
 ---
 
-- Important stuff
+- Important stuff:
     - Proxmox:
         icon: proxmox.png
         href: https://192.168.1.123:8006
         description: main Proxmox server
+        widget:
+            type: proxmox
+            url: https://192.168.1.123:8006
+            username: "{{HOMEPAGE_VAR_PROXMOX_USERNAME}}"
+            password: "{{HOMEPAGE_VAR_PROXMOX_PASSWORD}}"
     - Proxmox Backup Server:
         icon: proxmox-light.png
         href: https://192.168.1.13:8007
         description: main PBS, running along main Proxmox
+        # widget:
+        #     type: proxmoxbackupserver
+        #     url: https://192.168.1.13:8007
+        #     username: "{{HOMEPAGE_VAR_PBS_USERNAME}}"
+        #     password: "{{HOMEPAGE_VAR_PBS_PASSWORD}}"
     - YabaiMediaVault:
         icon: openmediavault.png
         href: http://192.168.1.12
-        description: NAS setup
+        description: NAS setup (services in widget)
+        widget:
+            type: openmediavault
+            url: http://192.168.1.12
+            username: "{{HOMEPAGE_VAR_OVM_USERNAME}}"
+            password: "{{HOMEPAGE_VAR_OVM_PASSWORD}}"
+            method: services.getStatus # required
+    - Adguard Home:
+        icon: adguard-home.png
+        href: http://192.168.1.199
+        description: Adblocker, DNS set in router
+        widget:
+            type: adguard
+            url: http://192.168.1.199:80
+            username: "{{HOMEPAGE_VAR_ADGUARD_USERNAME}}"
+            password: "{{HOMEPAGE_VAR_ADGUARD_PASSWORD}}"
+
+
+- HP SFF services:
+    - SWAG:
+        icon: linuxserver-io.png
+        description: Main reverse proxy
+        # widget:
+        #     type: swagdashboard
+        #     url: https://dashboard.shyonaemediaserver.work
+

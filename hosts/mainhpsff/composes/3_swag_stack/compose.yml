@@ -93,6 +93,7 @@ services:
     labels:
       - docker-volume-backup.stop-during-backup=true
     ports:
+      - 81:81
       - 443:443
     volumes:
       - ${DOCKERCONFDIR}/swag:/config

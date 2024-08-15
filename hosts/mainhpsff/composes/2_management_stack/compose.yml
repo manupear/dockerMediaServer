@@ -69,6 +69,22 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /smb/backups/dockerBackups:/archive:rw
 
+  glances:
+    container_name: glances
+    image: nicolargo/glances:latest-full
+    restart: unless-stopped
+    pid: "host"
+    privileged: true
+    networks:
+      - managementStackNetwork
+    ports:
+      - 61208:61208
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    environment:
+      - TZ=${TZ}
+      - "GLANCES_OPT=-w"
+
 networks:
   managementStackNetwork:
     driver: bridge

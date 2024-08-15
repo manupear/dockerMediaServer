@@ -6,11 +6,23 @@ services:
     environment:
       PUID: ${PUID}
       PGID: ${PGID}
+      HOMEPAGE_VAR_ADGUARD_USERNAME: ${HOMEPAGE_VAR_ADGUARD_USERNAME}
+      HOMEPAGE_VAR_ADGUARD_PASSWORD: ${HOMEPAGE_VAR_ADGUARD_PASSWORD}
+      HOMEPAGE_VAR_OPEN_WEATHER_MAP_API_KEY: ${HOMEPAGE_VAR_OPEN_WEATHER_MAP_API_KEY}
+      HOMEPAGE_VAR_PROXMOX_USERNAME: ${HOMEPAGE_VAR_PROXMOX_USERNAME}
+      HOMEPAGE_VAR_PROXMOX_PASSWORD: ${HOMEPAGE_VAR_PROXMOX_PASSWORD}
+      HOMEPAGE_VAR_PBS_USERNAME: ${HOMEPAGE_VAR_PBS_USERNAME}
+      HOMEPAGE_VAR_PBS_PASSWORD: ${HOMEPAGE_VAR_PBS_PASSWORD}
+      HOMEPAGE_VAR_OVM_USERNAME: ${HOMEPAGE_VAR_OVM_USERNAME}
+      HOMEPAGE_VAR_OVM_PASSWORD: ${HOMEPAGE_VAR_OVM_PASSWORD}
     ports:
       - 3045:3000
     volumes:
       - ./config/docker.yaml:/app/config/docker.yaml
-      - ./config/services.yaml:/app/config/services.yaml 
+      - ./config/widgets.yaml:/app/config/widgets.yaml
+      - ./config/settings.yaml:/app/config/settings.yaml
+      - ./config/services.yaml:/app/config/services.yaml
+      - ./images:/app/public/images
       - ${DOCKERCONFDIR}/homepage/config:/app/config 
     networks:
       - generalStackNetwork
@@ -20,6 +32,9 @@ services:
 
 networks:
   generalStackNetwork:
+    driver: bridge
+    external: true
+  managementStackNetwork:
     driver: bridge
     external: true
   socketProxyNetwork:
