@@ -26,7 +26,7 @@ services:
       ND_SPOTIFY_SECRET: ${ND_SPOTIFY_SECRET}
     labels:
       - swag=enable
-      # - swag_auth=authentik
+      # - swag_auth=authelia
       - docker-volume-backup.stop-during-backup=true
     ports:
       - "4533:4533"
@@ -39,7 +39,6 @@ services:
     container_name: betanin
     ports:
       - 9393:9393
-      - 8337:8337
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -49,6 +48,46 @@ services:
       - ${DOCKERCONFDIR}/betanin/config:/b/.config/betanin/
       - ${DOCKERCONFDIR}/betanin/beets:/b/.config/beets/
       - ${DOCKERSTORAGEDIR}:/storage
+
+  betanin-move:
+    image: sentriz/betanin:latest
+    container_name: betanin-move
+    ports:
+      - 9394:9393
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+    <<: *default_conf
+    volumes:
+      - ${DOCKERCONFDIR}/betanin-move/data:/b/.local/share/betanin/
+      - ${DOCKERCONFDIR}/betanin-move/config:/b/.config/betanin/
+      - ${DOCKERCONFDIR}/betanin-move/beets:/b/.config/beets/
+      - ${DOCKERSTORAGEDIR}:/storage
+
+  tidarr:
+    image: cstaelen/tidarr
+    container_name: 'tidarr'
+    ports:
+      - 8484:8484
+    <<: *default_conf
+    volumes:
+        - ${DOCKERCONFDIR}/tidarr/config:/home/app/standalone/shared
+        - ${DOCKERSTORAGEDIR}/downloads/tidarr/albums:/home/app/standalone/download/albums
+        - ${DOCKERSTORAGEDIR}/downloads/tidarr/tracks:/home/app/standalone/download/tracks
+        - ${DOCKERSTORAGEDIR}/downloads/tidarr/playlists:/home/app/standalone/download/playlists
+
+  deemix:
+    image: registry.gitlab.com/bockiii/deemix-docker
+    container_name: deemix
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+    <<: *default_conf
+    ports:
+      - 6595:6595
+    volumes:
+      - ${DOCKERCONFDIR}/deemix/config:/config
+      - ${DOCKERSTORAGEDIR}/downloads/deemix:/downloads
 
 networks:
   musicStackNetwork:

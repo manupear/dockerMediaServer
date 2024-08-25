@@ -44,6 +44,18 @@ services:
       - ${DOCKERCONFDIR}/radarr:/config
       - ${DOCKERSTORAGEDIR}:/storage
 
+  readarr:
+    image: lscr.io/linuxserver/readarr:develop
+    container_name: readarr
+    environment:
+      <<: *environment
+    <<: [*default_conf, *autheliaPlusBackup]
+    volumes:
+      - ${DOCKERCONFDIR}/readarr:/config
+      - ${DOCKERSTORAGEDIR}:/storage
+    ports:
+      - 8787:8787
+
   sonarr:
     container_name: sonarr
     image: lscr.io/linuxserver/sonarr:latest
