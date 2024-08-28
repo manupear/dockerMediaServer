@@ -15,16 +15,15 @@ services:
       - managementStackNetwork
       - generalStackNetwork
       - socketProxyNetwork
-      - musicStackNetwork
     logging:
       driver: "json-file"
       options:
         max-file: "2"
         max-size: "100m"
     ports:
-      - 4443:443
-      - 8001:80
-      - 8180:81
+      - 443:443
+      - 80:80
+      - 81:81
     volumes:
       - ${DOCKERCONFDIR}/nginx-proxy-manager/data:/data
       - ${DOCKERCONFDIR}/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
@@ -38,8 +37,5 @@ networks:
     driver: bridge
     external: true
   socketProxyNetwork:
-    driver: bridge
-    external: true
-  musicStackNetwork:
     driver: bridge
     external: true
