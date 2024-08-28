@@ -11,8 +11,8 @@ x-default-conf: &default_conf
 services:
   firefly_iii_app:
     image: fireflyiii/core:latest
-    hostname: firefly_iii_app
-    container_name: firefly_iii_app
+    hostname: firefly
+    container_name: firefly
     environment:
       TZ: ${TZ}
       APP_ENV: "local"

@@ -110,6 +110,8 @@
         icon: romm.png
         description: rom manager
         href: http://192.168.1.8:5689
+        server: t440p_1
+        container: romm
         widget:
             type: romm
             url: http://192.168.1.8:5689
@@ -241,14 +243,18 @@
         icon: linkwarden.png
         description: bookmarks
         href: http://192.168.1.8:3007
-        # widget:
-        #     type: linkwarden
-        #     url: http://192.168.1.8:3007
-        #     key: "{{HOMEPAGE_VAR_LINKWARDEN_TOKEN}}" # idk why I can't copy the token
+        server: t440p_1
+        container: linkwarden
+        widget:
+            type: linkwarden
+            url: http://192.168.1.8:3007
+            key: "{{HOMEPAGE_VAR_LINKWARDEN_TOKEN}}" # idk why I can't copy the token
     - homebox:
         icon: homebox.png
         description: storage
         href: http://192.168.1.8:3100
+        server: t440p_1
+        container: homebox
         widget:
             type: homebox
             url: http://192.168.1.8:3100
@@ -258,12 +264,14 @@
         icon: shoko.png
         description: anime manager
         href: http://192.168.1.8:8111
-    - firefly3:
+        server: t440p_1
+        container: shoko-server
+    - firefly:
         icon: mdi-cash
         description: finance manager
         href: http://192.168.1.9:8007
         server: hpsff-proxy
-        container: firefly_iii_app
+        container: firefly
     - notifiarr:
         icon: notifiarr.png
         description: TRaSH Guides updates for *arrs
@@ -333,10 +341,15 @@
         description: download extractor
         server: hpsff-proxy
         container: unpackerr
-    - dockerproxy:
+    - dockerproxy-main-hpsff:
         icon: mdi-arrow-decision
         description: docker socket proxy
         server: hpsff-proxy
+        container: dockerproxy
+    - dockerproxy-t440p1:
+        icon: mdi-arrow-decision
+        description: docker socket proxy
+        server: t440p_1
         container: dockerproxy
     - swag:
         icon: linuxserver-io.png
@@ -361,9 +374,13 @@
     - linkwarden_database:
         icon: postgres.png
         description: db for linkwarden
+        server: t440p_1
+        container: linkwarden_postgres_db
     - romm_database:
         icon: mariadb.png
         description: db for romm
+        server: t440p_1
+        container: romm_db
     - crowdsec:
         icon: crowdsec.png
         description: blocklist for swag
