@@ -55,18 +55,18 @@
 - Important stuff:
     - Proxmox:
         icon: proxmox.png
-        href: https://192.168.1.123:8006
-        siteMonitor: https://192.168.1.123:8006
+        href: https://proxmox.yabailocal.duckdns.org
+        siteMonitor: https://proxmox.yabailocal.duckdns.org
         description: main Proxmox server
         widget:
             type: proxmox
-            url: https://192.168.1.123:8006
+            url: https://proxmox.yabailocal.duckdns.org
             username: "{{HOMEPAGE_VAR_PROXMOX_USERNAME}}"
             password: "{{HOMEPAGE_VAR_PROXMOX_PASSWORD}}"
     - Proxmox Backup Server:
         icon: proxmox-light.png
-        href: https://192.168.1.13:8007
-        ping: https://192.168.1.13:8007
+        href: https://pbs.yabailocal.duckdns.org
+        siteMonitor: https://pbs.yabailocal.duckdns.org
         description: main PBS, running along main Proxmox
         # widget:
         #     type: proxmoxbackupserver
@@ -75,12 +75,12 @@
         #     password: "{{HOMEPAGE_VAR_PBS_PASSWORD}}"
     - YabaiMediaVault:
         icon: openmediavault.png
-        href: http://192.168.1.12
-        siteMonitor: http://192.168.1.12
+        href: https://omv.yabailocal.duckdns.org
+        siteMonitor: https://omv.yabailocal.duckdns.org
         description: NAS setup (services in widget)
         widget:
             type: openmediavault
-            url: http://192.168.1.12
+            url: https://omv.yabailocal.duckdns.org
             username: "{{HOMEPAGE_VAR_OVM_USERNAME}}"
             password: "{{HOMEPAGE_VAR_OVM_PASSWORD}}"
             method: services.getStatus # required
@@ -92,7 +92,7 @@
         widget:
             type: adguard
             url: http://192.168.1.199:80
-            username: "{{HOMEPAGE_VAR_ADGUARD_USERNAME}}"
+            username: "{{HOMEPAGE_VAR_USER}}"
             password: "{{HOMEPAGE_VAR_ADGUARD_PASSWORD}}"
 
 
@@ -100,7 +100,7 @@
     - myspeed:
         icon: mdi-speedometer
         description: speedtest
-        href: http://192.168.1.9:5216
+        href: https://myspeed.yabailocal.duckdns.org
         server: hpsff-proxy
         container: myspeed
         widget:
@@ -109,18 +109,18 @@
     - romm:
         icon: romm.png
         description: rom manager
-        href: http://192.168.1.8:5689
+        href: https://romm.yabailocal.duckdns.org
         server: t440p_1
         container: romm
         widget:
             type: romm
-            url: http://192.168.1.8:5689
-            username: "{{HOMEPAGE_VAR_ROMM_USER}}"
+            url: https://romm.yabailocal.duckdns.org
+            username: "{{HOMEPAGE_VAR_USER}}"
             password: "{{HOMEPAGE_VAR_ROMM_PWD}}"
     - qbittorrent:
         icon: qbittorrent.png
         description: torrent client
-        href: http://192.168.1.9:8080
+        href: https://qbittorrent.yabailocal.duckdns.org
         server: hpsff-proxy
         container: qbittorrent
         widget:
@@ -131,7 +131,7 @@
     - immich:
         icon: immich.png
         description: photos
-        href: http://192.168.1.9:2283
+        href: https://immich.yabailocal.duckdns.org
         server: hpsff-proxy
         container: immich_server
         widget:
@@ -141,7 +141,7 @@
     - audiobookshelf:
         icon: audiobookshelf.png
         description: audiobooks / podcasts
-        href: http://192.168.1.9:13378
+        href: https://audiobookshelf.yabailocal.duckdns.org
         server: hpsff-proxy
         container: audiobookshelf
         widget:
@@ -151,7 +151,7 @@
     - bazarr:
         icon: bazarr.png
         description: subtitles
-        href: http://192.168.1.9:6767
+        href: https://bazarr.yabailocal.duckdns.org
         server: hpsff-proxy
         container: bazarr
         widget:
@@ -162,7 +162,7 @@
     - radarr:
         icon: radarr.png
         description: movies
-        href: http://192.168.1.9:7878
+        href: https://radarr.yabailocal.duckdns.org
         server: hpsff-proxy
         container: radarr
         widget:
@@ -173,7 +173,7 @@
     - sonarr:
         icon: sonarr.png
         description: tv shows
-        href: http://192.168.1.9:8989
+        href: https://sonarr.yabailocal.duckdns.org
         server: hpsff-proxy
         container: sonarr
         widget:
@@ -184,7 +184,7 @@
     - readarr:
         icon: readarr.png
         description: books / audiobooks
-        href: http://192.168.1.9:8787
+        href: https://readarr.yabailocal.duckdns.org
         server: hpsff-proxy
         container: readarr
         widget:
@@ -194,7 +194,7 @@
     - prowlarr:
         icon: prowlarr.png
         description: index manager
-        href: http://192.168.1.9:9696
+        href: https://prowlarr.yabailocal.duckdns.org
         server: hpsff-proxy
         container: prowlarr
         widget:
@@ -220,7 +220,7 @@
     - jellyseerr:
         icon: jellyseerr.png
         description: request stuff for jellyfin
-        href: http://192.168.1.9:5055
+        href: https://jellyseer.yabailocal.duckdns.org
         server: hpsff-proxy
         container: jellyseerr
         widget:
@@ -230,7 +230,7 @@
     - navidrome:
         icon: navidrome.png
         description: music streaming
-        href: http://192.168.1.9:4533
+        href: https://navidrome.shyonaemediaserver.work
         server: hpsff-proxy
         container: navidrome
         widget:
@@ -242,88 +242,105 @@
     - linkwarden:
         icon: linkwarden.png
         description: bookmarks
-        href: http://192.168.1.8:3007
+        href: https://linkwarden.yabailocal.duckdns.org
         server: t440p_1
         container: linkwarden
         widget:
             type: linkwarden
-            url: http://192.168.1.8:3007
-            key: "{{HOMEPAGE_VAR_LINKWARDEN_TOKEN}}" # idk why I can't copy the token
+            url: https://linkwarden.yabailocal.duckdns.org
+            key: "{{HOMEPAGE_VAR_LINKWARDEN_TOKEN}}"
     - homebox:
         icon: homebox.png
         description: storage
-        href: http://192.168.1.8:3100
+        href: https://homebox.yabailocal.duckdns.org
         server: t440p_1
         container: homebox
         widget:
             type: homebox
-            url: http://192.168.1.8:3100
-            username: "{{HOMEPAGE_VAR_HOMEBOX_USER}}"
+            url: https://homebox.yabailocal.duckdns.org
+            username: "{{HOMEPAGE_VAR_EMAIL}}"
             password: "{{HOMEPAGE_VAR_HOMEBOX_PWD}}"
+    - nginx-proxy-manager:
+        icon: nginx-proxy-manager.png
+        description: https on local domains
+        href: https://npm.yabailocal.duckdns.org
+        server: t440p_1
+        container: nginx-proxy-manager
+        widget:
+            type: npm
+            url: https://npm.yabailocal.duckdns.org
+            username: "{{HOMEPAGE_VAR_USER}}"
+            password: "{{HOMEPAGE_VAR_NPM_PWD}}"
     - shoko-server:
         icon: shoko.png
         description: anime manager
-        href: http://192.168.1.8:8111
+        href: https://shoko.yabailocal.duckdns.org
         server: t440p_1
-        container: shoko-server
+        container: shokoserver
     - firefly:
         icon: mdi-cash
         description: finance manager
-        href: http://192.168.1.9:8007
+        href: https://firefly.yabailocal.duckdns.org
         server: hpsff-proxy
         container: firefly
     - notifiarr:
         icon: notifiarr.png
         description: TRaSH Guides updates for *arrs
-        href: http://192.168.1.9:5454
+        href: https://notifiarr.yabailocal.duckdns.org
         server: hpsff-proxy
         container: notifiarr
     - portainer:
         icon: portainer.png
-        href: http://192.168.1.9:9000
+        href: https://portainer.yabailocal.duckdns.org
         description: container management
         server: hpsff-proxy
         container: portainer
     - syncthing:
         icon: syncthing.png
         description: file sync
-        href: http://192.168.1.9:21027
+        href: https://syncthing.yabailocal.duckdns.org
         server: hpsff-proxy
         container: syncthing
     - wg-easy:
         icon: wireguard.png
         description: vpn
-        href: http://192.168.1.9:51820
+        href: https://wireguard.yabailocal.duckdns.org
         server: hpsff-proxy
         container: wg-easy
-    - glances:
+    - glances-hpsff:
         icon: glances.png
         description: monitoring
-        href: http://192.168.1.9:61208
+        href: https://glances.yabailocal.duckdns.org
         server: hpsff-proxy
+        container: glances
+    - glances-t440p1:
+        icon: glances.png
+        description: monitoring
+        href: https://glances2.yabailocal.duckdns.org
+        server: t440p_1
         container: glances
     - betanin:
         icon: beets.png
         description: based man-in-the-middle of your torrent client and music player
-        href: http://192.168.1.9:9393
+        href: https://betanin.yabailocal.duckdns.org
         server: hpsff-proxy
         container: betanin
     - betanin-move:
         icon: beets.png
         description: for deemix / tidarr downloads
-        href: http://192.168.1.9:9394
+        href: https://betaninm.yabailocal.duckdns.org
         server: hpsff-proxy
         container: betanin
     - deemix:
         icon: mdi-equalizer
         description: deezer downloader
-        href: http://192.168.1.9:6595
+        href: https://deemix.yabailocal.duckdns.org
         server: hpsff-proxy
         container: deemix
     - tidarr:
         icon: si-tidal
         description: tidal downloader
-        href: http://192.168.1.9:8484
+        href: https://tidarr.yabailocal.duckdns.org
         server: hpsff-proxy
         container: tidarr
     - flaresolverr: 
