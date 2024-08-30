@@ -1,0 +1,31 @@
+services:
+  s-pdf:
+    image: frooodle/s-pdf:latest
+    container_name: s-pdf
+    restart: unless-stopped
+    networks:
+      - generalStackNetwork
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "2"
+        max-size: "100m"
+    environment:
+      DOCKER_ENABLE_SECURITY: false
+      INSTALL_BOOK_AND_ADVANCED_HTML_OPS: false
+      LANGS: "en_GB,en_US,it_IT"
+      PGID: ${PGID}
+      PUID: ${PUID}
+      TZ: ${TZ}
+    labels:
+      - docker-volume-backup.stop-during-backup=true
+    ports:
+      - 8086:8080
+    volumes:
+      - ${DOCKERCONFDIR}/stirling-pdf/trainingData:/usr/share/tessdata # Required for extra OCR languages
+      - ${DOCKERCONFDIR}/stirling-pdf/extraConfigs:/configs
+
+networks:
+  generalStackNetwork:
+    driver: bridge
+    external: true

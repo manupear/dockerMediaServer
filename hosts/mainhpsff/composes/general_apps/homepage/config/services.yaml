@@ -269,7 +269,7 @@
         widget:
             type: npm
             url: https://npm.yabailocal.duckdns.org
-            username: "{{HOMEPAGE_VAR_USER}}"
+            username: "{{HOMEPAGE_VAR_EMAIL}}"
             password: "{{HOMEPAGE_VAR_NPM_PWD}}"
     - shoko-server:
         icon: shoko.png
@@ -283,6 +283,18 @@
         href: https://firefly.yabailocal.duckdns.org
         server: hpsff-proxy
         container: firefly
+    - it-tools:
+        icon: it-tools.png
+        description: very useful tools
+        href: https://it-tools.yabailocal.duckdns.org
+        server: t440p_1
+        container: it-tools
+    - stirling-pdf:
+        icon: stirling-pdf.png
+        description: pdf tools
+        href: https://s-pdf.yabailocal.duckdns.org
+        server: hpsff-proxy
+        container: s-pdf
     - notifiarr:
         icon: notifiarr.png
         description: TRaSH Guides updates for *arrs

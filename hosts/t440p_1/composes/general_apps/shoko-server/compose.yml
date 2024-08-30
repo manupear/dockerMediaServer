@@ -11,7 +11,7 @@ services:
     ports:
       - "8111:8111"
     networks:
-      - jellyStackNetwork
+      - generalStackNetwork
     logging:
       driver: "json-file"
       options:
