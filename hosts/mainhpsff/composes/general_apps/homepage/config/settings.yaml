@@ -1,0 +1,43 @@
+title: One sky, one destiny.
+
+theme: dark
+color: slate
+
+providers:
+  openweathermap: "{{HOMEPAGE_VAR_OPEN_WEATHER_MAP_API_KEY}}"
+
+statusStyle: "dot"
+headerStyle: boxed
+language: en
+target: _blank # open links in a new tab
+background: 
+  image: /images/vanitas.jpg
+  blur: sm # sm, "", md, xl... see https://tailwindcss.com/docs/backdrop-blur
+  brightness: 50 # 0, 50, 75... see https://tailwindcss.com/docs/backdrop-brightness
+  opacity: 50 # 0-100
+
+quicklaunch:
+  searchDescriptions: true
+  hideInternetSearch: true
+  showSearchSuggestions: true
+  hideVisitURL: true
+  provider: duckduckgo
+
+layout:
+  Important stuff:
+    style: row
+    columns: 4
+  HP SFF Monitoring:
+    useEqualHeights: true
+    style: row
+    columns: 4
+    header: false
+  T440p_1 Monitoring:
+    useEqualHeights: true
+    style: row
+    columns: 4
+    header: false
+  Docker services:
+    style: row
+    columns: 4
+    header: false

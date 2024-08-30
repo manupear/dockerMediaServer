@@ -1,0 +1,95 @@
+x-default-conf: &default_conf
+  restart: unless-stopped
+  networks:
+    - musicStackNetwork
+  labels:
+    - docker-volume-backup.stop-during-backup=true
+  logging:
+    driver: "json-file"
+    options:
+      max-file: "2"
+      max-size: "100m"
+
+services:
+  navidrome:
+    container_name: navidrome
+    image: deluan/navidrome:latest
+    user: ${PUID}:${PGID}
+    <<: *default_conf
+    environment:
+      ND_SCANSCHEDULE: 1h
+      ND_LOGLEVEL: info
+      ND_SESSIONTIMEOUT: 24h
+      ND_LASTFM_APIKEY: ${ND_LASTFM_APIKEY}
+      ND_LASTFM_SECRET: ${ND_LASTFM_SECRET}
+      ND_SPOTIFY_ID: ${ND_SPOTIFY_ID}
+      ND_SPOTIFY_SECRET: ${ND_SPOTIFY_SECRET}
+    labels:
+      - swag=enable
+      # - swag_auth=authelia
+      - docker-volume-backup.stop-during-backup=true
+    ports:
+      - "4533:4533"
+    volumes:
+      - ${DOCKERCONFDIR}/navidrome:/data
+      - ${DOCKERSTORAGEDIR}/medialibrary/music:/music:ro
+
+  betanin:
+    image: sentriz/betanin:latest
+    container_name: betanin
+    ports:
+      - 9393:9393
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+    <<: *default_conf
+    volumes:
+      - ${DOCKERCONFDIR}/betanin/data:/b/.local/share/betanin/
+      - ${DOCKERCONFDIR}/betanin/config:/b/.config/betanin/
+      - ${DOCKERCONFDIR}/betanin/beets:/b/.config/beets/
+      - ${DOCKERSTORAGEDIR}:/storage
+
+  betanin-move:
+    image: sentriz/betanin:latest
+    container_name: betanin-move
+    ports:
+      - 9394:9393
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+    <<: *default_conf
+    volumes:
+      - ${DOCKERCONFDIR}/betanin-move/data:/b/.local/share/betanin/
+      - ${DOCKERCONFDIR}/betanin-move/config:/b/.config/betanin/
+      - ${DOCKERCONFDIR}/betanin-move/beets:/b/.config/beets/
+      - ${DOCKERSTORAGEDIR}:/storage
+
+  tidarr:
+    image: cstaelen/tidarr
+    container_name: 'tidarr'
+    ports:
+      - 8484:8484
+    <<: *default_conf
+    volumes:
+        - ${DOCKERCONFDIR}/tidarr/config:/home/app/standalone/shared
+        - ${DOCKERSTORAGEDIR}/downloads/tidarr/albums:/home/app/standalone/download/albums
+        - ${DOCKERSTORAGEDIR}/downloads/tidarr/tracks:/home/app/standalone/download/tracks
+        - ${DOCKERSTORAGEDIR}/downloads/tidarr/playlists:/home/app/standalone/download/playlists
+
+  deemix:
+    image: registry.gitlab.com/bockiii/deemix-docker
+    container_name: deemix
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+    <<: *default_conf
+    ports:
+      - 6595:6595
+    volumes:
+      - ${DOCKERCONFDIR}/deemix/config:/config
+      - ${DOCKERSTORAGEDIR}/downloads/deemix:/downloads
+
+networks:
+  musicStackNetwork:
+    driver: bridge
+    external: true

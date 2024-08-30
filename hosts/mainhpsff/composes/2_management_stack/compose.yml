@@ -1,0 +1,94 @@
+x-default-conf: &default_conf
+  restart: unless-stopped
+  networks:
+    - managementStackNetwork
+    - socketProxyNetwork
+
+x-logging-conf: &logging
+  logging:
+    driver: "json-file"
+    options:
+      max-file: "2"
+      max-size: "100m"
+
+x-authentik-conf: &labels
+  labels:
+    - docker-volume-backup.stop-during-backup=true
+
+x-environment: &environment
+  PGID: ${PGID}
+  PUID: ${PUID}
+  TZ: ${TZ}
+  DOCKER_HOST: dockerproxy
+
+services:
+  ## PORTAINER##
+  portainer:
+    command: -H tcp://dockerproxy:2375
+    container_name: portainer
+    image: portainer/portainer-ce:latest
+    environment:
+      <<: *environment
+    <<: [*default_conf, *labels, *logging]
+    ports:
+      - 9000:9000
+    volumes:
+      - ${DOCKERCONFDIR}/portainer:/data
+      - ${DOCKERSTORAGEDIR}:/storage
+
+  ## DOCKER VOLUME BACKUP ##
+  docker-volume-backup:
+    image: offen/docker-volume-backup:latest
+    container_name: docker-volume-backup
+    user: 1000:100
+    environment:
+      DOCKER_HOST: "tcp://dockerproxy:2375"
+      BACKUP_CRON_EXPRESSION: "00 05 * * *"
+      BACKUP_COMPRESSION: "gz"
+      GZIP_PARALLELISM: 1
+      BACKUP_FILENAME: backup-mainhpsff-%Y-%m-%dT%H-%M-%S.tar.gz
+      # BACKUP_LATEST_SYMLINK: backup-mainhpsff-latest.tar.gz
+      BACKUP_SKIP_BACKENDS_FROM_PRUNE: s3,webdav,ssh,azure,dropbox
+      BACKUP_ARCHIVE: "/archive"
+      BACKUP_RETENTION_DAYS: "7"
+      BACKUP_PRUNING_LEEWAY: "1m"
+      BACKUP_PRUNING_PREFIX: "backup-mainhpsff"
+      EXEC_FORWARD_OUTPUT: "false"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "2"
+        max-size: "100m"
+    networks:
+      - managementStackNetwork
+      - socketProxyNetwork
+    volumes:
+      - ${DOCKERCONFDIR}:/backup:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /smb/backups/dockerBackups:/archive:rw
+
+  glances:
+    container_name: glances
+    image: nicolargo/glances:latest-full
+    restart: unless-stopped
+    pid: "host"
+    privileged: true
+    networks:
+      - managementStackNetwork
+    ports:
+      - 61208:61208
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    environment:
+      - TZ=${TZ}
+      - "GLANCES_OPT=-w"
+
+networks:
+  managementStackNetwork:
+    driver: bridge
+    external: true
+  socketProxyNetwork:
+    driver: bridge
+    external: true

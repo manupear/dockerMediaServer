@@ -1,0 +1,29 @@
+services:
+  shoko_server:
+    shm_size: 256m
+    container_name: shokoserver
+    image: shokoanime/server:daily
+    restart: unless-stopped
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    ports:
+      - "8111:8111"
+    networks:
+      - generalStackNetwork
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "2"
+        max-size: "100m"
+    labels:
+      - docker-volume-backup.stop-during-backup=true
+    volumes:
+      - ${DOCKERCONFDIR}/shoko-server:/home/shoko/.shoko
+      - ${DOCKERSTORAGEDIR}:/mnt
+
+networks:
+  generalStackNetwork:
+    driver: bridge
+    external: true
