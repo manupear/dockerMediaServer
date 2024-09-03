@@ -23,7 +23,7 @@ services:
   betanin:
     image: sentriz/betanin:latest
     container_name: betanin
-    # docker exec -it betanin pip install beets-xtractor beets-autofix beets-cue requests beautifulsoup4  # HOW TO EXECUTE THIS ON STARTUP?
+    # docker exec -it betanin pip install beets-xtractor beets-autofix requests beautifulsoup4  # HOW TO EXECUTE THIS ON STARTUP?
     ports:
       - 9393:9393
     environment:
@@ -40,7 +40,7 @@ services:
   betanin-move:
     image: sentriz/betanin:latest
     container_name: betanin-move
-    # docker exec -it betanin pip install beets-xtractor beets-autofix beets-cue requests beautifulsoup4  # HOW TO EXECUTE THIS ON STARTUP?
+    # docker exec -it betanin pip install beets-xtractor beets-autofix requests beautifulsoup4  # HOW TO EXECUTE THIS ON STARTUP?
     ports:
       - 9394:9393
     environment:
@@ -51,8 +51,8 @@ services:
       - ${DOCKERCONFDIR}/betanin-move/data/betanin.db:/b/.local/share/betanin/betanin.db
       - ${DOCKERCONFDIR}/betanin-move/config/:/b/.config/betanin/
       - ${DOCKERCONFDIR}/betanin-move/beets/:/b/.config/beets/
-      - ${DOCKERCONFDIR}/betanin/extractors/:/mnt/data/extractors/
       - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKERCONFDIR}/betanin/extractors/:/mnt/data/extractors/
       - ${DOCKERCONFDIR}/betanin/beets/musiclibrary.blb:/b/.config/beets/musiclibrary.blb
       - ${DOCKERCONFDIR}/betanin/data/betanin.db:/b/.local/share/betanin/betanin.db
 
