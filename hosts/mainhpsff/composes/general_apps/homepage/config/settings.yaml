@@ -25,24 +25,39 @@ quicklaunch:
 
 layout:
   Important stuff:
+    tab: Important
     style: row
-    columns: 4
+    columns: 2
   HP SFF Monitoring:
+    tab: Important
     useEqualHeights: true
     style: row
-    columns: 4
+    columns: 3
     header: false
   T440p_1 Monitoring:
+    tab: Important
     useEqualHeights: true
     style: row
-    columns: 4
+    columns: 3
     header: false
   RD450 Monitoring:
+    tab: Important
     useEqualHeights: true
     style: row
-    columns: 4
+    columns: 3
     header: false
-  Docker services:
+  Management:
+    tab: Management
     style: row
-    columns: 4
+    columns: 3
+    header: false
+  General:
+    tab: General
+    style: row
+    columns: 3
+    header: false
+  Media:
+    tab: Media
+    style: row
+    columns: 3
     header: false

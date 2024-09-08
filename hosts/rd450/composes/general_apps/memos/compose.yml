@@ -1,0 +1,27 @@
+services:
+  memos:
+    image: neosmemo/memos:stable
+    container_name: memos
+    restart: unless-stopped
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    ports:
+      - "5230:5230"
+    networks:
+      - generalStackNetwork
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "2"
+        max-size: "100m"
+    labels:
+      - docker-volume-backup.stop-during-backup=true
+    volumes:
+      - ${DOCKERCONFDIR}/memos/:/var/opt/memos
+
+networks:
+  generalStackNetwork:
+    driver: bridge
+    external: true
