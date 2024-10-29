@@ -29,7 +29,7 @@ services:
       <<: *environment
     <<: *default_conf
     ports:
-      - 2283:3001
+      - 2283:2283
     labels:
       - docker-volume-backup.stop-during-backup=true
     depends_on:
