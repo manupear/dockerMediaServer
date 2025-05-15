@@ -1,0 +1,28 @@
+
+services:
+  beaverhabits:
+    container_name: beaverhabits
+    image: daya0576/beaverhabits:latest
+    user: ${PUID}:${PGID}
+    environment:
+        - HABITS_STORAGE=DATABASE
+        - MAX_USER_COUNT=1
+    volumes:
+        - ${DOCKERCONFDIR}/beaver:/app/.user/
+    labels:
+      - docker-volume-backup.stop-during-backup=true
+    ports:
+        - 8077:8080
+    restart: unless-stopped
+    networks:
+    - generalStackNetwork
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "2"
+        max-size: "100m"
+
+networks:
+  generalStackNetwork:
+    driver: bridge
+    external: true

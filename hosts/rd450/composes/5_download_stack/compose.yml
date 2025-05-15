@@ -10,13 +10,10 @@ services:
       WEBUI_PORT: 8080
       TORRENTING_PORT: 52525
     labels:
-      - swag=enable
-      - swag_auth=authentik
       - docker-volume-backup.stop-during-backup=true
     networks:
       - downloadStackNetwork
       - arrStackNetwork
-      - musicStackNetwork
     logging:
       driver: "json-file"
       options:
@@ -33,9 +30,6 @@ services:
 
 networks:
   downloadStackNetwork:
-    driver: bridge
-    external: true
-  musicStackNetwork:
     driver: bridge
     external: true
   arrStackNetwork:
