@@ -44,17 +44,17 @@ services:
       - ${DOCKERCONFDIR}/radarr:/config
       - ${DOCKERSTORAGEDIR}:/storage
 
-  readarr:
-    image: lscr.io/linuxserver/readarr:develop
-    container_name: readarr
-    environment:
-      <<: *environment
-    <<: [*default_conf, *autheliaPlusBackup]
-    volumes:
-      - ${DOCKERCONFDIR}/readarr:/config
-      - ${DOCKERSTORAGEDIR}:/storage
-    ports:
-      - 8787:8787
+  # readarr:
+  #   image: lscr.io/linuxserver/readarr:develop
+  #   container_name: readarr
+  #   environment:
+  #     <<: *environment
+  #   <<: [*default_conf, *autheliaPlusBackup]
+  #   volumes:
+  #     - ${DOCKERCONFDIR}/readarr:/config
+  #     - ${DOCKERSTORAGEDIR}:/storage
+  #   ports:
+  #     - 8787:8787
 
   sonarr:
     container_name: sonarr
@@ -80,19 +80,19 @@ services:
     ports:
       - 8191:8191
 
-  notifiarr:
-    container_name: notifiarr
-    hostname: notifiarr
-    image: golift/notifiarr
-    environment:
-      <<: *environment
-    <<: [*default_conf, *autheliaPlusBackup]
-    ports:
-      - 5454:5454
-    volumes:
-      - ${DOCKERCONFDIR}/notifiarr:/config
-      - /var/run/utmp:/var/run/utmp
-      - /etc/machine-id:/etc/machine-id
+  # notifiarr:
+  #   container_name: notifiarr
+  #   hostname: notifiarr
+  #   image: golift/notifiarr
+  #   environment:
+  #     <<: *environment
+  #   <<: [*default_conf, *autheliaPlusBackup]
+  #   ports:
+  #     - 5454:5454
+  #   volumes:
+  #     - ${DOCKERCONFDIR}/notifiarr:/config
+  #     - /var/run/utmp:/var/run/utmp
+  #     - /etc/machine-id:/etc/machine-id
 
   prowlarr:
     container_name: prowlarr
@@ -105,33 +105,56 @@ services:
     volumes:
       - ${DOCKERCONFDIR}/prowlarr:/config
 
-  # unpackerr:
-  #   image: golift/unpackerr
-  #   container_name: unpackerr
-  #   volumes:
-  #     - ${DOCKERSTORAGEDIR}:/storage
-  #   <<: *default_conf
-  #   user: ${PUID}:${PGID}
+  # decluttarr:
+  #   image: ghcr.io/manimatter/decluttarr:latest
+  #   container_name: decluttarr
   #   environment:
-  #     - TZ=${TZ}
-  #     # Sonarr Config
-  #     - UN_SONARR_0_URL=http://sonarr:8989
-  #     - UN_SONARR_0_API_KEY=${UNPACKERR_SONARR_APIKEY}
-  #     - UN_SONARR_0_PATHS_0=/storage
-  #     - UN_SONARR_0_PROTOCOLS=torrent
-  #     - UN_SONARR_0_TIMEOUT=10s
-  #     - UN_SONARR_0_DELETE_ORIG=false
-  #     - UN_SONARR_0_DELETE_DELAY=5m
-  #     # Radarr Config
-  #     - UN_RADARR_0_URL=http://radarr:7878
-  #     - UN_RADARR_0_API_KEY=${UNPACKERR_RADARR_APIKEY}
-  #     - UN_RADARR_0_PATHS_0=/storage
-  #     - UN_RADARR_0_PROTOCOLS=torrent
-  #     - UN_RADARR_0_TIMEOUT=10s
-  #     - UN_RADARR_0_DELETE_ORIG=false
-  #     - UN_RADARR_0_DELETE_DELAY=5m
-  #   security_opt:
-  #     - no-new-privileges:true
+  #     <<: *environment
+  #   <<: [*default_conf, *autheliaPlusBackup]
+  #   volumes:
+  #     - ${DOCKERCONFDIR}/decluttarr/config.yaml:/app/config/config.yaml
+
+  unpackerr:
+    image: golift/unpackerr
+    container_name: unpackerr
+    volumes:
+      - ${DOCKERCONFDIR}/unpackerr:/config
+      - ${DOCKERSTORAGEDIR}:/storage
+    <<: *default_conf
+    user: ${PUID}:${PGID}
+    environment:
+      - TZ=${TZ}
+      - UN_QUIET=false
+      - UN_DEBUG=false
+      - UN_ERROR_STDERR=false
+      - UN_LOG_QUEUES=1m
+      - UN_LOG_FILES=10
+      - UN_LOG_FILE_MB=10
+      - UN_LOG_FILE=/config/unpackerr.log
+      - UN_INTERVAL=2m
+      - UN_START_DELAY=1m
+      - UN_RETRY_DELAY=5m
+      - UN_MAX_RETRIES=3
+      - UN_PARALLEL=1
+      - UN_FILE_MODE=0644
+      - UN_DIR_MODE=0755
+      - UN_ACTIVITY=false
+      # Sonarr Config
+      - UN_SONARR_0_URL=http://sonarr:8989
+      - UN_SONARR_0_API_KEY=${UNPACKERR_SONARR_APIKEY}
+      - UN_SONARR_0_PATHS_0=/storage
+      - UN_SONARR_0_PROTOCOLS=torrent
+      - UN_SONARR_0_TIMEOUT=10s
+      - UN_SONARR_0_DELETE_ORIG=false
+      - UN_SONARR_0_DELETE_DELAY=5m
+      # Radarr Config
+      - UN_RADARR_0_URL=http://radarr:7878
+      - UN_RADARR_0_API_KEY=${UNPACKERR_RADARR_APIKEY}
+      - UN_RADARR_0_PATHS_0=/storage
+      - UN_RADARR_0_PROTOCOLS=torrent
+      - UN_RADARR_0_TIMEOUT=10s
+      - UN_RADARR_0_DELETE_ORIG=false
+      - UN_RADARR_0_DELETE_DELAY=5m
 
 networks:
   arrStackNetwork:

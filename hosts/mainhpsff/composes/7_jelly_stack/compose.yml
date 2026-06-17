@@ -37,16 +37,16 @@ services:
       - ${DOCKERCONFDIR}/jellyfin:/config
       - ${DOCKERSTORAGEDIR}/medialibrary:/data
 
-  jellyseerr:
-    image: fallenbagel/jellyseerr:latest
-    container_name: jellyseerr
-    environment:
-      <<: *environment
-    <<: [*default_conf, *autheliaPlusBackup]
-    ports:
-      - 5055:5055
-    volumes:
-      - ${DOCKERCONFDIR}/jellyseerr:/app/config
+      #  jellyseerr:
+      #image: fallenbagel/jellyseerr:latest
+    #container_name: jellyseerr
+    #environment:
+    # <<: *environment
+    #<<: [*default_conf, *autheliaPlusBackup]
+    #ports:
+    # - 5055:5055
+    #volumes:
+    # - ${DOCKERCONFDIR}/jellyseerr:/app/config
 
 networks:
   jellyStackNetwork:

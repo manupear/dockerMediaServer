@@ -21,9 +21,9 @@ services:
         max-file: "2"
         max-size: "100m"
     ports:
-      - 443:443
-      - 80:80
-      - 81:81
+      - 4443:443
+      - 880:80
+      - 881:81
     volumes:
       - ${DOCKERCONFDIR}/nginx-proxy-manager/data:/data
       - ${DOCKERCONFDIR}/nginx-proxy-manager/letsencrypt:/etc/letsencrypt

@@ -1,0 +1,32 @@
+
+
+services:
+  mealie:
+    image: ghcr.io/mealie-recipes/mealie:latest
+    container_name: mealie
+    restart: unless-stopped
+    ports:
+        - "9925:9000"
+    deploy:
+      resources:
+        limits:
+          memory: 1000M 
+    volumes:
+      - ${DOCKERCONFDIR}/mealie:/app/data/
+    networks:
+      - generalStackNetwork
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "2"
+        max-size: "100m"
+    environment:
+      ALLOW_SIGNUP: "false"
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+
+networks:
+  generalStackNetwork:
+    driver: bridge
+    external: true

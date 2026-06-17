@@ -22,19 +22,6 @@ x-environment: &environment
   DOCKER_HOST: dockerproxy
 
 services:
-  ## PORTAINER##
-  # portainer:
-  #   command: -H tcp://dockerproxy:2375
-  #   container_name: portainer
-  #   image: portainer/portainer-ce:latest
-  #   environment:
-  #     <<: *environment
-  #   <<: [*default_conf, *labels, *logging]
-  #   ports:
-  #     - 9000:9000
-  #   volumes:
-  #     - ${DOCKERCONFDIR}/portainer:/data
-  #     - ${DOCKERSTORAGEDIR}:/storage
 
   ## DOCKER VOLUME BACKUP ##
   docker-volume-backup:
@@ -68,22 +55,6 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
       - /smb/backups/dockerBackups:/archive:rw
-
-  glances:
-    container_name: glances
-    image: nicolargo/glances:latest-full
-    restart: unless-stopped
-    pid: "host"
-    privileged: true
-    networks:
-      - managementStackNetwork
-    ports:
-      - 61208:61208
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-    environment:
-      - TZ=${TZ}
-      - "GLANCES_OPT=-w"
 
 networks:
   managementStackNetwork:
