@@ -50,7 +50,7 @@ services:
       NAVIDROME_PASSWORD: ${ND_PWD}
       DATABASE_PATH: /app/data/magiclists.db
       AI_PROVIDER: openrouter
-      AI_API_KEY: "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"
+      AI_API_KEY: ${OPENROUTER_API_KEY}
     volumes:
       - ${DOCKERCONFDIR}/magiclists:/app/data
 
