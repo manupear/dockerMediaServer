@@ -1,0 +1,16 @@
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+logs:
+  level: DEBUG
+api:
+  dashboard: true
+  insecure: true
+providers:
+  docker:
+    exposedByDefault: false
+entryPoints:
+  web:
+    address: :80
+  websecure:
+    address: :443

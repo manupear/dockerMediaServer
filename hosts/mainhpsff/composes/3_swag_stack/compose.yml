@@ -14,20 +14,6 @@ x-environment: &environment
   TZ: ${TZ}
 
 services:
-  authelia:
-    image: authelia/authelia
-    container_name: authelia
-    environment:
-      <<: *environment
-    <<: *default_conf
-    labels:
-      - docker-volume-backup.stop-during-backup=true
-    depends_on:
-      - redis
-    ports:
-      - 9091:9091
-    volumes:
-      - ${DOCKERCONFDIR}/authelia:/config
 
   redis:
     image: redis:latest
