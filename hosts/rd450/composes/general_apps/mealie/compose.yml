@@ -20,6 +20,8 @@ services:
       options:
         max-file: "2"
         max-size: "100m"
+    labels:
+      - docker-volume-backup.stop-during-backup=true
     environment:
       ALLOW_SIGNUP: "false"
       PUID: ${PUID}
