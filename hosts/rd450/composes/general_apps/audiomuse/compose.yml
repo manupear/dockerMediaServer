@@ -1,0 +1,85 @@
+x-default-conf: &default_conf
+  restart: unless-stopped
+  networks:
+    - generalStackNetwork
+  labels:
+    - docker-volume-backup.stop-during-backup=true
+  logging:
+    driver: "json-file"
+    options:
+      max-file: "2"
+      max-size: "100m"
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: audiomuse-redis
+    <<: *default_conf
+    ports:
+      - "6390:6379" # Expose Redis port to the host
+    volumes:
+      - ${DOCKERCONFDIR}/audiomuse-redis:/data # Persistent storage for Redis data
+    restart: unless-stopped
+
+  # PostgreSQL database service
+  postgres:
+    image: postgres:15-alpine
+    <<: *default_conf
+    container_name: audiomuse-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-audiomuse}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-audiomusepassword}
+      POSTGRES_DB: "audiomusedb"
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432" # Expose PostgreSQL port to the host
+    volumes:
+      - ${DOCKERCONFDIR}/audiomuse-postgres:/var/lib/postgresql/data # Persistent storage for PostgreSQL data
+
+  # AudioMuse-AI Flask application service
+  audiomuse-ai-flask:
+    image: ghcr.io/neptunehub/audiomuse-ai:latest # Reflects deployment.yaml
+    <<: *default_conf
+    container_name: audiomuse-ai-flask-app
+    ports:
+      - "${FRONTEND_PORT:-8000}:8000" # Map host port 8000 to container port 8000
+    environment:
+      SERVICE_TYPE: "flask" # Tells the container to run the Flask app
+      TZ: "${TZ:-UTC}"
+      # DATABASE_URL is now constructed by config.py from the following:
+      POSTGRES_USER: ${POSTGRES_USER:-audiomuse}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-audiomusepassword}
+      POSTGRES_DB: "audiomusedb"
+      POSTGRES_HOST: "postgres" # Service name of the postgres container
+      POSTGRES_PORT: "5432" # Internal port — always 5432 inside the Docker network
+      REDIS_URL: "redis://redis:6390/0" # Connects to the 'redis' service
+      TEMP_DIR: "/app/temp_audio"
+    volumes:
+      - ${DOCKERCONFDIR}/temp-audio-flask:/app/temp_audio # Volume for temporary audio files
+    depends_on:
+      - postgres
+
+  # AudioMuse-AI RQ Worker service
+  audiomuse-ai-worker:
+    image: ghcr.io/neptunehub/audiomuse-ai:latest # Reflects deployment.yaml
+    <<: *default_conf
+    container_name: audiomuse-ai-worker-instance
+    environment:
+      SERVICE_TYPE: "worker" # Tells the container to run the RQ worker
+      TZ: "${TZ:-UTC}"
+      # DATABASE_URL is now constructed by config.py from the following:
+      POSTGRES_USER: ${POSTGRES_USER:-audiomuse}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-audiomusepassword}
+      POSTGRES_DB: "audiomusedb"
+      POSTGRES_HOST: "postgres" # Service name of the postgres container
+      POSTGRES_PORT: "5432" # Internal port — always 5432 inside the Docker network
+      REDIS_URL: "redis://redis:6390/0" # Connects to the 'redis' service
+      TEMP_DIR: "/app/temp_audio"
+    volumes:
+      - ${DOCKERCONFDIR}/temp-audio-worker:/app/temp_audio # Volume for temporary audio files
+    depends_on:
+      - postgres
+
+networks:
+  generalStackNetwork:
+    driver: bridge
+    external: true
