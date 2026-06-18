@@ -31,7 +31,6 @@ services:
       BACKUP_COMPRESSION: "gz"
       GZIP_PARALLELISM: 1
       BACKUP_FILENAME: backup-rd450-%Y-%m-%dT%H-%M-%S.tar.gz
-      # BACKUP_LATEST_SYMLINK: backup-mainhpsff-latest.tar.gz
       BACKUP_SKIP_BACKENDS_FROM_PRUNE: s3,webdav,ssh,azure,dropbox
       BACKUP_ARCHIVE: "/archive"
       BACKUP_RETENTION_DAYS: "7"
@@ -46,7 +45,6 @@ services:
         max-size: "100m"
     networks:
       - managementStackNetwork
-      - socketProxyNetwork
     volumes:
       - ${DOCKERCONFDIR}:/backup:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -54,13 +52,27 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /smb/backups/dockerBackups:/archive:rw
 
-  cloudflared: 
-    image: cloudflare/cloudflared 
-    container_name: cloudflare-tunnel 
-    restart: unless-stopped 
-    command: tunnel run 
-    environment: 
-      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+  # zerobyte:
+  #   image: ghcr.io/nicotsx/zerobyte:v0.39
+  #   container_name: zerobyte
+  #   restart: unless-stopped
+  #   cap_add:
+  #     - SYS_ADMIN
+  #   ports:
+  #     - "4096:4096"
+  #   devices:
+  #     - /dev/fuse:/dev/fuse
+  #   networks:
+  #     - managementStackNetwork
+  #   environment:
+  #     TZ: ${TZ}
+  #     BASE_URL: http://192.168.1.6:4096
+  #     APP_SECRET: ${ZEROBYTE_APP_SECRET}
+  #   volumes:
+  #     - /etc/localtime:/etc/localtime:ro
+  #     - /var/lib/zerobyte:/var/lib/zerobyte
+  #     - ${DOCKERCONFDIR}:/backup:ro
+  #     - /smb/backups/dockerBackups:/smb_share
 
 networks:
   managementStackNetwork:
