@@ -27,6 +27,8 @@ services:
       ND_DEVARTISTINFOTIMETOLIVE: 1s
       ND_PLUGINS_ENABLED: true
       ND_PLUGINS_AUTORELOAD: true
+      ND_LISTENBRAINZ_ENABLED: true
+      ND_LISTENBRAINZ_BASEURL: "192.168.1.6:4110/apis/listenbrainz/1"
     labels:
       - swag=enable
       # - swag_auth=authelia

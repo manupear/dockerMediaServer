@@ -1,0 +1,22 @@
+services:
+  koito:
+    image: gabehf/koito:latest
+    container_name: koito
+    ports:
+      - "4110:4110"
+    volumes:
+      - ${DOCKERCONFDIR}/koito:/etc/koito
+    environment:
+      KOITO_SUBSONIC_URL: http://192.168.1.9:4533
+      KOITO_SUBSONIC_PARAMS: ${KOITO_NAVI_PARAMS}
+      KOITO_DEFAULT_THEME: "black" 
+    restart: unless-stopped
+    networks:
+      - generalStackNetwork
+    labels:
+      - docker-volume-backup.stop-during-backup=true
+
+networks:
+  generalStackNetwork:
+    driver: bridge
+    external: true
